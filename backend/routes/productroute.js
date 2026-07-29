@@ -1,0 +1,21 @@
+import express from "express"
+import { authMiddleware } from "../middleware/authmiddleware.js"
+import { addProduct, deleteProduct, featureProduct, getMyProduct, getProductDetails, getProducts,
+     getSingleProduct, searchProduct, updateProduct } from "../controller/productcontroller.js"
+import { authorizeRole } from "../middleware/rolemiddleware.js"
+import uploads from "../middleware/fileupload.js"
+
+const productrouter=express.Router()
+
+productrouter.post("/addproduct",authMiddleware,authorizeRole("admin","owner"),uploads.array("images"),addProduct)
+productrouter.get("/getproduct",authMiddleware,authorizeRole("admin","owner","user"),getProducts)
+productrouter.patch("/updateproduct/:id",authMiddleware,authorizeRole("admin","owner"),updateProduct)
+productrouter.delete("/deleteproduct/:id",authMiddleware,authorizeRole("owner","admin"),deleteProduct)
+productrouter.get("/getsingleproduct/:id",authMiddleware,getSingleProduct)
+productrouter.get("/getmyproduct",authMiddleware,authorizeRole("owner"),getMyProduct)
+productrouter.get("/searchproduct/search",authMiddleware,searchProduct)
+// productrouter.get("/products",filterProducts)
+productrouter.get("/featureproduct",featureProduct)
+productrouter.get("/getproductdetails/:id",getProductDetails)
+
+export default productrouter
