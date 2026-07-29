@@ -25,11 +25,12 @@ const signin = () => {
     try {
       const response = await api.post("/signin", formData);
 
-      localStorage.setItem("token", response.data.token);
+      // localStorage.setItem("token", response.data.token);
 
       alert("Login Successfull!");
 
       navigate("/home");
+      window.location.reload()
     } catch (err) {
       alert(err.response?.data?.message || "Login Failed");
     }

@@ -1,6 +1,23 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import api from "../service/api";
 
-const Navbar = () => {
+const Navbar = ({user, setUser}) => {
+  const navigate=useNavigate()
+
+
+  const handleLogout=async()=>{
+    try{
+      await api.post("/logout");
+      setUser(null);
+
+      navigate("/signin")
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+
   return (
     <nav className="sticky top-0 left-0 w-full z-50 bg-[#213555]/90 backdrop-blur-md shadow-lg">
       <div className="max-w-7xl mx-auto px-6">
@@ -41,10 +58,22 @@ const Navbar = () => {
 
           {/* Buttons */}
           <div className="flex items-center gap-4">
-            <Link
-              to="/signin"
-              className="px-5 py-2 border border-[#D8C4B6] rounded-lg text-[#F5EFE7] hover:bg-[#D8C4B6] hover:text-[#213555] transition"
-            >
+            {user ? (
+              <>
+                <span className="text-[#F5EFE7] font-medium">
+                  {user.email}
+                </span>
+
+                <button onClick={handleLogout} className="px-5 py-2 bg-red-500 rounded-lg text-white">
+                  Logout
+                </button>
+              </>
+            ):(
+              <>
+              <Link
+                to="/signin"
+                className="px-5 py-2 border border-[#D8C4B6] rounded-lg text-[#F5EFE7] hover:bg-[#D8C4B6] hover:text-[#213555] transition"
+              >
               Login
             </Link>
 
@@ -54,6 +83,10 @@ const Navbar = () => {
             >
               Sign Up
             </Link>
+              </>
+            )
+
+            }
           </div>
 
         </div>

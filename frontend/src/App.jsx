@@ -15,9 +15,28 @@ import Product from './pages/Product'
 import Footer from './components/Footer'
 import Checkout from './pages/Checkout'
 import Bookingconfirmed from './pages/Bookingconfirmed'
+import api from './service/api'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 function App() {
   const location=useLocation()
+
+  const [user,setUser]=useState(null)
+
+  const getUser=async()=>{
+    try{
+      const res=await api.get("/getme")
+      setUser(res.data.user)
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+
+  useEffect(()=>{
+    getUser();
+  },[])
 
   const hidenavbar=location.pathname==="/signin" ||
                    location.pathname==="/signup";
@@ -26,7 +45,7 @@ function App() {
 
   return(
     <>
-    {!hidenavbar && <Navbar />}
+    {!hidenavbar && <Navbar user={user} setUser={setUser}/>}
     
     <Routes>
       <Route path='/signup' element={<Signup />}/>
