@@ -2,7 +2,8 @@
   import api from "../service/api";
   // import "../../css/ProductListing.css"
   import { useNavigate } from "react-router-dom";
-  
+  import CategoryCard from "../components/CategoryCard";
+  import categories from "../data/categories";
 
   const Home = () => {
     const navigate=useNavigate()
@@ -158,6 +159,22 @@ return (
       </div>
 
     </div>
+  </section>
+
+
+  <section className="category-section">
+        <h2 className="section-title">
+          Browse Categories
+        </h2>
+
+        <div className="category-container">
+          <div className="category-grid">
+          {categories.map(category=>(
+            <CategoryCard key={category.id} category={category}/>
+          ))}
+        </div>
+        </div>
+        
   </section>
 
 

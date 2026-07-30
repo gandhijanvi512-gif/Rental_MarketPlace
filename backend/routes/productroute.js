@@ -1,9 +1,10 @@
 import express from "express"
 import { authMiddleware } from "../middleware/authmiddleware.js"
 import { addProduct, deleteProduct, featureProduct, getMyProduct, getProductDetails, getProducts,
-     getSingleProduct, searchProduct, updateProduct } from "../controller/productcontroller.js"
+     getSingleProduct, searchProduct, updateProduct, getProductByCategory } from "../controller/productcontroller.js"
 import { authorizeRole } from "../middleware/rolemiddleware.js"
 import uploads from "../middleware/fileupload.js"
+
 
 const productrouter=express.Router()
 
@@ -17,5 +18,6 @@ productrouter.get("/searchproduct/search",authMiddleware,searchProduct)
 // productrouter.get("/products",filterProducts)
 productrouter.get("/featureproduct",featureProduct)
 productrouter.get("/getproductdetails/:id",getProductDetails)
+productrouter.get("/getproductbycategory/:category",getProductByCategory)
 
 export default productrouter

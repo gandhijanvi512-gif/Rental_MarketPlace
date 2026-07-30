@@ -18,6 +18,7 @@ import Bookingconfirmed from './pages/Bookingconfirmed'
 import api from './service/api'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import Category from './pages/Category'
 
 function App() {
   const location=useLocation()
@@ -59,6 +60,7 @@ function App() {
       <Route path='/products' element={<Product />}/>
       <Route path='/checkout' element={<Checkout />}/>
       <Route path='/bookingconfirmed' element={<Bookingconfirmed />}/>
+      <Route path='/categories' element={<Category />}/>
       
     </Routes>
 

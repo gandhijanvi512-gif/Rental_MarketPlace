@@ -301,3 +301,23 @@ export const getProductDetails=async(req,res)=>{
   }
 }
 
+export const getProductByCategory=async(req,res)=>{
+  try{
+    const {category}=req.params;
+
+    const products=await Product.find({
+      category,
+    })
+
+    return res.status(200).json({
+      success:true,
+      products
+    })
+  }catch(err){
+    return res.status(500).json({
+      success:false,
+      message:err.message
+    })
+  }
+}
+
