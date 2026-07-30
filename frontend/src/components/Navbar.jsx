@@ -43,7 +43,7 @@ const Navbar = ({user, setUser}) => {
               Products
             </Link>
 
-            <Link to="/categories" className="text-[#F5EFE7] hover:text-[#D8C4B6]">
+            <Link to="/category" className="text-[#F5EFE7] hover:text-[#D8C4B6]">
               Categories
             </Link>
 

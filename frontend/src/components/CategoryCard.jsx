@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom"
 
-function CategoryCard({category,active}){
+function CategoryCard({category}){
     const navigatae=useNavigate()
 
     return(
-        <div className={`category-card ${active? "active-category" : ""}`}
+        <div className="category-card"
             onClick={()=>navigatae(`/category/${category.name}`)}
         >
             <img src={category.image} alt={category.name} />

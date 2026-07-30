@@ -19,6 +19,7 @@ import api from './service/api'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Category from './pages/Category'
+import CategoryProducts from './pages/CategoryProducts'
 
 function App() {
   const location=useLocation()
@@ -60,7 +61,9 @@ function App() {
       <Route path='/products' element={<Product />}/>
       <Route path='/checkout' element={<Checkout />}/>
       <Route path='/bookingconfirmed' element={<Bookingconfirmed />}/>
-      <Route path='/categories' element={<Category />}/>
+      <Route path='/category' element={<Category />} />
+      <Route path='/category/:category' element={<CategoryProducts />}/>
+
       
     </Routes>
 

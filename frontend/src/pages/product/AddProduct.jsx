@@ -2,95 +2,12 @@ import { useState } from "react";
 import api from "../../service/api";
 import "../../css/AddProduct.css";
 import { useNavigate } from "react-router-dom";
+import categoryData from "../../data/categorydata";
+
 
 const AddProduct = () => {
   const navigate = useNavigate();
 
-  const categories={
-    Vehicles: [
-      "Bike","Car","Scooter","Truck","Bus","Electronic Bike","Electronic Scooter"
-    ],
-
-    Electronics: [
-      "Laptop",
-      "Desktop",
-      "Mobile",
-      "Tablet",
-      "Camera",
-      "DSLR",
-      "Drone",
-      "Projector",
-      "TV",
-      "Speaker",
-      "Headphones",
-      "Gaming Console",
-      "Printer",
-      "Monitor"
-    ],
-
-    Furniture: [
-      "Chair", "Table", "Sofa", "Bed", "Cupboard", "Dining Table"
-    ],
-
-    Properties: [
-      "Room", "Flat", "Apartment", "Bungalow", "Villa"
-    ],
-
-    Books: [
-      "Academic", "Novel", "Comics","Story Book","Magazine"
-    ],
-
-    Gaming: [
-      "PlayStation",
-      "Xbox",
-      "Nintendo",
-      "VR Headset",
-      "Gaming Chair",
-      "Gaming Accessories"
-    ],
-
-    Fashion: [
-       "Men",
-      "Women",
-      "Kids",
-      "Wedding Dress",
-      "Traditional Wear",
-      "Shoes",
-      "Bags",
-      "Jewellery"
-    ],
-
-    HomeAppliances: [
-      "Refrigerator",
-      "Washing Machine",
-      "Microwave",
-      "Air Conditioner",
-      "Cooler",
-      "Vacuum Cleaner",
-      "Water Purifier"
-    ],
-
-    EventParty: [
-        "Tent",
-        "Chair",
-        "Table",
-        "Stage",
-        "Lighting",
-        "Sound System",
-        "Decoration"
-    ],
-
-    MusicalInstruments: [
-        "Guitar",
-        "Piano",
-        "Keyboard",
-        "Drums",
-        "Violin",
-        "Microphone",
-        "DJ Equipment"
-    ]
-
-  }
 
   const [formData, setFormData] = useState({
     title: "",
@@ -195,7 +112,7 @@ const AddProduct = () => {
             
             <option value="">Select Category</option>
 
-            {Object.keys(categories).map((cat)=>(
+            {Object.keys(categoryData).map((cat)=>(
               <option key={cat} value={cat}>
                 {cat}
               </option>
@@ -212,7 +129,7 @@ const AddProduct = () => {
             disabled={!formData.category}
           >
             <option value="">Select Sub Category</option>
-              {formData.category && categories[formData.category].map((sub)=>(
+              {formData.category && categoryData[formData.category].map((sub)=>(
                 <option key={sub} value={sub}>
                   {sub}
                 </option>
