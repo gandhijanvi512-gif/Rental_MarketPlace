@@ -146,7 +146,7 @@ function Checkout(){
                                 const statusRes = await api.get(
                                     `/paymentstatus/${response.razorpay_order_id}`
                                 );
-                                console.log("Payment Status:", statusRes.data);
+                                // console.log("Payment Status:", statusRes.data);
 
                                 if (statusRes.data.status === "PAID") {
                                     console.log("Payment is PAID");

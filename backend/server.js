@@ -9,6 +9,7 @@ import productrouter from './routes/productroute.js'
 import cartrouter from './routes/cartroute.js'
 import bookingrouter from './routes/bookingroute.js'
 import paymentrouter from './routes/paymentroute.js'
+import profilerouter from './routes/profileroute.js'
 import morgan from 'morgan'
 
 const app=express()
@@ -33,6 +34,7 @@ app.use(productrouter)
 app.use(cartrouter)
 app.use(bookingrouter)
 app.use(paymentrouter)
+app.use(profilerouter)
 
 
 

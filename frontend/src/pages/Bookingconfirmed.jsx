@@ -4,7 +4,7 @@ function Bookingconfirmed(){
     const navigate=useNavigate()
     const {state}=useLocation()
 
-    console.log("State:",state)
+    // console.log("State:",state)
 
     if(!state){
         return <h2>No Booking Found</h2>

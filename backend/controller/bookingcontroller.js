@@ -213,3 +213,69 @@ export const updateBookingStatus=async(req,res)=>{
         })
     }
 }
+
+
+export const getMyRentals=async(req,res)=>{
+    try{
+        const bookings=await Booking.find({userId:req.user.id}).populate("productId").sort({createdAt: -1})
+
+        const today=new Date()
+
+        const rentals=bookings.map((booking)=>{
+            const start=new Date(booking.startDate)
+            const end=new Date(booking.endDate)
+
+
+            let rentalStatus=""
+            let remainingDays=0
+            let progress=0
+
+            const totalDays=Math.ceil((end-start)/(1000*60*60*24))+1
+
+            if(today<start){
+                rentalStatus="Upcoming";
+
+                remainingDays=Math.ceil((end-start)/(1000*60*60*24))
+
+                progress=0;
+            }
+            else if(today>=start && today<=end){
+                rentalStatus="Active"
+
+                remainingDays=Math.ceil((end-start)/(1000*60*60*24))
+
+                const usedDays=Math.ceil((end-start)/(1000*60*60*24))
+
+                progress=Math.min(Math.round((usedDays/totalDays)*100),100)
+            }
+            else{
+                rentalStatus="Completed"
+                remainingDays=0
+                progress=100
+            }
+
+            return{
+                id:booking._id,
+                startDate:booking.startDate,
+                endDate:booking.endDate,
+                totalAmount:booking.totalAmount,
+                bookingStatus:booking.status,
+                rentalStatus,
+                remainingDays,
+                progress,
+                totalDays,
+                product:booking.productId
+            }
+        })
+
+        return res.status(200).json({
+            success:true,
+            rentals
+        })
+    }catch(err){
+        return res.status(500).json({
+            success:false,
+            message:err.message
+        })
+    }
+}

@@ -20,6 +20,11 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import Category from './pages/Category'
 import CategoryProducts from './pages/CategoryProducts'
+import Profile from './pages/Profile'
+import MyRental from './pages/MyRental'
+import RentalHistory from './pages/RentalHistory'
+import Setting from './pages/Setting'
+import ProfileLayout from './pages/ProfileLayout'
 
 function App() {
   const location=useLocation()
@@ -63,7 +68,17 @@ function App() {
       <Route path='/bookingconfirmed' element={<Bookingconfirmed />}/>
       <Route path='/category' element={<Category />} />
       <Route path='/category/:category' element={<CategoryProducts />}/>
+      {/* <Route path='/profile' element={<Profile />}/>
+      <Route path='/myrentals' element={<MyRental />}/>
+      <Route path='/rentalhistory' element={<RentalHistory />}/>
+      <Route path='/settings' element={<Setting />}/> */}
 
+      <Route element={<ProfileLayout />}>
+        <Route path='/profile' element={<Profile />}/>
+        <Route path='/myrentals' element={<MyRental />}/>
+        <Route path='/rentalhistory' element={<RentalHistory />}/>
+        <Route path='/setting' element={<Setting />}/>
+      </Route>
       
     </Routes>
 

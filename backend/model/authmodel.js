@@ -18,9 +18,39 @@ const userSchema=new mongoose.Schema(
         },
         role:{
             type:String,
-            enum:["user","admin","owner"],
+            enum:["user","owner"],
             default:"user"
         },
+        phone: {
+            type: String,
+            default: ""
+        },
+
+        address: {
+            type: String,
+            default: ""
+        },
+
+        city: {
+            type: String,
+            default: ""
+        },
+
+        state: {
+            type: String,
+            default: ""
+        },
+
+        pincode: {
+            type: String,
+            default: ""
+        },
+
+        profileImage: {
+            type: String,
+            default: ""
+        },
+
         isActive:{
             type:Boolean,
             default:true

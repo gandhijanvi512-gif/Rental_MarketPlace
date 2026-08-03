@@ -104,7 +104,7 @@ function CategoryProducts(){
 
                         <div className="product-card" key={item._id}>
     <img
-        src={`http://localhost:5200/${item.images[0]}`}
+        src={`http://localhost:5200${item.images[0]}`}
         alt={item.title}
     />
 
