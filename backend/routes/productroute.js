@@ -8,7 +8,7 @@ import uploads from "../middleware/fileupload.js"
 
 const productrouter=express.Router()
 
-productrouter.post("/addproduct",authMiddleware,authorizeRole("admin","owner"),uploads.array("images"),addProduct)
+productrouter.post("/addproduct",authMiddleware,authorizeRole("admin","owner"),uploads.array("images",5),addProduct)
 productrouter.get("/getproduct",authMiddleware,authorizeRole("admin","owner","user"),getProducts)
 productrouter.patch("/updateproduct/:id",authMiddleware,authorizeRole("admin","owner"),updateProduct)
 productrouter.delete("/deleteproduct/:id",authMiddleware,authorizeRole("owner","admin"),deleteProduct)

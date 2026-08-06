@@ -83,17 +83,20 @@ export const updateProfile=async(req,res)=>{
     try{
         const {name,phone,address,city,state,pincode}=req.body;
 
-        const user=await User.findByIdAndUpdate(req.user.id,{
-            name,
-            phone,
-            address,
-            city,
-            state,
-            pincode
-        },{
-            new:true,
-            runValidators:true
-        }).select("-password")
+        const updateData={name,phone,address,city,state,pincode};
+
+        if(req.file){
+            updateData.profileImage=`/uploads/profile/${req.file.filename}`
+        }
+
+        const user=await User.findByIdAndUpdate(
+            req.user.id,
+            updateData,
+            {
+                new:true,
+                runValidators:true
+            }
+        ).select("-password")
 
         return res.status(200).json({
             success:true,
@@ -107,3 +110,57 @@ export const updateProfile=async(req,res)=>{
         })
     }
 }
+
+export const getBookingHistory = async (req, res) => {
+    try {
+
+        const today = new Date();
+
+        // Approved -> Ongoing
+        await Booking.updateMany(
+            {
+                status: "approved",
+                startDate: { $lte: today },
+                endDate: { $gte: today }
+            },
+            {
+                $set: {
+                    status: "ongoing"
+                }
+            }
+        );
+
+        // Approved/Ongoing -> Completed
+        await Booking.updateMany(
+            {
+                status: { $in: ["approved", "ongoing"] },
+                endDate: { $lt: today }
+            },
+            {
+                $set: {
+                    status: "completed"
+                }
+            }
+        );
+
+        const bookings = await Booking.find({
+            userId: req.user.id,
+            status: "completed"
+        })
+        .populate("productId")
+        .sort({ endDate: -1 });
+
+        return res.status(200).json({
+            success: true,
+            bookings
+        });
+
+    } catch (err) {
+        console.log(err);
+
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+};

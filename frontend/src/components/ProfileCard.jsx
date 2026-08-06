@@ -1,7 +1,10 @@
-import { Calendar, CheckCircle2, Mail, MapPin, Pencil, Phone, Shield, User } from "lucide-react";
+import { Calendar, CheckCircle2, Import, Mail, MapPin, Pencil, Phone, Shield, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import userImage from "../assets/user.jpg"
 
 function ProfileCard({user}){
-    
+    const navigate=useNavigate()
+
     if(!user){
         return null;
     }
@@ -16,22 +19,28 @@ function ProfileCard({user}){
     .filter(Boolean)
     .join(", ")
 
+    // console.log(user);
+    // console.log(user.profileImage);
     return(
         
         <div className="profile-card">
             <div className="profile-left">
                 <div className="profile-avatar-container">
                     <div className="profile-avatar">
-                        {
-                            user.profileImage?(
-                                <img src={user.profileImage} alt={user.name} className="profile-image"/>
-                            ):(
-                                <User size={45} color="#fffffff"/>
-                            )
-                        }
+
+
+                        <img src={
+                            user.profileImage?`http://localhost:5200${user.profileImage}`:userImage
+                        } alt={user.name} className="profile-image" />
+
+                        
+
+
                     </div>
                     
-                    <button className="edit-profile-btn">
+                    <button className="edit-profile-btn"
+                        onClick={()=>navigate("/editprofile")}
+                    >
                         {/* <Pencil size={18}/> */}
                         Edit Profile
                     </button>

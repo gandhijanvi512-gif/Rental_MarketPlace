@@ -25,6 +25,7 @@ import MyRental from './pages/MyRental'
 import RentalHistory from './pages/RentalHistory'
 import Setting from './pages/Setting'
 import ProfileLayout from './pages/ProfileLayout'
+import EditProfile from './pages/EditProfile'
 
 function App() {
   const location=useLocation()
@@ -61,13 +62,15 @@ function App() {
       <Route path='/home' element={<Home />}/>
       <Route path='updateproduct/:id' element={<Updateproduct />}/>
       <Route path='/myproducts' element={<MyProduct />}/>
-      <Route path='/products/:id' element={<ProductDetails />}/>
+      <Route path='/productsdetails/:id' element={<ProductDetails />}/>
       <Route path="/cart" element={<Cart />} />
       <Route path='/products' element={<Product />}/>
       <Route path='/checkout' element={<Checkout />}/>
       <Route path='/bookingconfirmed' element={<Bookingconfirmed />}/>
       <Route path='/category' element={<Category />} />
       <Route path='/category/:category' element={<CategoryProducts />}/>
+      <Route path='/editprofile' element={<EditProfile />}/>
+      
       {/* <Route path='/profile' element={<Profile />}/>
       <Route path='/myrentals' element={<MyRental />}/>
       <Route path='/rentalhistory' element={<RentalHistory />}/>
@@ -78,6 +81,7 @@ function App() {
         <Route path='/myrentals' element={<MyRental />}/>
         <Route path='/rentalhistory' element={<RentalHistory />}/>
         <Route path='/setting' element={<Setting />}/>
+        
       </Route>
       
     </Routes>

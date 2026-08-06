@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import api from "../service/api";
 import { useEffect, useState } from "react";
-
+import { Heart } from "lucide-react";
 
 const Product=()=>{
     const navigate=useNavigate()
@@ -11,9 +11,11 @@ const Product=()=>{
     const [category,setCategory]=useState("");
     const [minPrice,setMinPrice]=useState("");
     const [maxPrice,setMaxPrice]=useState("");
+    const [loading,setLoading]=useState(false)
+    const [wishlistIds,setwishlistIds]=useState([]);
 
 
-    const fetchProducts=async()=>{
+    const fetchProducts=async(productId)=>{
         try{
             const res=await api.get("/getProduct",{
                 params:{
@@ -31,9 +33,51 @@ const Product=()=>{
         }
     }
 
+    const handlewishlist=async(productId)=>{
+      try{
+        setLoading(true)
+
+        if(wishlistIds.includes(productId)){
+          await api.delete(`/removefromwishlist/${productId}`,{
+            withCredentials:true
+          })
+
+          setwishlistIds((prev)=>prev.filter((id)=>id!==productId))
+        }else{
+          await api.post(`/addtowishlist/${productId}`,{},{withCredentials:true})
+          setwishlistIds((prev) => [...prev, productId]);
+        }
+        
+
+      }catch(err){
+        alert(err.response?.data?.message||"Something went wrong")
+      }finally{
+        setLoading(false)
+      }
+    }
+
+    const fetchWishlist=async()=>{
+      try{
+        const res=await api.get("/getwishlist",{
+          withCredentials:true
+        })
+
+        const ids=res.data.wishlist.map((item)=>item.productId._id)
+
+        setwishlistIds(ids)
+      }catch(err){
+        console.log(err)
+        
+      }
+    }
+
     useEffect(()=>{
         fetchProducts()
     },[search,category,minPrice,maxPrice])
+
+    useEffect(()=>{
+      fetchWishlist()
+    },[])
 
     return (
     <div className="min-h-screen p-6">
@@ -164,8 +208,22 @@ const Product=()=>{
         {products?.map((product) => (
           <div
             key={product._id}
-            className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition"
+            className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition"
           >
+            <button
+                className="wishlist-btn"
+                onClick={()=>handlewishlist(product._id)}
+                disabled={loading}
+              >
+                <Heart size={22} fill={
+                  wishlistIds.includes(product._id)?"red":"none"
+                }
+                color={
+                  wishlistIds.includes(product._id)?"red":"#374151"
+                }
+                />
+            </button>
+
             <img
               src={`http://localhost:5200${product.images?.[0]}`}
               alt={product.title}
@@ -186,7 +244,7 @@ const Product=()=>{
               </h3>
 
               <button
-                onClick={() => navigate(`/products/${product._id}`)}
+                onClick={() => navigate(`/productsdetails/${product._id}`)}
                 className="mt-4 w-full bg-[#213555] text-white py-2 rounded-xl hover:bg-[#3E5879] transition"
               >
                 View Details

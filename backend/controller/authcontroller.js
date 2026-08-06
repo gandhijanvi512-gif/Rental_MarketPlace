@@ -31,7 +31,7 @@ export const signup=async(req,res)=>{
         })
     }catch(err){
         return res.status(500).json({
-            success:false,
+            success:false, 
             message:err.message
         })
     }

@@ -62,7 +62,9 @@ function MyRental(){
                     
                 </div>
 
-                {
+
+                <div className="active-list">
+                                    {
                     filteredRentals.map((rental)=>{
                         const today=new Date()
 
@@ -83,14 +85,14 @@ function MyRental(){
                                 <div className="rental-details">
                                     <h3>{rental.productId.title}</h3>
 
-                                    <p>{rental.productId.category}</p>
+                                    <span>{rental.productId.category}</span>
 
                                     <span>
-                                        Start: {" "}{new Date(rental.startDate).toLocaleDateString()}
+                                        📅Start Date: {" "}{new Date(rental.startDate).toLocaleDateString()}
                                     </span>
 
                                     <span>
-                                        End: {" "}{new Date(rental.endDate).toLocaleDateString()}
+                                        📅End Date: {" "}{new Date(rental.endDate).toLocaleDateString()}
                                     </span>
                                 </div>
 
@@ -132,6 +134,8 @@ function MyRental(){
                     })
                     
                 }
+                </div>
+
             </div>
         </>  
     )

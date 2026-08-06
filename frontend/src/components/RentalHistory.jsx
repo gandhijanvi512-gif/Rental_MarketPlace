@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 function RentalHistory({history}){
-    console.log("RentalHistory props:", history);
+    // console.log("RentalHistory props:", history);
     if(!history){
         return null
     }

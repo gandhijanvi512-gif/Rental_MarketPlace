@@ -3,6 +3,7 @@ import api from "../../service/api";
 import "../../css/AddProduct.css";
 import { useNavigate } from "react-router-dom";
 import categoryData from "../../data/categorydata";
+import { useEffect } from "react";
 
 
 const AddProduct = () => {
@@ -19,6 +20,7 @@ const AddProduct = () => {
   });
 
   const [images, setImages] = useState([]);
+  const[previewUrls,setPreviewUrls]=useState([]);
 
   const handleChange = (e) => {
     setFormData({
@@ -28,11 +30,40 @@ const AddProduct = () => {
   };
 
   const handleImageChange = (e) => {
-    setImages(e.target.files);
-  };
+    const selectedFiles=Array.from(e.target.files)
+  
+    if(images.length+selectedFiles.length>5){
+      //  alert("You can upload a maximum of 5 images.");
+      // e.target.value="";
+      return
+    }
+    setImages((prev)=>[...prev,...selectedFiles])
+    e.target.value="";
+  }
 
+  const handleRemoveImage=(index)=>{
+    setImages((prev)=>prev.filter((_,i)=>i!==index))
+  }
+
+   useEffect(() => {
+    const urls = images.map((file) => URL.createObjectURL(file));
+    setPreviewUrls(urls);
+
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [images]);
+  
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    if (images.length === 0) {
+      alert("Please upload at least one product image.");
+      return;
+    }
 
     try {
       const data = new FormData();
@@ -159,9 +190,30 @@ const AddProduct = () => {
             required
           />
 
-          <label>Product Images</label>
+          <label htmlFor="images">Product Images</label>
 
-          <input type="file" multiple onChange={handleImageChange} required />
+          <input type="file" name="images" id="images"
+          multiple 
+          accept="image/*"
+          onChange={handleImageChange}  />
+
+          {/* Preview thumbnails of all selected images so far */}
+          {previewUrls.length > 0 && (
+            <div className="image-preview-grid">
+              {previewUrls.map((url, index) => (
+                <div className="image-preview-item" key={index}>
+                  <img src={url} alt={`preview-${index}`} />
+                  <button
+                    type="button"
+                    className="remove-img-btn"
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
 
           <button type="submit">Add Product</button>
         </form>

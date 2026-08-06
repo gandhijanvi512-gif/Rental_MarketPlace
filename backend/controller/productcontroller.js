@@ -280,7 +280,7 @@ export const featureProduct=async(req,res)=>{
 
 export const getProductDetails=async(req,res)=>{
   try{
-    const product=await Product.findById(req.params.id).populate("ownerId","name email")
+    const product=await Product.findById(req.params.id).populate("ownerId","name email phone city state profileImage")
 
     if(!product){
       return res.status(404).json({
