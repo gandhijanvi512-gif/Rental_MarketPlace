@@ -10,6 +10,7 @@ function Cart() {
   const [startDate, setStartDate] = useState(null);
 
   const navigate=useNavigate()
+  const GST_RATE=18
 
   useEffect(() => {
     fetchCart();
@@ -54,7 +55,14 @@ function Cart() {
   const calculateTotal = (item) => {
     const days = calculateDays(item.startDate, item.endDate);
 
-    return item.productId.deposit + item.productId.rentPrice * days;
+    const rent=(item.productId?.rentPrice||0)*days;
+
+    const deposit=item.productId?.deposit||0
+
+    const gst=rent*GST_RATE/100;
+
+    return rent+deposit+gst
+
   };
 
   const handleDateChange = (index, field, date) => {
@@ -108,26 +116,60 @@ function Cart() {
     return total + (item.productId?.deposit || 0);
   }, 0);
 
-  const grandTotal = rentTotal + depositTotal;
+ const depositeTotal=cartItems.reduce((total,item)=>{
+  return (total+(item.productId?.deposit||0))
+ },0)
 
-  return (
+//  gst
+const gstTotal=rentTotal*GST_RATE/100
+
+const grandTotal=rentTotal+gstTotal+depositTotal
+ return (
+
     <div className="cart-container">
-      <h1 className="cart-title">My Cart</h1>
+
+      <h1 className="cart-title">
+        My Cart
+      </h1>
+
 
       {cartItems.length === 0 ? (
+
         <div className="empty-cart">
-          <h2>Your Cart is Empty</h2>
+
+          <h2>
+            Your Cart is Empty
+          </h2>
+
         </div>
+
       ) : (
+
         <>
+
+
+          {/* ======================================
+              CART ITEMS
+          ====================================== */}
+
           {cartItems.map((item, index) => (
-            <div className="cart-card" key={item._id}>
-              {/* TOP RIGHT DELETE ICON */}
+
+            <div
+              className="cart-card"
+              key={item._id}
+            >
+
+
+              {/* DELETE ICON */}
+
               <button
                 className="delete-icon"
-                onClick={() => removeItem(item._id)}
+                onClick={() =>
+                  removeItem(item._id)
+                }
                 title="Remove Item"
               >
+
                 <svg
                   width="20"
                   height="20"
@@ -138,31 +180,67 @@ function Cart() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <path d="M3 6h18"></path>
-                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+
+                  <path d="M3 6h18" />
+
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+
                 </svg>
+
               </button>
 
-              {/* ================= LEFT COLUMN ================= */}
+
+              {/* ==================================
+                  LEFT COLUMN
+              ================================== */}
+
               <div className="cart-left">
+
+
                 <div className="cart-image-wrapper">
+
                   <img
-                    src={`http://localhost:5200${item.productId?.images?.[0]}`}
-                    alt={item.productId?.title}
+                    src={
+                      `http://localhost:5200${
+                        item.productId?.images?.[0]
+                      }`
+                    }
+                    alt={
+                      item.productId?.title ||
+                      "Product"
+                    }
                   />
+
                 </div>
+
 
                 <div className="cart-left-bottom">
+
+
                   <h2 className="total-price">
-                    Total: ₹{calculateTotal(item)}
+
+                    Total: ₹
+                    {calculateTotal(item).toLocaleString(
+                      "en-IN"
+                    )}
+
                   </h2>
 
+
                   <div className="cart-actions">
+
+
+                    {/* REMOVE */}
+
                     <button
                       className="remove-btn"
-                      onClick={() => removeItem(item._id)}
+                      onClick={() =>
+                        removeItem(item._id)
+                      }
                     >
+
                       <svg
                         width="18"
                         height="18"
@@ -173,13 +251,29 @@ function Cart() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
-                        <path d="M3 6h18"></path>
-                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+
+                        <path d="M3 6h18" />
+
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+
                       </svg>
+
                       Remove
+
                     </button>
-                    <button className="book-btn" onClick={()=>handleBookNow(item)}>
+
+
+                    {/* BOOK NOW */}
+
+                    <button
+                      className="book-btn"
+                      onClick={() =>
+                        handleBookNow(item)
+                      }
+                    >
+
                       <svg
                         width="18"
                         height="18"
@@ -190,22 +284,54 @@ function Cart() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+
+                        <circle
+                          cx="9"
+                          cy="21"
+                          r="1"
+                        />
+
+                        <circle
+                          cx="20"
+                          cy="21"
+                          r="1"
+                        />
+
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+
                       </svg>
+
                       Book Now
+
                     </button>
+
+
                   </div>
+
                 </div>
+
               </div>
 
-              {/* ================= RIGHT COLUMN ================= */}
+
+              {/* ==================================
+                  RIGHT COLUMN
+              ================================== */}
+
               <div className="cart-right">
-                <h2 className="product-title">{item.productId?.title}</h2>
+
+
+                <h2 className="product-title">
+
+                  {item.productId?.title}
+
+                </h2>
+
 
                 <div className="price-info">
+
+
                   <span>
+
                     <svg
                       width="16"
                       height="16"
@@ -214,12 +340,27 @@ function Cart() {
                       stroke="currentColor"
                       strokeWidth="2"
                     >
-                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                      <line x1="7" y1="7" x2="7.01" y2="7"></line>
+
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+
+                      <line
+                        x1="7"
+                        y1="7"
+                        x2="7.01"
+                        y2="7"
+                      />
+
                     </svg>
-                    Rent Price: ₹{item.productId?.rentPrice}/day
+
+                    Rent Price:
+                    ₹{item.productId?.rentPrice}
+                    /day
+
                   </span>
+
+
                   <span>
+
                     <svg
                       width="16"
                       height="16"
@@ -228,31 +369,60 @@ function Cart() {
                       stroke="currentColor"
                       strokeWidth="2"
                     >
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+
                     </svg>
-                    Deposit: ₹{item.productId?.deposit}
+
+                    Deposit:
+                    ₹{item.productId?.deposit}
+
                   </span>
+
+
                 </div>
 
-                <div className="date-section">
-                  {/* START DATE GROUP */}
-                  <div className="input-group">
-                    <label>Start Date</label>
 
-                    {/* ફોટા જેવું જ ઇનપુટ બોક્સ જેમાં સિલેક્ટ કરેલી ડેટ દેખાશે */}
+                {/* ==================================
+                    DATE SECTION
+                ================================== */}
+
+                <div className="date-section">
+
+
+                  {/* START DATE */}
+
+                  <div className="input-group">
+
+                    <label>
+                      Start Date
+                    </label>
+
+
                     <div className="custom-date-display-box">
+
                       <span>
+
                         {item.startDate
-                          ? new Date(item.startDate).toLocaleDateString(
+
+                          ? new Date(
+                              item.startDate
+                            ).toLocaleDateString(
                               "en-GB",
                               {
                                 day: "2-digit",
                                 month: "short",
-                                year: "numeric",
-                              },
+                                year: "numeric"
+                              }
                             )
-                          : "Select Start Date"}
+
+                          : "Select Start Date"
+
+                        }
+
                       </span>
+
+
                       <svg
                         width="18"
                         height="18"
@@ -263,6 +433,7 @@ function Cart() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
+
                         <rect
                           x="3"
                           y="4"
@@ -270,43 +441,99 @@ function Cart() {
                           height="18"
                           rx="2"
                           ry="2"
-                        ></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        />
+
+                        <line
+                          x1="16"
+                          y1="2"
+                          x2="16"
+                          y2="6"
+                        />
+
+                        <line
+                          x1="8"
+                          y1="2"
+                          x2="8"
+                          y2="6"
+                        />
+
+                        <line
+                          x1="3"
+                          y1="10"
+                          x2="21"
+                          y2="10"
+                        />
+
                       </svg>
+
                     </div>
 
-                    {/* કાયમ માટે ખુલ્લું રહેતું કેલેન્ડર */}
+
                     <div className="inline-calendar-container">
+
                       <DatePicker
                         selected={
-                          item.startDate ? new Date(item.startDate) : null
+                          item.startDate
+                            ? new Date(
+                                item.startDate
+                              )
+                            : null
                         }
+
                         onChange={(date) =>
-                          handleDateChange(index, "startDate", date)
+                          handleDateChange(
+                            index,
+                            "startDate",
+                            date
+                          )
                         }
+
                         inline
-                        minDate={new Date()}
+
+                        minDate={
+                          new Date()
+                        }
+
                       />
+
                     </div>
+
                   </div>
 
-                  {/* END DATE GROUP */}
-                  <div className="input-group">
-                    <label>End Date</label>
 
-                    {/* display selected date */}
+                  {/* END DATE */}
+
+                  <div className="input-group">
+
+                    <label>
+                      End Date
+                    </label>
+
+
                     <div className="custom-date-display-box">
+
                       <span>
+
                         {item.endDate
-                          ? new Date(item.endDate).toLocaleDateString("en-GB", {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            })
-                          : "Select End Date"}
+
+                          ? new Date(
+                              item.endDate
+                            ).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric"
+                              }
+                            )
+
+                          : "Select End Date"
+
+                        }
+
                       </span>
+
+
                       <svg
                         width="18"
                         height="18"
@@ -317,6 +544,7 @@ function Cart() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
+
                         <rect
                           x="3"
                           y="4"
@@ -324,38 +552,91 @@ function Cart() {
                           height="18"
                           rx="2"
                           ry="2"
-                        ></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        />
+
+                        <line
+                          x1="16"
+                          y1="2"
+                          x2="16"
+                          y2="6"
+                        />
+
+                        <line
+                          x1="8"
+                          y1="2"
+                          x2="8"
+                          y2="6"
+                        />
+
+                        <line
+                          x1="3"
+                          y1="10"
+                          x2="21"
+                          y2="10"
+                        />
+
                       </svg>
+
                     </div>
 
-                    {/* always open calender */}
+
                     <div className="inline-calendar-container">
+
                       <DatePicker
-                        selected={item.endDate ? new Date(item.endDate) : null}
+                        selected={
+                          item.endDate
+                            ? new Date(
+                                item.endDate
+                              )
+                            : null
+                        }
+
                         onChange={(date) =>
-                          handleDateChange(index, "endDate", date)
+                          handleDateChange(
+                            index,
+                            "endDate",
+                            date
+                          )
                         }
+
                         inline
+
                         minDate={
-                          item.startDate ? new Date(item.startDate) : new Date()
+                          item.startDate
+                            ? new Date(
+                                item.startDate
+                              )
+                            : new Date()
                         }
+
                       />
+
                     </div>
+
                   </div>
+
+
                 </div>
+
               </div>
+
             </div>
+
           ))}
 
-          {/* CART SUMMARY */}
+
+          {/* ======================================
+              CART SUMMARY
+          ====================================== */}
 
           <div className="cart-summary-card">
+
+
             <div className="summary-header">
+
+
               <div className="summary-icon-box">
-                {/* clipboard icon */}
+
                 <svg
                   width="24"
                   height="24"
@@ -366,20 +647,49 @@ function Cart() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
+
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+
+                  <polyline points="14 2 14 8 20 8" />
+
+                  <line
+                    x1="16"
+                    y1="13"
+                    x2="8"
+                    y2="13"
+                  />
+
+                  <line
+                    x1="16"
+                    y1="17"
+                    x2="8"
+                    y2="17"
+                  />
+
+                  <polyline points="10 9 9 9 8 9" />
+
                 </svg>
+
               </div>
-              <h2>Order Summary</h2>
+
+
+              <h2>
+                Order Summary
+              </h2>
+
+
             </div>
 
+
             <div className="summary-body">
-              {/* Rent Total Item */}
+
+
+              {/* RENT TOTAL */}
+
               <div className="summary-item">
+
                 <div className="item-label-group">
+
                   <svg
                     width="18"
                     height="18"
@@ -388,17 +698,44 @@ function Cart() {
                     stroke="#3E5879"
                     strokeWidth="2"
                   >
-                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+
+                    <line
+                      x1="7"
+                      y1="7"
+                      x2="7.01"
+                      y2="7"
+                    />
+
                   </svg>
-                  <h3>Rent Total</h3>
+
+
+                  <h3>
+                    Rent Total
+                  </h3>
+
                 </div>
-                <p className="item-value">₹{rentTotal}</p>
+
+
+                <p className="item-value">
+
+                  ₹
+                  {rentTotal.toLocaleString(
+                    "en-IN"
+                  )}
+
+                </p>
+
               </div>
 
-              {/* Deposit Total Item */}
+
+              {/* DEPOSIT TOTAL */}
+
               <div className="summary-item">
+
                 <div className="item-label-group">
+
                   <svg
                     width="18"
                     height="18"
@@ -407,19 +744,83 @@ function Cart() {
                     stroke="#3E5879"
                     strokeWidth="2"
                   >
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+
                   </svg>
-                  <h3>Deposit Total</h3>
+
+
+                  <h3>
+                    Deposit Total
+                  </h3>
+
                 </div>
-                <p className="item-value">₹{depositTotal}</p>
+
+
+                <p className="item-value">
+
+                  ₹
+                  {depositTotal.toLocaleString(
+                    "en-IN"
+                  )}
+
+                </p>
+
               </div>
 
-              {/* Divider Line */}
+
+              {/* GST TOTAL */}
+
+              <div className="summary-item">
+
+                <div className="item-label-group">
+
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#3E5879"
+                    strokeWidth="2"
+                  >
+
+                    <path d="M12 2v20" />
+
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+
+                  </svg>
+
+
+                  <h3>
+                    GST ({GST_RATE}%)
+                  </h3>
+
+                </div>
+
+
+                <p className="item-value">
+
+                  ₹
+                  {gstTotal.toLocaleString(
+                    "en-IN"
+                  )}
+
+                </p>
+
+              </div>
+
+
+              {/* DIVIDER */}
+
               <div className="summary-divider"></div>
 
-              {/* Grand Total Item - Bold and Distinct */}
+
+              {/* GRAND TOTAL */}
+
               <div className="summary-item grand-total-item">
+
                 <div className="item-label-group">
+
                   <svg
                     width="20"
                     height="20"
@@ -428,19 +829,52 @@ function Cart() {
                     stroke="#213555"
                     strokeWidth="2.5"
                   >
-                    <line x1="12" y1="1" x2="12" y2="23"></line>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+
+                    <line
+                      x1="12"
+                      y1="1"
+                      x2="12"
+                      y2="23"
+                    />
+
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+
                   </svg>
-                  <h3>Grand Total</h3>
+
+
+                  <h3>
+                    Grand Total
+                  </h3>
+
                 </div>
-                <p className="item-value total-amount">₹{grandTotal}</p>
+
+
+                <p className="item-value total-amount">
+
+                  ₹
+                  {grandTotal.toLocaleString(
+                    "en-IN"
+                  )}
+
+                </p>
+
               </div>
+
+
             </div>
+
           </div>
+
+
         </>
+
       )}
+
     </div>
+
   );
+
 }
+
 
 export default Cart;

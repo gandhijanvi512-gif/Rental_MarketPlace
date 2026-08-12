@@ -11,8 +11,8 @@ export const createBooking=async(req,res)=>{
                 $in:[
                     "pending",
                     "approved",
-                    "ongoing",
-                    "cancelled"
+                    "ongoing"
+                    // "cancelled"
                 ]
             },
             startDate:{
@@ -33,17 +33,63 @@ export const createBooking=async(req,res)=>{
 
         const product=await Product.findById(productId)
 
+        if(!product){
+            return res.status(404).json({
+                success:false,
+                message:"Product Not Found"
+            })
+        }
+
+
+        // Rental Days
         const days=Math.ceil((
             new Date(endDate)-new Date(startDate)
         )/(1000*60*60*24))+1;
 
-        const totalAmount=product.rentPrice*days+product.deposit
+
+        // Rent amount
+
+        const rentAmount=product.rentPrice*days;
+
+        const depositAmount=product.deposit;
+
+        // GST calculation
+
+        const GST_RATE=18;
+        const gstAmount=rentAmount*GST_RATE/100
+
+        // Admin Commission
+        const COMMISSION_RATE=10;
+        const commissionAmount=rentAmount*COMMISSION_RATE/100
+
+        // owner earning
+        const ownerEarning=rentAmount-commissionAmount
+
+        //admin earning
+        const adminEarning=commissionAmount
+
+        // final customer amount
+
+        const totalAmount=rentAmount+gstAmount+depositAmount
+
+        
+
+
+        // const totalAmount=product.rentPrice*days+product.deposit
 
         const booking=await Booking.create({
             userId:req.user.id,
             productId,
             startDate,
             endDate,
+            rentAmount,
+            depositAmount,
+            gstRate:GST_RATE,
+            gstAmount,
+            commissionRate:COMMISSION_RATE,
+            commissionAmount,
+            ownerEarning,
+            adminEarning,
             totalAmount,
             status:"pending",
         })
@@ -55,6 +101,7 @@ export const createBooking=async(req,res)=>{
         
         
     }catch(err){
+        console.error("CREATE BOOKING ERROR:",err)
         return res.status(500).json({
             success:false,
             message:err.message
@@ -91,7 +138,13 @@ export const getBooking=async(req,res)=>{
         
 
         const bookings=await Booking.find(filter).populate("userId","name email")
-        .populate("productId")
+        .populate({
+            path:"productId",
+            populate:{
+                path:"ownerId",
+                select:"name city state"
+            }
+        })
 
 
         return res.status(200).json({

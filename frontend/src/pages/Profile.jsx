@@ -5,11 +5,9 @@ import ProfileCard from "../components/ProfileCard"
 import StatsCards from "../components/StatsCards"
 import ActiveRentals from "../components/ActiveRentals"
 import RentalHistory from "../components/RentalHistory"
-import { useNavigate } from "react-router-dom"
 
 function Profile(){
 
-    const navigate=useNavigate()
 
     const[profileData,setProfileData]=useState(null)
     const[loading,setLoading]=useState(true)
@@ -18,6 +16,8 @@ function Profile(){
         try{
             const res=await api.get("/getProfile")
             //  console.log("PROFILE DATA:", res.data);
+
+
             setProfileData(res.data)
         }catch(err){
             console.log(err);
@@ -26,6 +26,8 @@ function Profile(){
             setLoading(false)
         }
     }
+
+
 
     useEffect(()=>{
         getProfile()
@@ -59,6 +61,8 @@ function Profile(){
 
                             <RentalHistory history={profileData.rentalHistory}/>
                         </div>
+
+                            {/* <ProfileSidebar/> */}
 
                     </>
                 )}

@@ -295,11 +295,11 @@ input:-webkit-autofill:active {
   text-transform: capitalize;
 }
 
-.price-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+.price-info{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
 }
 
 .price-info span {
@@ -313,6 +313,8 @@ input:-webkit-autofill:active {
   align-items: center;
   gap: 6px;
 }
+
+
 
 /* --- DATE PICKERS & INLINE CALENDAR --- */
 .date-section {
@@ -573,7 +575,7 @@ input:-webkit-autofill:active {
    ========================================= */
 .cart-summary-card {
   width: 100%; 
-  margin-top: 35px;
+  margin-top: 30px;
   background: #ffffff; 
   border-radius: 16px; 
   padding: 15px 40px; 
@@ -584,11 +586,12 @@ input:-webkit-autofill:active {
 }
 
 .summary-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-right: 40px;
-  border-right: 2px solid rgba(216, 196, 182, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 30px;
+    border-right: 2px solid rgba(216, 196, 182, 0.3);
+    flex-shrink: 0; /* Ensures the "Order Summary" title never gets squished */
 }
 
 .summary-icon-box {
@@ -610,19 +613,22 @@ input:-webkit-autofill:active {
 }
 
 .summary-body {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1;
-  padding-left: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* Spreads the items evenly */
+    gap: 25px; /* Adds perfect spacing between Rent, Deposit, and GST */
+    flex: 1;
+    padding-left: 30px;
+    flex-wrap: wrap; /* Allows items to wrap cleanly on smaller screens */
 }
 
 .summary-item {
-  display: flex;
-  flex-direction: row; 
-  align-items: center;
-  gap: 12px;
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    gap: 8px; /* Space between label and price */
+    white-space: nowrap; /* Prevents text like "DEPOSIT TOTAL" from breaking into two lines */
 }
 
 .item-label-group {
@@ -630,6 +636,7 @@ input:-webkit-autofill:active {
   align-items: center;
   gap: 6px;
   color: #3E5879;
+  white-space: nowrap;
 }
 
 .cart-summary-card h3 {
@@ -642,7 +649,7 @@ input:-webkit-autofill:active {
 }
 
 .item-value {
-  font-size: 20px; 
+  font-size: 18px; 
   font-weight: 700;
   color: #213555;
   margin: 0;
@@ -652,7 +659,7 @@ input:-webkit-autofill:active {
   width: 2px;
   height: 35px; 
   background: rgba(216, 196, 182, 0.3);
-  margin: 0 10px;
+  margin: 0 ;
 }
 
 .grand-total-item {
@@ -666,7 +673,7 @@ input:-webkit-autofill:active {
 
 .grand-total-item .item-value {
   color: #213555;
-  font-size: 24px; 
+  font-size: 22px; 
 }
 
 @media(max-width: 1100px) {
@@ -719,6 +726,10 @@ input:-webkit-autofill:active {
     font-family:'Poppins',sans-serif;
 }
 
+/* =========================================
+   HEADER
+========================================= */
+
 .checkout-header{
     display:flex;
     align-items:center;
@@ -728,122 +739,272 @@ input:-webkit-autofill:active {
 
 .back-btn{
     border:none;
-    background:none;
-    font-size:22px;
+    background:#F5EFE7;
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    font-size:18px;
     cursor:pointer;
     color:#213555;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s;
+}
+
+.back-btn:hover{
+    background:#ece2d3;
 }
 
 .checkout-header h2{
     flex:1;
     margin:0;
     text-align:center;
-    font-size:24px;
-    font-weight:600;
+    font-size:22px;
+    font-weight:700;
     color:#213555;
-    margin-right:22px;
+    margin-right:38px; /* balances the back button width so title stays centered */
 }
 
-.product-card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+/* =========================================
+   PRODUCT CARD  (this was missing!)
+========================================= */
+
+/* =========================================
+   PRODUCT CARD
+========================================= */
+
+.product-card {
+    display: flex;
+    flex-direction: row; /* This is the key change to make them side-by-side */
+    align-items: flex-start; /* Aligns text to the top of the image */
+    gap: 24px; /* Adds space between the image and the text */
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    margin-bottom: 24px;
 }
 
-.product-card img{
-    width:110px;
-    height:110px;
-    object-fit:cover;
-    border-radius:10px;
-    border:1px solid #eee;
+.product-card:hover {
+    background: #fafafa;
 }
 
-.product-details{
-    flex:1;
+
+/* =========================================
+   PRODUCT IMAGE
+========================================= */
+
+.product-card img {
+    width: 220px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0; /* Prevents the image from squishing so text has room */
+    margin-bottom: 0; /* Removes any bottom margin that was pushing text down */
 }
 
-.product-details h3{
-    margin:0 0 10px;
-    font-size:20px;
-    font-weight:600;
-    color:#213555;
+
+
+
+/* =========================================
+   PRODUCT DETAILS
+========================================= */
+
+.product-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.product-details .price{
-    margin:0;
-    font-size:17px;
-    font-weight:500;
-    color:#222;
+
+/* =========================================
+   PRODUCT TITLE
+========================================= */
+
+.product-details h3 {
+    margin: 0;
+
+    font-size: 23px;
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    color: #213555;
+
+    text-transform: capitalize;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.product-details p{
-    margin:6px 0;
-    font-size:15px;
-    color:#666;
+
+/* =========================================
+   PRICE ROW
+========================================= */
+
+.product-price-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
 }
+
+
+/* =========================================
+   RENT PRICE
+========================================= */
+
+.price-badge {
+    height: 46px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: #f5efe7;
+    border: 1px solid #e8d8bd;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: #213555;
+    white-space: nowrap;
+}
+
+.price-amount {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.price-unit {
+    font-size: 15px;
+    font-weight: 600;
+    color: #3e5879;
+}
+
+
+/* =========================================
+   DEPOSIT
+========================================= */
+
+.deposit-badge {
+    height: 46px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: #fff6df;
+    border: 1px solid #f4d58d;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: #9a5a00;
+    white-space: nowrap;
+}
+
+.deposit-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.deposit-amount {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   SUMMARY CARD
+========================================= */
 
 .summary-card{
-    margin:0 20px 16px;
-    padding:18px;
+    margin:16px 20px;
+    padding:20px;
+    background:#fbfaf8;
     border:1px solid #ececec;
-    border-radius:12px;
+    border-radius:14px;
 }
 
 .summary-card h3{
     margin:0 0 12px;
-    font-size:18px;
+    font-size:17px;
+    font-weight:700;
     color:#213555;
 }
 
 .rental-date{
-    margin-bottom:14px;
+    margin-bottom:16px;
     font-size:14px;
     color:#666;
+    padding-bottom:14px;
+    border-bottom:1px dashed #e0dcd3;
 }
 
 .price-row{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:8px 0;
-    font-size:15px;
-    color:#444;
+    padding:7px 0;
+    font-size:14.5px;
+    color:#666;
+}
+
+.price-row span:first-child{
+    color:#7a7f87;
 }
 
 .price-row span:last-child{
     font-weight:600;
+    color:#333;
 }
 
 .summary-card hr{
     border:none;
     border-top:1px solid #ececec;
-    margin:10px 0;
+    margin:12px 0;
 }
 
 .total{
-    font-size:18px;
+    font-size:17px;
     font-weight:700;
+    color:#213555;
 }
 
 .total span:last-child{
     color:#15803d;
+    font-size:20px;
+    font-weight:800;
 }
+
+
+/* =========================================
+   INFO BOX
+========================================= */
 
 .info-box{
     margin:0 20px 16px;
-    padding:12px 14px;
+    padding:14px 16px;
     background:#FFF8E8;
     border:1px solid #F4D58D;
     border-radius:10px;
     font-size:13px;
-    color:#666;
+    line-height:1.5;
+    color:#7a6a3a;
 }
+
+
+/* =========================================
+   PAY BUTTON
+========================================= */
 
 .pay-btn{
     width:calc(100% - 40px);
-    margin:0 20px 20px;
-    height:48px;
+    margin:0 20px 24px;
+    height:50px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     background:#213555;
     color:#fff;
     font-size:16px;
@@ -854,17 +1015,39 @@ input:-webkit-autofill:active {
 
 .pay-btn:hover{
     background:#30486b;
+    transform:translateY(-1px);
+    box-shadow:0 6px 16px rgba(33,53,85,.25);
 }
+
+.pay-btn:active{
+    transform:translateY(0);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
 
 @media(max-width:600px){
     .checkout-page{ margin:15px; }
-    .product-card{ flex-direction:column; align-items:center; text-align:center; }
+
+    .product-card{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
+
     .product-details{ text-align:center; }
-    .checkout-header h2{ font-size:20px; }
+
+    .checkout-header h2{
+        font-size:19px;
+        margin-right:0;
+    }
+
     .product-card img{ width:100px; height:100px; }
+
     .product-details h3{ font-size:18px; }
 }
-
 /* =====================================
    CATEGORY CARD (HOME)
 ===================================== */
@@ -2784,10 +2967,9 @@ input:-webkit-autofill:active {
    FORM GROUP
 ====================================== */
 
-.form-group{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group label{
@@ -4180,4 +4362,1703 @@ input:-webkit-autofill:active {
 
 .wishlist-btn:hover{
     transform:scale(1.08);
+}
+
+
+/* =========================================
+   WISHLIST PAGE & HEADER
+========================================= */
+.wishlist-page {
+  min-height: 100vh;
+  padding: 40px 60px;
+  background: #faf8f5; 
+  color: #1e293b;
+}
+
+.wishlist-header {
+  max-width: 1000px; 
+  margin: 0 auto 25px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.wishlist-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wishlist-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wishlist-title h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.wishlist-title-group p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.wishlist-count {
+  background: #eef2ff; 
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.wishlist-count span {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #4f46e5;
+}
+
+/* =========================================
+   SEARCH BAR
+========================================= */
+.wishlist-search {
+  max-width: 1000px;
+  margin: 0 auto 30px;
+  height: 50px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.wishlist-search svg {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.wishlist-search input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.wishlist-search input::placeholder {
+  color: #94a3b8;
+}
+
+/* =========================================
+   WISHLIST CARD
+========================================= */
+.wishlist-list {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wishlist-card {
+  display: flex;
+  align-items: stretch;
+  padding: 16px; 
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #f1f5f9;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================
+   PRODUCT IMAGE
+========================================= */
+.wishlist-image {
+  position: relative;
+  width: 240px;
+  min-width: 240px;
+  height: 200px;
+  border-radius: 12px; 
+  overflow: hidden;
+}
+
+.wishlist-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* =========================================
+   REMOVE HEART
+========================================= */
+.wishlist-remove {
+  position: absolute;
+  top: 12px;
+  left: 12px; 
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  transition: transform 0.2s ease;
+}
+
+.wishlist-remove:hover {
+  transform: scale(1.1);
+}
+
+/* =========================================
+   PRODUCT DETAILS (Left/Middle Column)
+========================================= */
+.wishlist-details {
+  flex: 1;
+  padding: 10px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.wishlist-details h2 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.wishlist-category {
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #eef2ff; 
+  color: #4f46e5;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.wishlist-details h3 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.wishlist-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.wishlist-rating span {
+  font-weight: 500;
+}
+
+/* =========================================
+   RIGHT ACTION SECTION (Owner Info + Button)
+========================================= */
+.wishlist-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  align-items: flex-end;
+  padding: 10px 10px 10px 0;
+  min-width: 320px; /* Widened to fit the owner box properly */
+}
+
+.wishlist-actions button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  align-self: flex-end;
+}
+
+.wishlist-actions button:hover {
+  background: #334155;
+}
+
+/* =========================================
+   OWNER INFORMATION
+========================================= */
+.owner-information {
+  width: 100%;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.owner-info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.owner-icon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.owner-info-header h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.owner-info-header p {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.owner-info-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.owner-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #64748b;
+}
+
+.owner-detail > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.owner-detail div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.owner-label {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.owner-detail strong {
+  font-size: 0.85rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+.empty-wishlist {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 50px 30px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #f1f5f9;
+}
+
+.empty-wishlist h2 {
+  margin: 20px 0 8px;
+  font-size: 1.5rem;
+  color: #1e293b;
+}
+
+.empty-wishlist p {
+  margin: 0 0 25px;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.empty-wishlist button {
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  background: #1e293b;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.empty-wishlist button:hover {
+  background: #334155;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN (Tablets & Mobile)
+========================================= */
+@media (max-width: 900px) {
+  .wishlist-page {
+    padding: 30px 20px;
+  }
+  .wishlist-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .wishlist-image {
+    width: 100%;
+    min-width: 100%;
+    height: 250px;
+  }
+  .wishlist-details {
+    padding: 20px 10px 10px;
+  }
+  .wishlist-actions {
+    min-width: 100%;
+    padding: 10px;
+  }
+  .wishlist-actions button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+
+/* --------------------------------------------------------------------------------------------------------------------- */
+
+/* =========================================
+   PAGE WRAPPER
+========================================= */
+
+/* =========================================
+   PAGE WRAPPER
+========================================= */
+.checkout-wrapper {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    padding: 40px 30px;
+    background: #f5f4f1; /* Light grey-blue background */
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: #334155;
+}
+
+.checkout-grid {
+    max-width: 1200px; /* Increased for more width */
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1.1fr; /* Increased right column width slightly */
+    gap: 35px;
+    align-items: start;
+}
+
+/* =========================================
+   LEFT COLUMN CARD
+========================================= */
+.checkout-main {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    padding: 32px;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+.checkout-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.back-btn {
+    border: none;
+    background: #f1f5f9;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    background: #e2e8f0;
+}
+
+.checkout-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.checkout-header p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* =========================================
+   PRODUCT CARD
+========================================= */
+.checkout-main .product-card {
+    display: flex;
+    flex-direction: row !important; 
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    margin-bottom: 24px;
+}
+
+.checkout-main .product-card img {
+    width: 220px !important;
+    height: 150px !important;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0; 
+    margin-bottom: 0 !important; 
+}
+
+.checkout-main .product-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.product-details h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: capitalize;
+}
+
+.product-desc {
+    margin: 0 0 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #64748b;
+}
+
+.product-price-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.price-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0f4ff;
+    color: #1e3a8a;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.price-badge::before {
+    content: "🏷️";
+    font-size: 14px;
+}
+
+.price-amount {
+    font-size: 16px;
+}
+
+.price-unit {
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.deposit-badge {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    color: #92400e;
+    padding: 8px 16px;
+    border-radius: 10px;
+}
+
+.deposit-label {
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.deposit-label::before {
+    content: "🛡️"; /* Icon placeholder */
+    font-size: 13px;
+}
+
+.deposit-sub {
+    font-size: 11px;
+    font-weight: 500;
+    opacity: 0.8;
+    margin-left: 20px; /* Align under text */
+}
+
+/* =========================================
+   RENTAL PERIOD CARD
+========================================= */
+.rental-period-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+}
+
+.rental-period-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.rental-period-icon {
+    width: 44px;
+    height: 44px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.rental-period-left h3 {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.rental-period-left p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.days-pill {
+    background: #f0f4ff;
+    color: #1e3a8a;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* =========================================
+   RIGHT SIDEBAR — ORDER SUMMARY
+========================================= */
+.checkout-sidebar {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    width: 100%;
+}
+
+.summary-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box; /* Ensures exact sizing */
+}
+
+.summary-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+    background: #f8fafc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.summary-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    font-size: 14.5px;
+    color: #64748b;
+}
+
+.price-row span:last-child {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* ALL 3 BOXES (GRAND TOTAL, INFO, BUTTON) EXACTLY SAME WIDTH */
+.grand-total-box,
+.info-box,
+.pay-btn {
+    width: 100%;
+    box-sizing: border-box; /* Prevents padding from breaking width */
+}
+
+.grand-total-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ecfdf5; 
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 20px 0;
+}
+
+.grand-total-box strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #065f46;
+}
+
+.grand-total-box p {
+    margin: 4px 0 0;
+    font-size: 12.5px;
+    color: #047857;
+    opacity: 0.8;
+}
+
+.grand-total-amount {
+    font-size: 26px;
+    font-weight: 800;
+    color: #059669;
+}
+
+.info-box {
+    background: #fffbeb; 
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: #92400e;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.info-box::before {
+    content: "ⓘ";
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.info-box strong {
+    color: #78350f;
+}
+
+.pay-btn {
+    height: 56px;
+    border: none;
+    border-radius: 12px;
+    background: #1e3a8a; 
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.pay-btn:hover {
+    background: #172554;
+}
+
+.pay-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.secure-note {
+    text-align: center;
+    margin: 20px 0 0;
+    font-size: 13px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.secure-note::before {
+    content: "✓"; 
+    font-weight: bold;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media(max-width: 992px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+    .checkout-sidebar {
+        position: static;
+    }
+}
+
+@media(max-width: 600px) {
+    .checkout-wrapper { padding: 20px 15px; }
+    .checkout-main, .summary-card { padding: 24px; }
+    
+    .product-card {
+        flex-direction: column; /* Stacks image and details on mobile */
+        align-items: center;
+        text-align: center;
+    }
+    .product-card img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4/3;
+    }
+    .product-price-row {
+        justify-content: center;
+    }
+    .rental-period-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    .days-pill {
+        align-self: flex-start;
+    }
+}
+/* ----------------------------------------------------------------------------------------------------------------------------- */
+
+/* =========================================
+   OWNER SETUP PAGE
+========================================= */
+
+.owner-setup-page {
+    width: 100%;
+    min-height: calc(100vh - 86px);
+    padding: 15px 30px 40px;
+    box-sizing: border-box;
+    background: #f5f4f1;
+}
+
+.owner-setup-card {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 17px 36px 28px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 18px rgba(33, 53, 85, 0.08);
+}
+
+.owner-setup-card h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #213555;
+}
+
+.owner-setup-card > p {
+    margin: 0 0 28px;
+    font-size: 16px;
+    color: #6b7280;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.owner-setup-card form {
+    width: 100%;
+}
+
+.form-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    /* margin-bottom: 8px; */
+    font-size: 15px;
+    font-weight: 600;
+    color: #213555;
+}
+
+.form-group input,
+.form-group textarea {
+    height: 20px;
+    min-height: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d7dce3;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 10px 12px;
+    font-size: 15px;
+    font-family: inherit;
+    color: #213555;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.form-group input {
+    height: 40px;
+}
+
+.form-group textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #9ca3af;
+}
+
+
+/* Focus */
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #3E5879;
+    box-shadow: 0 0 0 3px rgba(62, 88, 121, 0.10);
+}
+
+
+/* =========================================
+   CITY + STATE
+========================================= */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+
+/* =========================================
+   SUBMIT AREA
+========================================= */
+
+.owner-setup-card form button {
+    width: 100%;
+    height: 52px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 8px;
+    background: #213555;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.owner-setup-card form button:hover {
+    background: #3E5879;
+}
+
+.owner-setup-card form button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.profile-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #213555;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.become-owner-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    width: 100%;
+    min-height: 52px;
+
+    margin-top: 8px;
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+    color: #213555;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.become-owner-btn:hover {
+    background: #f5efe7;
+}
+
+.become-owner-btn svg {
+    flex-shrink: 0;
+}
+
+
+/* -------------------------------------------------------------------------------- */
+
+/* ===========================
+   OWNER SIDEBAR
+=========================== */
+
+.owner-sidebar {
+    /* position: fixed; */
+    top: 80px;
+    left: 0;
+
+    width: 260px;
+    height: calc(100vh - 80px);
+
+    background: #f5f4f1;
+    border-right: 1px solid #e8e8e8;
+
+    padding: 30px 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    
+}
+
+
+/* ===========================
+   OWNER SIDEBAR HEADER
+=========================== */
+
+.owner-sidebar-header {
+    padding: 0 18px;
+    margin-bottom: 25px;
+}
+
+.owner-sidebar-header h2 {
+    margin: 0;
+
+    color: #213555;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* ===========================
+   OWNER MENU
+=========================== */
+
+.owner-sidebar-menu {
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+}
+
+
+.owner-sidebar-menu li {
+    margin-bottom: 12px;
+}
+
+
+/* ===========================
+   OWNER SIDEBAR LINK
+=========================== */
+
+.owner-sidebar-link {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    text-decoration: none;
+
+    color: #213555;
+
+    font-size: 17px;
+    font-weight: 500;
+
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    transition: 0.3s;
+}
+
+
+/* Hover */
+
+.owner-sidebar-link:hover {
+    background: #f5efe7;
+}
+
+
+/* Active */
+
+.owner-sidebar-link.active {
+    background: #213555;
+
+    color: white;
+}
+
+
+/* ===========================
+   BOTTOM BUTTON
+=========================== */
+
+.owner-sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.owner-sidebar-button {
+    margin-top: 0;
+
+    
+}
+
+
+.back-profile-btn {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    width: 100%;
+
+    padding: 14px 18px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #213555;
+
+    font-size: 17px;
+    font-weight: 500;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+.back-profile-btn:hover {
+    background: #f5efe7;
+}
+
+
+/* ===========================
+   OWNER CONTENT
+=========================== */
+.owner-layout {
+    display: flex;
+    align-items: flex-start;
+
+    min-height: calc(100vh - 80px);
+
+    background: #f5f4f1;
+}
+
+.owner-sidebar {
+    width: 260px;
+    min-width: 260px;
+
+    min-height: calc(100vh - 80px);
+
+    background: #f5f4f1;
+    border-right: 1px solid #e8e8e8;
+
+    padding: 30px 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    position: sticky;
+    top: 80px;
+
+    box-sizing: border-box;
+}
+
+.owner-content {
+    flex: 1;
+    min-width: 0;
+
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 900px) {
+
+    .owner-sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+
+    .owner-sidebar-link,
+    .back-profile-btn {
+        font-size: 15px;
+
+        padding: 13px 14px;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .owner-sidebar {
+        width: 75px;
+        min-width: 75px;
+
+        padding: 30px 10px;
+    }
+
+    .owner-sidebar-header {
+        padding: 0;
+        text-align: center;
+    }
+
+    .owner-sidebar-header h2 {
+        font-size: 0;
+    }
+
+    .owner-sidebar-header h2::first-letter {
+        font-size: 22px;
+    }
+
+    .owner-sidebar-link {
+        justify-content: center;
+
+        padding: 14px 10px;
+    }
+
+    .owner-sidebar-link span {
+        display: none;
+    }
+
+    .back-profile-btn {
+        justify-content: center;
+
+        padding: 14px 10px;
+    }
+
+    .back-profile-btn span {
+        display: none;
+    }
+
+    .owner-content {
+        padding: 20px;
+    }
+}
+
+
+
+/* ------------------------------------------------------------------------------------------- */
+
+.add-product-page {
+  background: #f5f1eb;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.add-product-card {
+  background: #ffffff;
+  max-width: 1180px;
+  margin: 0 auto;
+  border-radius: 14px;
+  padding: 30px 48px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.add-product-card h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e2a4a;
+  margin: 0 0 5px;
+}
+
+.add-product-card .subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0 0 28px;
+}
+
+.add-product-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;              /* <-- controls ALL vertical rhythm now */
+}
+
+
+.add-product-card label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.add-product-card input[type="text"],
+.add-product-card textarea,
+.add-product-card select {
+  width: 100%;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #1f2937;
+  background: #fff;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.add-product-card input[type="text"]::placeholder,
+.add-product-card textarea::placeholder {
+  color: #9ca3af;
+}
+
+.add-product-card input[type="text"]:focus,
+.add-product-card textarea:focus,
+.add-product-card select:focus {
+  border-color: #1e3a5f;
+}
+
+.add-product-card textarea {
+  min-height: 90px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.add-product-card select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+}
+
+/* Two-column rows */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.form-col label {
+  margin-top: 18px;
+}
+
+/* Rupee-prefixed inputs */
+.input-with-icon {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.input-with-icon:focus-within {
+  border-color: #1e3a5f;
+}
+
+.rupee-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  background: #f9fafb;
+  color: #6b7280;
+  border-right: 1px solid #e2e2e2;
+  font-size: 14px;
+}
+
+.input-with-icon input {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* File upload box */
+.file-upload-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+
+.file-upload-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.file-icon {
+  font-size: 20px;
+  opacity: 0.6;
+}
+
+.file-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.file-subtitle {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: #9ca3af;
+}
+
+.browse-btn {
+  background: #f3f4f6;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.browse-btn:hover {
+  background: #e9eaec;
+}
+
+/* Image preview grid */
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.image-preview-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.image-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-img-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.remove-img-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Submit button */
+.submit-btn {
+  margin-top: 28px;
+  background: #1e2f4f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.submit-btn:hover {
+  background: #16233d;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .image-preview-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .add-product-card {
+    padding: 24px;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/* =========================================
+   FIX FOR CHECKOUT SUMMARY BOX WIDTHS
+========================================= */
+
+.checkout-sidebar .summary-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important; 
+    box-sizing: border-box !important;
+    padding: 30px !important;
+}
+
+
+.checkout-sidebar .grand-total-box,
+.checkout-sidebar .info-box,
+.checkout-sidebar .pay-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.checkout-sidebar .grand-total-box {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.checkout-sidebar .info-box {
+    margin-bottom: 20px !important;
+}
+
+.checkout-sidebar {
+    position: sticky !important; 
+    top: 20px !important;
+    align-self: start !important;
+    margin-top: -20px !important; 
+    width: 100%;
+}
+
+
+.checkout-sidebar .summary-card {
+    padding: 24px !important; 
+}
+
+.checkout-sidebar .summary-header {
+    margin-bottom: 16px !important;
+    padding-bottom: 12px !important;
+}
+
+.checkout-sidebar .price-row {
+    padding: 10px 0 !important; 
+}
+
+.checkout-sidebar .grand-total-box {
+    margin: 14px 0 !important; 
+    padding: 14px 18px !important; 
+}
+
+.checkout-sidebar .info-box {
+    margin-bottom: 16px !important; 
+    padding: 12px 16px !important;
+}
+
+.checkout-sidebar .pay-btn {
+    height: 50px !important; 
+}
+
+.checkout-sidebar .secure-note {
+    margin-top: 14px !important; 
+}
+
+.cart-summary-card {
+    align-items: center !important; 
+}
+
+.summary-header {
+    display: flex !important;
+    align-items: center !important; 
+    align-self: center !important;  
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    height: auto !important;
+}
+
+.summary-header h2 {
+    margin: 0 !important; 
+    line-height: 1.2 !important; 
+    display: flex;
+    align-items: center;
+}
+
+.summary-icon-box {
+    margin: 0 !important;
+}
+
+/* ----------------------hover effect------------------------------- */
+
+/* =========================================
+   CHECKOUT PAGE - CLICK & HOVER ANIMATIONS
+========================================= */
+
+
+.checkout-main .product-card,
+.rental-period-card,
+.summary-card {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* hover effect */
+.checkout-main .product-card:hover,
+.rental-period-card:hover,
+.summary-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 30px rgba(33, 53, 85, 0.08) !important;
+    border-color: #cbd5e1 !important;
+}
+
+ /* active effect */
+.checkout-main .product-card:active,
+.rental-period-card:active,
+.summary-card:active {
+    transform: scale(0.98) translateY(0) !important;
+    box-shadow: 0 2px 10px rgba(33, 53, 85, 0.04) !important;
+}
+
+
+.pay-btn {
+    transition: all 0.2s ease !important;
+}
+
+.pay-btn:active {
+    transform: scale(0.96) !important; 
+    opacity: 0.9 !important;
 }

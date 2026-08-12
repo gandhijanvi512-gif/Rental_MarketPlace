@@ -133,7 +133,7 @@ return (
       Don't have an account?
 
       <span
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/signup")}
         className="ml-2 font-bold cursor-pointer hover:text-[#3E5879]"
       >
         Sign Up

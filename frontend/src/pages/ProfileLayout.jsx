@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
 import ProfileSidebar from "../components/ProfileSidebar";
 
-function ProfileLayout() {
+function ProfileLayout({user}) {
     return (
         <div className="profile-layout">
 
             {/* Sidebar */}
-            <ProfileSidebar />
+            <ProfileSidebar user={user} />
 
             {/* Main Content */}
             <div className="profile-content">

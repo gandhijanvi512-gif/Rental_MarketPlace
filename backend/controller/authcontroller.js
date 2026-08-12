@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 
 export const signup=async(req,res)=>{
     try{
-        const {name,email,password,role}=req.body;
+        const {name,email,password}=req.body;
         
         const isAlreadySignUp=await User.findOne({email})
 
@@ -21,7 +21,7 @@ export const signup=async(req,res)=>{
             name,
             email,
             password:hashedPassword,
-            role
+            role:["user"]
         })
 
         return res.status(200).json({
@@ -145,4 +145,49 @@ export const logout=async(req,res)=>{
             message:err.message
         })
     }
+}
+
+
+export const becomeOwner=async(req,res)=>{
+    try{
+
+        const userId=req.user.id;
+
+        const user=await User.findById(userId)
+
+        if(!user){
+            return res.status(404).json({
+                success:false,
+                message:"User not found"
+            })
+        }
+
+           // Make sure role is an array
+        if (!Array.isArray(user.role)) {
+            user.role = [user.role];
+        }
+
+        if(user.role.includes("owner")){
+            return res.status(400).json({
+                success:false,
+                message:"You are already an owner"
+            })
+        }
+
+        user.role.push("owner")
+        await user.save()
+
+        return res.status(200).json({
+            success:true,
+            message:"You are now an owner",
+            user
+        })
+    }catch (err) {
+    console.log("BECOME OWNER ERROR:", err);
+
+    return res.status(500).json({
+        success: false,
+        message: err.message
+    });
+}
 }

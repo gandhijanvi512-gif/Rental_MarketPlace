@@ -26,6 +26,13 @@ import RentalHistory from './pages/RentalHistory'
 import Setting from './pages/Setting'
 import ProfileLayout from './pages/ProfileLayout'
 import EditProfile from './pages/EditProfile'
+import Wishlist from './pages/Wishlist'
+import OwnerSetup from './pages/OwnerSetup'
+import OwnerLayout from './pages/OwnerLayout'
+import OwnerDashboard from './pages/OwnerDahboard'
+import ActiveRentals from './components/ActiveRentals'
+import OwnerActiveRentals from './pages/OwnerActiveRentals'
+import OwnerHistory from './pages/OwnerHistory'
 
 function App() {
   const location=useLocation()
@@ -58,10 +65,10 @@ function App() {
     <Routes>
       <Route path='/signup' element={<Signup />}/>
       <Route path='/signin' element={<Signin />}/>
-      <Route path='addProduct' element={<AddProduct />}/>
+      {/* <Route path='addProduct' element={<AddProduct />}/> */}
       <Route path='/home' element={<Home />}/>
-      <Route path='updateproduct/:id' element={<Updateproduct />}/>
-      <Route path='/myproducts' element={<MyProduct />}/>
+      {/* <Route path='updateproduct/:id' element={<Updateproduct />}/> */}
+      {/* <Route path='/myproducts' element={<MyProduct />}/> */}
       <Route path='/productsdetails/:id' element={<ProductDetails />}/>
       <Route path="/cart" element={<Cart />} />
       <Route path='/products' element={<Product />}/>
@@ -70,19 +77,31 @@ function App() {
       <Route path='/category' element={<Category />} />
       <Route path='/category/:category' element={<CategoryProducts />}/>
       <Route path='/editprofile' element={<EditProfile />}/>
+      <Route path='/wishlist' element={<Wishlist />} />
+      
       
       {/* <Route path='/profile' element={<Profile />}/>
       <Route path='/myrentals' element={<MyRental />}/>
       <Route path='/rentalhistory' element={<RentalHistory />}/>
       <Route path='/settings' element={<Setting />}/> */}
 
-      <Route element={<ProfileLayout />}>
+      <Route element={<ProfileLayout user={user} />}>
         <Route path='/profile' element={<Profile />}/>
         <Route path='/myrentals' element={<MyRental />}/>
         <Route path='/rentalhistory' element={<RentalHistory />}/>
         <Route path='/setting' element={<Setting />}/>
-        
+        {/* <Route path='/ownerdashboard'  element={<h1>Owner Dashboard</h1>}/> */}
+        <Route path='/ownerSetup' element={<OwnerSetup />}/>
       </Route>
+
+      <Route element={<OwnerLayout />}>
+        <Route path='/ownerdashboard' element={<OwnerDashboard />}/>
+        <Route path='/addProduct' element={<AddProduct />} />
+        <Route path='/myproducts' element={<MyProduct />}/>
+        <Route path="/updateproduct/:id" element={<Updateproduct />}/>
+        <Route path='owner/activerentals' element={<OwnerActiveRentals />}/>
+        <Route path='owner/rentalhistory' element={<OwnerHistory />}/>
+      </Route> 
       
     </Routes>
 

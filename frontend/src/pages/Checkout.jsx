@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../service/api";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useEffect } from "react";
 
 
 function Checkout(){
@@ -12,13 +13,21 @@ function Checkout(){
 
     const[loading,setLoading]=useState(false)
     const[verifying,setVerifying]=useState(false)
+    const[user,setUser]=useState(null)
 
-    if(!item){
+    useEffect(()=>{
+        if(!item){
         navigate("/cart")
-        return null
+        
     }
+    },[item,navigate])
 
     const calculateDays=()=>{
+
+        if(!item?.startDate||!item?.endDate){
+            return 0
+        }
+
         const start=new Date(item.startDate);
         const end=new Date(item.endDate)
 
@@ -27,9 +36,21 @@ function Checkout(){
         )
     }
 
-    const rentTotal=item.productId.rentPrice*calculateDays()
+    const days=calculateDays()
 
-    const grandTotal=rentTotal+item.productId.deposit;
+    const rentTotal=Number(item?.productId?.rentPrice||0)*days
+
+    const deposit=Number(item?.productId?.deposit||0)
+
+    // GST
+
+    const GST_RATE=18;
+    const gstAmount=rentTotal * GST_RATE / 100;
+
+    // grand total
+
+    const grandTotal=rentTotal+gstAmount+deposit
+
 
     const handlePayment=async()=>{
         try{
@@ -43,6 +64,16 @@ function Checkout(){
                 endDate: new Date(item.endDate).toISOString()
             })
 
+
+            if (!bookingRes.data.success) {
+
+                throw new Error(
+                    bookingRes.data.message ||
+                    "Booking creation failed"
+                );
+
+            }
+
             //recive booking
             const booking=bookingRes.data.booking
 
@@ -53,6 +84,15 @@ function Checkout(){
                     bookingId:booking._id,
                 }
             )
+
+             if (!orderRes.data.success) {
+
+                throw new Error(
+                    orderRes.data.message ||
+                    "Unable to create payment order"
+                );
+
+            }
 
             const {order}=orderRes.data
             console.log(order);
@@ -66,71 +106,8 @@ function Checkout(){
                 order_id:order.id,
 
 
-//                 handler:async function(response) {
-//                     try{
-//                         const verifyRes=await api.post("/verifypayment",{
-//                             razorpay_order_id:response.razorpay_order_id,
-//                             razorpay_payment_id:response.razorpay_payment_id,
-//                             razorpay_signature:response.razorpay_signature,
-//                         })
-
-//                         if(verifyRes.data.success){
-//                             setVerifying(true)
-
-//                             const interval=setInterval(async()=>{
-//                                 const statusRes=await api.get(`/paymentstatus/${response.razorpay_order_id}`)
-//                             })
-                            
-//                             if(statusRes.data.status==="PAID"){
-//                                 clearInterval(interval)
-//                                 setVerifying(false)
-                            
-                        
-
-//                         // console.log(verifyRes.data);
-
-//                         await api.delete(`/removefromcart/${item._id}`)
-
-//                         alert("Payment Successful")
-
-//                         navigate("/bookingconfirmed",{
-//                                 state:{
-//                                     booking:verifyRes.data.booking,
-//                                     // payment:{
-//                                     //     razorpay_order_id:response.razorpay_order_id,
-//                                     //     razorpay_payment_id:response.razorpay_payment_id,
-//                                     //     razorpay_signature:response.razorpay_signature
-//                                     // }
-//                                     payment:response
-//                                 }
-//                             })
-//                         }
-
-//                         // if(verifyRes.data.success){
-//                         //     // console.log("Navigating....",verifyRes.data);
-                            
-                            
-//                         // }
-
-//                         if(statusRes.data.status==="FAILED"){
-//                             clearInterval(interval)
-//                             setVerifying(false)
-//                             alert("Payment Failed")
-//                         }
-//                     }
-                    
-
-                        
-//                     }catch(err){
-//                         console.log(err);
-//                         console.log(err.response?.data);
-//                         console.log(err.message);
-
-//                         // alert(err.response?.data?.message || err.message);
-// }
-//                 },
-
                 handler: async function (response) {
+
                     try {
 
                         const verifyRes = await api.post("/verifypayment", {
@@ -180,18 +157,35 @@ function Checkout(){
                     }
                 },
                 prefill:{
-                    name:"",
-                    email:"",
+                    name:user?.name||"",
+                    email:user?.email||"",
+                    contact:user?.contact||""
                 },
                 theme:{
                     color:"#213555"
                 }
             }
-            const razor=new window.Razorpay(options)
+            
+            // const razor=new window.Razorpay(options)
+            
+            // razor.open()
+            
+            // setLoading(false)
 
-            razor.open()
+            const razor = new window.Razorpay(options);
 
-            setLoading(false)
+            razor.on("payment.failed", function (response) {
+                console.log("PAYMENT FAILED:", response);
+                setLoading(false);
+
+                alert(
+                    response.error?.description ||
+                    "Payment Failed"
+                );
+            });
+
+            razor.open();
+            setLoading(false);
 
         }catch(err){
             console.log(err);
@@ -200,88 +194,155 @@ function Checkout(){
             
         }
     }
-    return(
-        <div className="checkout-page">
 
-    {verifying && (
-        <div className="payment-verifying">
-            <h3>Payment received.</h3>
-            <p>Confirming payment...</p>
-        </div>
-    )}
-
-
-        <div className="checkout-header">
-            <button className="back-btn">←</button>
-            <h2>Confirm Booking</h2>
-        </div>
-
-        <div className="product-card">
-
-            <img
-            src={`http://localhost:5200${item.productId.images[0]}`}
-            alt={item.productId.title}
-            />
-
-            <div className="product-details">
-           <h3>{item.productId.title}</h3>
-
-                <p className="price">
-                    ₹{item.productId.rentPrice} / day
-                </p>
-
-                <p>
-                    Deposit : ₹{item.productId.deposit}
-                </p>
-            </div>
-
-        </div>
-
-        <div className="summary-card">
-
-            <h3>Rental Period</h3>
-
-            <p>
-            {new Date(item.startDate).toLocaleDateString()} -
-            {new Date(item.endDate).toLocaleDateString()}
-            ({calculateDays()} days)
-            </p>
-
-            <div className="price-row">
-            <span>Rent</span>
-            <span>₹{rentTotal}</span>
-            </div>
-
-            <div className="price-row">
-            <span>Deposit</span>
-            <span>₹{item.productId.deposit}</span>
-            </div>
-
-            <hr />
-
-            <div className="price-row total">
-            <span>Grand Total</span>
-            <span>₹{grandTotal}</span>
-            </div>
-
-        </div>
-
-        <div className="info-box">
-            ℹ You will be redirected to Razorpay to complete payment.
-        </div>
-
-        <button
-            className="pay-btn"
-            onClick={handlePayment}
-            disabled={loading}
-        >
-            {loading
-            ? "Processing..."
-            : `Proceed to Pay ₹${grandTotal}`}
-        </button>
-
-        </div>
-            )
+    useEffect(()=>{
+        const getUser=async()=>{
+            try{
+                const res=await api.get("/getme")
+                setUser(res.data.user)
+            }catch(err){
+                console.log(err);
+                
+            }
         }
+        getUser()
+    },[])
+
+return (
+    <div className="checkout-wrapper">
+
+        {verifying && (
+            <div className="payment-verifying">
+                <h3>Payment received.</h3>
+                <p>Confirming payment...</p>
+            </div>
+        )}
+
+        <div className="checkout-grid">
+
+            {/* ================= LEFT COLUMN ================= */}
+            <div className="checkout-main">
+
+                <div className="checkout-header">
+                    <button className="back-btn" onClick={() => navigate(-1)}>
+                        ←
+                    </button>
+                    <div>
+                        <h2>Confirm Booking</h2>
+                        <p>Review your booking details before payment</p>
+                    </div>
+                </div>
+
+                <div className="product-card">
+                    <img
+                        src={`http://localhost:5200${item.productId.images[0]}`}
+                        alt={item.productId.title}
+                    />
+
+                    <div className="product-details">
+                        <h3>{item.productId?.title || "Xyz"}</h3>
+                        <p className="product-desc">
+                            Premium item available for rent. Enjoy flexible rental and affordable pricing.
+                        </p>
+
+                        <div className="product-price-row">
+                            <div className="price-badge">
+                                <span className="price-amount">
+                                    ₹{Number(item.productId?.rentPrice || 0).toLocaleString("en-IN")}
+                                </span>
+                                <span className="price-unit">/ day</span>
+                            </div>
+
+                            <div className="deposit-badge">
+                                <span className="deposit-label">Deposit: ₹{deposit.toLocaleString("en-IN")}</span>
+                                <span className="deposit-sub">(Refundable)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="rental-period-card">
+                    <div className="rental-period-left">
+                        <div className="rental-period-icon">📅</div>
+                        <div>
+                            <h3>Rental Period</h3>
+                            <p>
+                                {new Date(item.startDate).toLocaleDateString("en-IN")} –{" "}
+                                {new Date(item.endDate).toLocaleDateString("en-IN")} ({days} days)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="days-pill">
+                        📅 {days} Days
+                    </div>
+                </div>
+
+            </div>
+
+            {/* ================= RIGHT COLUMN ================= */}
+            <div className="checkout-sidebar">
+
+                <div className="summary-card">
+                    <div className="summary-header">
+                        <div className="summary-icon">📄</div>
+                        <h3>Order Summary</h3>
+                    </div>
+
+                    <div className="price-row">
+                        <span>Rent ({days} days × ₹{item.productId?.rentPrice})</span>
+                        <span>₹{rentTotal.toLocaleString("en-IN")}</span>
+                    </div>
+
+                    <div className="price-row">
+                        <span>GST ({GST_RATE}%)</span>
+                        <span>₹{gstAmount.toLocaleString("en-IN")}</span>
+                    </div>
+
+                    <div className="price-row">
+                        <span>Deposit (Refundable)</span>
+                        <span>₹{deposit.toLocaleString("en-IN")}</span>
+                    </div>
+
+                    <div className="grand-total-box">
+                        <div>
+                            <strong>Grand Total</strong>
+                            <p>(Incl. of all taxes)</p>
+                        </div>
+                        <span className="grand-total-amount">
+                            ₹{grandTotal.toLocaleString("en-IN")}
+                        </span>
+                    </div>
+
+                    <div className="info-box">
+                        <div>
+                            You will be redirected to <strong>Razorpay</strong> to complete payment securely.
+                        </div>
+                    </div>
+
+                    <button
+                        className="pay-btn"
+                        onClick={handlePayment}
+                        disabled={loading}
+                    >
+                        {loading ? "Processing..." : (
+                            <>🔒 Proceed to Payment →</>
+                        )}
+                    </button>
+
+                    <p className="secure-note">
+                        Secure payments powered by Razorpay
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+);
+
+
+}
 
 export default Checkout

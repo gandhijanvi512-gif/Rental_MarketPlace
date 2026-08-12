@@ -98,8 +98,21 @@ export const verifyPayment=async(req,res)=>{
         
         await payment.save();
 
-        const booking = await Booking.findById(payment.bookingId).populate("productId");
+        // const booking = await Booking.findById(payment.bookingId).populate("productId");
         // console.log("Booking after populate:", booking);
+
+        const booking = await Booking.findById(payment.bookingId)
+        .populate({
+            path: "productId",
+            populate: {
+                path: "ownerId",
+                select: "name city state email phone profileImage"
+            }
+        });
+
+        console.log("🔥 FINAL BOOKING:", JSON.stringify(booking, null, 2));
+console.log("🔥 OWNER:", booking?.productId?.ownerId);
+
 
         return res.status(200).json({
             success:true,

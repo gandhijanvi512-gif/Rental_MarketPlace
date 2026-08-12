@@ -103,101 +103,137 @@ const AddProduct = () => {
     }
   };
 
-  return (
+return (
     <div className="add-product-page">
       <div className="add-product-card">
         <h1>Add Product</h1>
+        <p className="subtitle">Add a new product to your rental marketplace.</p>
 
         <form onSubmit={handleSubmit}>
-          <label>Product Title</label>
+          <div className="form-group">
+            <label>Product Title</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Enter product title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <input
-            type="text"
-            name="title"
-            placeholder="Enter product title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              placeholder="Enter product description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <label>Description</label>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Category</label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    category: e.target.value,
+                    subcategory: "",
+                  })
+                }
+                required
+              >
+                <option value="">Select Category</option>
+                {Object.keys(categoryData).map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <textarea
-            name="description"
-            placeholder="Enter product description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
+            <div className="form-group">
+              <label>Sub Category</label>
+              <select
+                name="subcategory"
+                value={formData.subcategory}
+                onChange={handleChange}
+                required
+                disabled={!formData.category}
+              >
+                <option value="">Select Sub Category</option>
+                {formData.category &&
+                  categoryData[formData.category].map((sub) => (
+                    <option key={sub} value={sub}>
+                      {sub}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
 
-          <label>Category</label>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Rent Price (Per Day)</label>
+              <div className="input-with-icon">
+                <span className="rupee-icon">₹</span>
+                <input
+                  type="text"
+                  name="rentPrice"
+                  placeholder="Enter rent price"
+                  value={formData.rentPrice}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
 
-          <select 
-            name="category" 
-            value={formData.category}
-            onChange={(e)=>setFormData({
-              ...formData,
-              category: e.target.value,
-              subcategory:""
-            })} required>
-            
-            <option value="">Select Category</option>
+            <div className="form-group">
+              <label>Security Deposit</label>
+              <div className="input-with-icon">
+                <span className="rupee-icon">₹</span>
+                <input
+                  type="text"
+                  name="deposit"
+                  placeholder="Enter deposit amount"
+                  value={formData.deposit}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          </div>
 
-            {Object.keys(categoryData).map((cat)=>(
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+          <div className="form-group">
+            <label htmlFor="images">Product Images</label>
+            <div className="file-upload-box">
+              <div className="file-upload-left">
+                <span className="file-icon">🖼️</span>
+                <div>
+                  <p className="file-title">Choose files</p>
+                  <p className="file-subtitle">You can select multiple images</p>
+                </div>
+              </div>
+              <label htmlFor="images" className="browse-btn">
+                Browse
+              </label>
+              <input
+                type="file"
+                name="images"
+                id="images"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+                hidden
+              />
+            </div>
+          </div>
 
-          <label htmlFor="">Sub Category</label>
-
-          <select
-            name="subcategory"
-            value={formData.subcategory}
-            onChange={handleChange}
-            required
-            disabled={!formData.category}
-          >
-            <option value="">Select Sub Category</option>
-              {formData.category && categoryData[formData.category].map((sub)=>(
-                <option key={sub} value={sub}>
-                  {sub}
-                </option>
-              ))}
-
-          </select>
-
-          <label>Rent Price (Per Day)</label>
-
-          <input
-            type="text"
-            name="rentPrice"
-            placeholder="Enter rent price"
-            value={formData.rentPrice}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Security Deposit</label>
-
-          <input
-            type="text"
-            name="deposit"
-            placeholder="Enter deposit amount"
-            value={formData.deposit}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="images">Product Images</label>
-
-          <input type="file" name="images" id="images"
-          multiple 
-          accept="image/*"
-          onChange={handleImageChange}  />
-
-          {/* Preview thumbnails of all selected images so far */}
           {previewUrls.length > 0 && (
             <div className="image-preview-grid">
               {previewUrls.map((url, index) => (
@@ -215,7 +251,9 @@ const AddProduct = () => {
             </div>
           )}
 
-          <button type="submit">Add Product</button>
+          <button type="submit" className="submit-btn">
+            Add Product
+          </button>
         </form>
       </div>
     </div>

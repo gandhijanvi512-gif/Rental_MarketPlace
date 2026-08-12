@@ -20,6 +20,38 @@ export const bookingSchema=new mongoose.Schema(
             type:Date,
             required:true
         },
+        rentAmount:{
+            type:Number,
+            required:true
+        },
+        depositAmount:{
+            type:Number,
+            required:true
+        },
+        gstRate:{
+            type:Number,
+            default:0
+        },
+        gstAmount:{
+            type:Number,
+            default:0
+        },
+        commissionRate: {
+            type: Number,
+            default: 0
+        },
+        commissionAmount: {
+            type: Number,
+            default: 0
+        },
+        ownerEarning:{
+            type:Number,
+            default:0
+        },
+        adminEarning:{
+            type:Number,
+            default:0
+        },
         totalAmount:{
             type:Number,
             required:true

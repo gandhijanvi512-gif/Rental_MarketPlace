@@ -13,6 +13,7 @@ import profilerouter from './routes/profileroute.js'
 import morgan from 'morgan'
 import reviewrouter from './routes/reviewroute.js'
 import wishlistrouter from './routes/wishlistroute.js'
+import ownerRouter from './routes/ownerRoute.js'
 
 const app=express()
 
@@ -39,6 +40,7 @@ app.use(paymentrouter)
 app.use(profilerouter)
 app.use(reviewrouter)
 app.use(wishlistrouter)
+app.use(ownerRouter)
 
 
 
