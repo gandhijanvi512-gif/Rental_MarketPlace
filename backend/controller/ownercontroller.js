@@ -392,6 +392,70 @@ export const getOwnerEarnings=async(req,res)=>{
     try{
         const ownerId=req.user.id
 
+        const products=await Product.find({
+            ownerId:ownerId
+        }).select("_id")
+
+        const productIds=products.map(product=>product._id)
+
+        const bookings=await Booking.find({
+            productId:{
+                $in:productIds
+            },
+            status:"completed"
+        })
+        .populate("productId","title images rentPrice")
+        .populate("userId","name email")
+        .sort({endDate:-1})
+
+        const totalEarning=bookings.reduce((total,booking)=>{
+            return total+Number(booking.ownerEarning||0)
+        },0)
+
+        const totalCommission=bookings.reduce((total,booking)=>{
+            return total+Number(booking.commissionAmount||0)
+        },0)
+
+        const totalRentals=bookings.length;
+
+        const averageEarning=totalRentals>0?totalEarning/totalRentals:0
+
+        const monthlyEarnings=[
+            {month:"Jan",earnings:0},
+            {month:"Feb",earnings:0},
+            {month:"Mar",earnings:0},
+            {month:"Apr",earnings:0},
+            {month:"May",earnings:0},
+            {month:"Jun",earnings:0},
+            {month:"Jul",earnings:0},
+            {month:"Aug",earnings:0},
+            {month:"Sep",earnings:0},
+            {month:"Oct",earnings:0},
+            {month:"Nov",earnings:0},
+            {month:"Dec",earnings:0},
+
+        ]
+
+        bookings.forEach((booking)=>{
+            const month=new Date(booking.endDate).getMonth()
+
+            monthlyEarnings[month].earning+=Number(booking.ownerEarning||0)
+        })
+
+
+
+        return res.status(200).json({
+            success:true,
+            summary:{
+                totalEarning,
+                totalCommission,
+                totalRentals,
+                averageEarning
+            },
+            monthlyEarnings,
+            earnings:bookings
+        })
+
         
     }catch(err){
         return res.status(500).json({

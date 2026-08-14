@@ -23,11 +23,11 @@ function OwnerSidebar(){
             icon: <Package size={20}/>,
             path:"/myproducts"
         },
-        {
-            name:"Rental Request",
-            icon: <Clipboard size={20}/>,
-            path:"/owner/rentalrequest"
-        },
+        // {
+        //     name:"Rental Request",
+        //     icon: <Clipboard size={20}/>,
+        //     path:"/owner/rentalrequest"
+        // },
         {
             name:"Active Rentals",
             icon:<Activity size={20}/>,

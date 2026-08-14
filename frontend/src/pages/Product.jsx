@@ -205,53 +205,82 @@ const Product=()=>{
 
       {/* Products */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {products?.map((product) => (
-          <div
-            key={product._id}
-            className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition"
-          >
-            <button
-                className="wishlist-btn"
-                onClick={()=>handlewishlist(product._id)}
-                disabled={loading}
-              >
-                <Heart size={22} fill={
-                  wishlistIds.includes(product._id)?"red":"none"
-                }
-                color={
-                  wishlistIds.includes(product._id)?"red":"#374151"
-                }
-                />
-            </button>
+{products?.map((product) => (
+  <div
+    key={product._id}
+    className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition"
+  >
+    <button
+      className="wishlist-btn"
+      onClick={() => handlewishlist(product._id)}
+      disabled={loading}
+    >
+      <Heart
+        size={22}
+        fill={
+          wishlistIds.includes(product._id) ? "red" : "none"
+        }
+        color={
+          wishlistIds.includes(product._id) ? "red" : "#374151"
+        }
+      />
+    </button>
 
-            <img
-              src={`http://localhost:5200${product.images?.[0]}`}
-              alt={product.title}
-              className="w-full h-56 object-cover"
-            />
+    <img
+      src={`http://localhost:5200${product.images?.[0]}`}
+      alt={product.title}
+      className="w-full h-56 object-cover"
+    />
 
-            <div className="p-5">
-              <h2 className="text-xl font-medium text-[#213555]">
-                {product.title}
-              </h2>
+    <div className="p-5">
+      <h2 className="text-xl font-medium text-[#213555]">
+        {product.title}
+      </h2>
 
-              <h3 className="mt-2 text-[#3E5879]">
-                Category: {product.category}
-              </h3>
+      <h3 className="mt-2 text-[#3E5879]">
+        Category: {product.category}
+      </h3>
 
-              <h3 className="mt-2 text-[#3E5879]">
-                ₹{product.rentPrice}/day
-              </h3>
+      <h3 className="mt-2 text-[#3E5879]">
+        ₹{product.rentPrice}/day
+      </h3>
 
-              <button
-                onClick={() => navigate(`/productsdetails/${product._id}`)}
-                className="mt-4 w-full bg-[#213555] text-white py-2 rounded-xl hover:bg-[#3E5879] transition"
-              >
-                View Details
-              </button>
-            </div>
-          </div>
-        ))}
+      {product.availability?.available ? (
+        <div className="mt-3 px-3 py-2 rounded-lg bg-[#F5EFE7] text-[#213555] text-sm font-medium">
+          Available Today
+        </div>
+      ) : (
+        <div className="mt-3 px-3 py-2 rounded-lg bg-[#F5EFE7] text-[#213555] text-sm">
+          <strong>
+            Unavailable for {product.availability?.unavailableDays} day
+            {product.availability?.unavailableDays > 1 ? "s" : ""}
+          </strong>
+
+          <br />
+
+          Available from{" "}
+          {product.availability?.availableFrom
+            ? new Date(
+                product.availability.availableFrom
+              ).toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+              })
+            : "-"}
+        </div>
+      )}
+
+      <button
+        onClick={() =>
+          navigate(`/productsdetails/${product._id}`)
+        }
+        className="mt-4 w-full bg-[#213555] text-white py-2 rounded-xl hover:bg-[#3E5879] transition"
+      >
+        View Details
+      </button>
+    </div>
+  </div>
+))}
       </div>
 
       {products.length === 0 && (

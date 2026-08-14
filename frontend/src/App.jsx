@@ -33,6 +33,7 @@ import OwnerDashboard from './pages/OwnerDahboard'
 import ActiveRentals from './components/ActiveRentals'
 import OwnerActiveRentals from './pages/OwnerActiveRentals'
 import OwnerHistory from './pages/OwnerHistory'
+import OwnerEarning from './pages/OwnerEarning'
 
 function App() {
   const location=useLocation()
@@ -101,6 +102,7 @@ function App() {
         <Route path="/updateproduct/:id" element={<Updateproduct />}/>
         <Route path='owner/activerentals' element={<OwnerActiveRentals />}/>
         <Route path='owner/rentalhistory' element={<OwnerHistory />}/>
+        <Route path='owner/earnings' element={<OwnerEarning />}/>
       </Route> 
       
     </Routes>

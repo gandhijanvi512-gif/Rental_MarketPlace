@@ -1,4 +1,5 @@
 import User from "../model/authmodel.js";
+import Booking from "../model/bookingmodel.js";
 import Product from "../model/productmodel.js";
 
 export const addProduct = async (req, res) => {
@@ -69,9 +70,79 @@ export const getProducts = async (req, res) => {
     const products = await Product.find(filter)
       .populate("ownerId", "name email");
 
+    const today=new Date()
+    today.setHours(0,0,0,0)
+
+    const productIds=products.map(product=>product._id)
+
+    const bookings=await Booking.find({
+      productId:{$in:productIds},
+      
+      status:{
+        $in:["pending","approved","ongoing"]
+      },
+      endDate:{
+        $gte:today
+      }
+    }).select("productId startDate endDate")
+
+
+    const updateProducts=products.map(product=>{
+      const productBookings=bookings.filter(booking=>booking.productId && booking.productId.toString()===product._id.toString())
+      .sort((a,b)=>new Date(a.startDate)-new Date(b.startDate))
+
+      let availability={
+        available:true,
+        unavailableDays:0,
+        availableFrom: null
+      }
+
+      if(productBookings.length>0){
+        let unavailableUntil=null
+
+        for(const booking of productBookings){
+          const start = new Date(booking.startDate);
+          const end = new Date(booking.endDate);
+
+          start.setHours(0, 0, 0, 0);
+          end.setHours(0, 0, 0, 0);
+
+
+          if(start<=today && end>=today){
+            unavailableUntil=end
+            break
+          }
+        }
+
+        if(unavailableUntil){
+          const availableDate=new Date(unavailableUntil)
+
+          availableDate.setDate(
+            availableDate.getDate()+1
+          )
+
+          const unavailableDays=Math.ceil((availableDate-today)/(1000*60*60*24))
+
+          availability={
+            available:false,
+            unavailableDays,
+            availableFrom:availableDate
+          }
+        }
+      }
+
+      return{
+        ...product.toObject(),
+        availability
+      }
+    })
+
+
+
+
     return res.status(200).json({
       success: true,
-      products,
+      products: updateProducts,
     });
 
   } catch (error) {
@@ -280,18 +351,82 @@ export const featureProduct=async(req,res)=>{
 
 export const getProductDetails=async(req,res)=>{
   try{
-    const product=await Product.findById(req.params.id).populate("ownerId","name email phone city state profileImage")
+
+    const id=req.params.id
+
+    const product=await Product.findById(req.params.id)
+    .populate("ownerId","name email phone city state profileImage")
+
+    const today=new Date()
+    today.setHours(0,0,0,0)
+
+    const bookings=await Booking.find({
+      productId:id,
+      status:{
+        $in:["pending","approved","ongoing"]
+      },
+      endDate:{
+        $gte:today
+      }
+    }).select("startDate endDate")
+
+
+    let availability = {
+    available: true,
+    unavailableDays: 0,
+    availableFrom: null
+};
+
+const currentBooking = bookings
+    .map((booking) => ({
+        start: new Date(booking.startDate),
+        end: new Date(booking.endDate)
+    }))
+    .sort((a, b) => a.start - b.start)
+    .find((booking) => {
+        booking.start.setHours(0, 0, 0, 0);
+        booking.end.setHours(0, 0, 0, 0);
+
+        return booking.start <= today && booking.end >= today;
+    });
+
+if (currentBooking) {
+
+    const availableDate = new Date(currentBooking.end);
+
+    availableDate.setDate(
+        availableDate.getDate() + 1
+    );
+
+    const unavailableDays = Math.ceil(
+        (availableDate - today) /
+        (1000 * 60 * 60 * 24)
+    );
+
+    availability = {
+        available: false,
+        unavailableDays,
+        availableFrom: availableDate
+    };
+}
+
 
     if(!product){
       return res.status(404).json({
         success:false,
         message:"Product Not Found!"
+
       })
     }
 
+
+
     return res.status(200).json({
       success:true,
-      product
+      product:{
+        ...product.toObject(),
+        availability
+      }
     })
   }catch(err){
     return res.status(500).json({
@@ -320,4 +455,27 @@ export const getProductByCategory=async(req,res)=>{
     })
   }
 }
+
+
+// available or not
+
+// export const checkProductAvailabilitu=async(req,res)=>{
+//   try{
+//     const {productId}=req.params;
+//     const {startDate,endDate}=req.query;
+
+//     if(!startDate || !endDate){
+//       return res.status(400).json({
+//         success:false,
+//         message:"Start "
+//       })
+//     }
+
+//   }catch(err){
+//     return res.status(500).json({
+//       success:false,
+//       message:err.message
+//     })
+//   }
+// }
 

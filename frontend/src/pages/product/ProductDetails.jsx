@@ -33,22 +33,19 @@ const ProductDetails = () => {
     }
   };
 
-  useEffect(()=>{
-    
-      setSelectedImage(0)
-    
-  },[product?._id])
+  useEffect(() => {
+    setSelectedImage(0);
+  }, [product?._id]);
 
   useEffect(() => {
     fetchProducts();
   }, [id]);
 
-
   if (!product) return <h2>Loading...</h2>;
 
   const mainImage = product.images?.[selectedImage] ?? product.images?.[0];
 
-return (
+  return (
     <div className="product-details-wrapper">
       <div className="product-details-container">
         {/* Top product card */}
@@ -74,7 +71,7 @@ return (
                   className="gallery-arrow arrow-left"
                   onClick={() =>
                     setSelectedImage((prev) =>
-                      prev === 0 ? product.images.length - 1 : prev - 1
+                      prev === 0 ? product.images.length - 1 : prev - 1,
                     )
                   }
                 >
@@ -94,7 +91,7 @@ return (
                   className="gallery-arrow arrow-right"
                   onClick={() =>
                     setSelectedImage((prev) =>
-                      prev === product.images.length - 1 ? 0 : prev + 1
+                      prev === product.images.length - 1 ? 0 : prev + 1,
                     )
                   }
                 >
@@ -119,6 +116,56 @@ return (
             </div>
 
             <p className="product-description">{product.description}</p>
+            <div className="product-availability">
+              {product.availability?.available ? (
+                <div className="availability-card available-card">
+                  <div className="availability-icon">✓</div>
+
+                  <div className="availability-content">
+                    <h3>Available Today</h3>
+
+                    <p>You can book this item starting today.</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="availability-unavailable-wrapper">
+                  <div className="availability-card unavailable-card">
+                    <div className="availability-icon">!</div>
+
+                    <div className="availability-content">
+                      <h3>
+                        Unavailable for {product.availability?.unavailableDays}{" "}
+                        days
+                      </h3>
+
+                      <p>This item is currently booked.</p>
+                    </div>
+                  </div>
+
+                  <div className="availability-card available-from-card">
+                    <div className="availability-icon">i</div>
+
+                    <div className="availability-content">
+                      <h3>Available from</h3>
+
+                      <p>
+                        <strong>
+                          {new Date(
+                            product.availability?.availableFrom,
+                          ).toLocaleDateString("en-IN", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </strong>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            
 
             <div className="product-meta">
               <p>
@@ -142,9 +189,15 @@ return (
                 <span className="deposit-price">₹{product.deposit}</span>
               </div>
 
-              <button className="cart-btn" onClick={handleAddToCart}>
-                🛒 Add To Cart
-              </button>
+<button
+  className="cart-btn"
+  onClick={handleAddToCart}
+  disabled={!product.availability?.available}
+>
+  {!product.availability?.available
+    ? "❌ Currently Unavailable"
+    : "🛒 Add To Cart"}
+</button>
             </div>
           </div>
         </div>
@@ -174,7 +227,10 @@ return (
                 )}
                 {(product.ownerId?.city || product.ownerId?.state) && (
                   <span>
-                    📍 {[product.ownerId.city, product.ownerId.state].filter(Boolean).join(", ")}
+                    📍{" "}
+                    {[product.ownerId.city, product.ownerId.state]
+                      .filter(Boolean)
+                      .join(", ")}
                   </span>
                 )}
               </div>
@@ -182,7 +238,9 @@ return (
 
             <button
               className="view-products-btn"
-              onClick={() => navigate(`/owner/${product.ownerId?._id}/products`)}
+              onClick={() =>
+                navigate(`/owner/${product.ownerId?._id}/products`)
+              }
             >
               View All Products
             </button>
