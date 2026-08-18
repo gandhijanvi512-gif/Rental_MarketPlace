@@ -34,6 +34,10 @@ import ActiveRentals from './components/ActiveRentals'
 import OwnerActiveRentals from './pages/OwnerActiveRentals'
 import OwnerHistory from './pages/OwnerHistory'
 import OwnerEarning from './pages/OwnerEarning'
+import AdminSignin from './pages/AdminSignin'
+import AdminDashboard from './pages/AdminDashboard'
+import AdminLayout from './components/AdminLayout'
+import AdminSidebar from './components/AdminSidebar'
 
 function App() {
   const location=useLocation()
@@ -54,10 +58,16 @@ function App() {
     getUser();
   },[])
 
-  const hidenavbar=location.pathname==="/signin" ||
-                   location.pathname==="/signup";
+  const isAdminPage=location.pathname.startsWith("/admin")
 
-  const hideFooter=location.pathname==="/signin" || location.pathname==="/signup"             
+  const hidenavbar=location.pathname==="/signin" ||
+                   location.pathname==="/signup" ||
+                   isAdminPage;
+
+  const hideFooter=location.pathname==="/signin" || 
+                   location.pathname==="/signup" ||
+                   isAdminPage;
+  
 
   return(
     <>
@@ -79,6 +89,7 @@ function App() {
       <Route path='/category/:category' element={<CategoryProducts />}/>
       <Route path='/editprofile' element={<EditProfile />}/>
       <Route path='/wishlist' element={<Wishlist />} />
+      
       
       
       {/* <Route path='/profile' element={<Profile />}/>
@@ -104,6 +115,12 @@ function App() {
         <Route path='owner/rentalhistory' element={<OwnerHistory />}/>
         <Route path='owner/earnings' element={<OwnerEarning />}/>
       </Route> 
+
+      <Route path='/admin/signin' element={<AdminSignin />}/>
+
+      <Route element={<AdminLayout />}>
+        <Route path='/admin/dashboard' element={<AdminDashboard />} />
+      </Route>
       
     </Routes>
 

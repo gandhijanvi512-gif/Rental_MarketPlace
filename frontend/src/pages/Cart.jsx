@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [startDate, setStartDate] = useState(null);
-
+  const [availability, setAvailability] = useState({});
+  const [checkingAvailability, setCheckingAvailability] = useState(false);
   const navigate=useNavigate()
   const GST_RATE=18
 
@@ -41,6 +42,45 @@ function Cart() {
     }
   };
 
+
+const checkProductAvailability = async (item) => {
+  try {
+    if (!item?.productId?._id) return false;
+    if (!item.startDate || !item.endDate) return false;
+
+    setCheckingAvailability(true); // ✅ fixed
+
+    const res = await api.get(
+      `/checkavailable/${item.productId._id}`,
+      {
+        params: {
+          startDate: item.startDate,
+          endDate: item.endDate,
+        },
+        withCredentials: true,
+      }
+    );
+
+    setAvailability((prev) => ({
+      ...prev,
+      [item._id]: res.data,
+    }));
+
+    return res.data.isAvailable;
+  } catch (err) {
+    console.log("AVAILABILITY ERROR:", err);
+    setAvailability((prev) => ({
+      ...prev,
+      [item._id]: {
+        isAvailable: false,
+        message: "Unable to check product availability",
+      },
+    }));
+    return false;
+  } finally {
+    setCheckingAvailability(false); // ✅ fixed
+  }
+};
   const calculateDays = (startDate, endDate) => {
     if (!startDate || !endDate) return 0;
 
@@ -65,18 +105,33 @@ function Cart() {
 
   };
 
-  const handleDateChange = (index, field, date) => {
-    setCartItems((prevItems) => {
-      // 1. Create a shallow copy of the entire array
-      const newItems = [...prevItems];
+const handleDateChange = (index, field, date) => {
+  setCartItems((prevItems) => {
+    const newItems = [...prevItems];
 
-      //Create a deep copy of the specific item being changed
-      newItems[index] = { ...newItems[index], [field]: date };
+    const updatedItem = {
+      ...newItems[index],
+      [field]: date,
+    };
 
-      localStorage.setItem("cartItems", JSON.stringify(newItems));
-      return newItems;
-    });
-  };
+    newItems[index] = updatedItem;
+
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(newItems)
+    );
+
+    // Check availability when both dates are selected
+    if (
+      updatedItem.startDate &&
+      updatedItem.endDate
+    ) {
+      checkProductAvailability(updatedItem);
+    }
+
+    return newItems;
+  });
+};
 
   const removeItem = async (productId) => {
     try {
@@ -92,18 +147,32 @@ function Cart() {
     }
   };
 
-  const handleBookNow=(item)=>{
-    if(!item.startDate || !item.endDate){
-      alert("Please select start date or end date")
-      return
-    }
-
-    navigate("/checkout",{
-      state:{
-        item,
-      },
-    })
+const handleBookNow = async (item) => {
+  if (!item.startDate || !item.endDate) {
+    alert("Please select start date and end date");
+    return;
   }
+
+  if (new Date(item.endDate) < new Date(item.startDate)) {
+    alert("End date must be after start date");
+    return;
+  }
+
+  const isAvailable = await checkProductAvailability(item);
+
+  if (!isAvailable) {
+    alert(
+      "This product is not available for the selected dates."
+    );
+    return;
+  }
+
+  navigate("/checkout", {
+    state: {
+      item,
+    },
+  });
+};
 
 
   const rentTotal = cartItems.reduce((total, item) => {
@@ -267,14 +336,18 @@ const grandTotal=rentTotal+gstTotal+depositTotal
 
                     {/* BOOK NOW */}
 
-                    <button
-                      className="book-btn"
-                      onClick={() =>
-                        handleBookNow(item)
-                      }
-                    >
+<button
+  className="book-btn"
+  onClick={() => handleBookNow(item)}
+  disabled={
+    checkingAvailability ||
+    !item.startDate ||
+    !item.endDate ||
+    availability[item._id]?.isAvailable === false
+  }
+>
 
-                      <svg
+                        <svg
                         width="18"
                         height="18"
                         viewBox="0 0 24 24"
@@ -300,8 +373,14 @@ const grandTotal=rentTotal+gstTotal+depositTotal
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
 
                       </svg>
+  {checkingAvailability
+    ? "Checking..."
+    : "Book Now"}
 
-                      Book Now
+
+
+
+                      
 
                     </button>
 
@@ -617,6 +696,54 @@ const grandTotal=rentTotal+gstTotal+depositTotal
 
 
                 </div>
+
+                {availability[item._id] && (
+  <div
+    className={
+      availability[item._id].isAvailable
+        ? "cart-availability available"
+        : "cart-availability unavailable"
+    }
+  >
+    {availability[item._id].isAvailable ? (
+      <>
+        <strong>✓ Product Available</strong>
+        <p>
+          This product is available for your selected dates.
+        </p>
+      </>
+    ) : (
+      <>
+        <strong>✕ Product Unavailable</strong>
+
+        <p>
+          {availability[item._id].message}
+        </p>
+
+        {availability[item._id].bookedFrom && (
+          <p>
+            Booked from{" "}
+            {new Date(
+              availability[item._id].bookedFrom
+            ).toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+            {" "}to{" "}
+            {new Date(
+              availability[item._id].bookedUntil
+            ).toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </p>
+        )}
+      </>
+    )}
+  </div>
+)}
 
               </div>
 

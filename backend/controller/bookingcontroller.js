@@ -5,6 +5,43 @@ export const createBooking=async(req,res)=>{
     try{
         const {productId,startDate,endDate}=req.body;
 
+        if(!productId ||!startDate || !endDate){
+            return res.status(400).json({
+                success:false,
+                message:"Product, start date and end date are required"
+            })
+        }
+
+        // convert dates
+
+        const start=new Date(startDate)
+        const end=new Date(endDate)
+
+        if(isNaN(start.getTime())||isNaN(end.getTime())){
+            return res.status(400).json({
+                success:false,
+                message:"Invalid booking dates"
+            })
+        }
+
+
+        if(start>end){
+            return res.status(400).json({
+                success:false,
+                message:"End date must be after start date"
+            })
+        }
+
+        // findd product
+        const product=await Product.findById(productId)
+
+        if(!product){
+            return res.status(404).json({
+                success:false,
+                message:"Product Not Found"
+            })
+        }
+
         const existingBooking=await Booking.findOne({
             productId,
             status:{
@@ -16,51 +53,44 @@ export const createBooking=async(req,res)=>{
                 ]
             },
             startDate:{
-                $lte:endDate
+                $lte:end
             },
             endDate:{
-                $gte:startDate
+                $gte:start
             }
         });
 
         if(existingBooking){
             return res.status(400).json({
                 success:false,
-                message:"Product Already Booked"
+                message:"Product Already Booked",
+
+                bookedFrom:existingBooking.startDate,
+                bookedUntil:existingBooking.endDate
+
             })
         }
 
-
-        const product=await Product.findById(productId)
-
-        if(!product){
-            return res.status(404).json({
-                success:false,
-                message:"Product Not Found"
-            })
-        }
-
-
-        // Rental Days
+    // Rental Days
         const days=Math.ceil((
             new Date(endDate)-new Date(startDate)
         )/(1000*60*60*24))+1;
 
+    // Rent amount
 
-        // Rent amount
+        const rentAmount=Number(product.rentPrice)*days;
 
-        const rentAmount=product.rentPrice*days;
-
-        const depositAmount=product.deposit;
+        const depositAmount = Number(product.deposit || 0);
 
         // GST calculation
 
         const GST_RATE=18;
         const gstAmount=rentAmount*GST_RATE/100
 
+        
         // Admin Commission
         const COMMISSION_RATE=10;
-        const commissionAmount=rentAmount*COMMISSION_RATE/100
+        const commissionAmount = rentAmount * COMMISSION_RATE / 100;
 
         // owner earning
         const ownerEarning=rentAmount-commissionAmount
@@ -72,30 +102,28 @@ export const createBooking=async(req,res)=>{
 
         const totalAmount=rentAmount+gstAmount+depositAmount
 
-        
-
-
         // const totalAmount=product.rentPrice*days+product.deposit
 
         const booking=await Booking.create({
             userId:req.user.id,
             productId,
-            startDate,
-            endDate,
-            rentAmount,
-            depositAmount,
+            startDate:start,
+            endDate:end,
+            rentAmount:Number(rentAmount.toFixed(2)),
+            depositAmount:Number(depositAmount.toFixed(2)),
             gstRate:GST_RATE,
-            gstAmount,
+            gstAmount:Number(gstAmount.toFixed(2)),
             commissionRate:COMMISSION_RATE,
-            commissionAmount,
-            ownerEarning,
-            adminEarning,
-            totalAmount,
+            commissionAmount:Number(commissionAmount.toFixed(2)),
+            ownerEarning:Number(ownerEarning.toFixed(2)),
+            adminEarning:Number(ownerEarning.toFixed(2)),
+            totalAmount:Number(totalAmount.toFixed(2)),
             status:"pending",
         })
 
         return res.status(200).json({
             success:true,
+            message: "Booking created successfully",
             booking
         })
         
@@ -332,3 +360,177 @@ export const getMyRentals=async(req,res)=>{
         })
     }
 }
+
+
+
+
+// check available or not
+
+
+// export const checkProductAvailability=async(req,res)=>{
+//   try{
+//     const {productId}=req.params;
+//     const {startDate,endDate}=req.query;
+
+//     if(!startDate || !endDate){
+//       return res.status(400).json({
+//         success:false,
+//         message:"Start date and End date are required"
+//       })
+//     }
+
+
+//     // convert date
+//   const requestedStart=new Date(startDate)
+//   const requestedEnd=new Date(endDate)
+
+//   // validate date
+
+//     if(isNaN(requestedStart.getTime())||isNaN(requestedEnd.getTime())){
+//       return res.status(400).json({
+//         success:false,
+//         message:"Invalid date"
+//       })
+//     }
+
+//     if (requestedStart > requestedEnd) { // ✅ compare Dates, not string vs Date
+//       return res.status(400).json({
+//         success: false,
+//         message: "End date must be after start date",
+//       });
+//     }
+
+//     const product=await Product.findById(productId)
+
+//     if(!product){
+//       return res.status(400).json({
+//         success:false,
+//         message:"Product Not Found"
+//       })
+//     }
+
+//     // 6. Find overlapping booking
+ 
+//     const existingBooking=await Booking.findOne({
+//       productId,
+//       status:{
+//         $in:["pending","approved","ongoing"]
+//       },
+//       startDate:{
+//         $lte:requestedEnd
+//       },
+//     }).select("startDate endDate")
+
+
+//     // if product unavailable
+
+//     if(existingBooking){
+//       return res.status(200).json({
+//         success:true,
+//         isAvailable:false,
+//         message:"Product is not available for selected dates",
+//         bookedFrom:existingBooking.startDate,
+//         bookedUntil:existingBooking.endDate
+//       })
+//     }
+
+//     return res.status(200).json({
+//       success: true,
+//       isAvailable: true,
+//       message: "Product is available for selected dates",
+//     });
+
+
+//   }catch(err){
+//     return res.status(500).json({
+//       success:false,
+//       message:err.message
+//     })
+//   }
+// }
+
+export const checkProductAvailability = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const { startDate, endDate } = req.query;
+ 
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        success: false,
+        message: "Start date and End date are required",
+      });
+    }
+ 
+    // convert date
+    const requestedStart = new Date(startDate);
+    const requestedEnd = new Date(endDate);
+ 
+    // validate date
+    if (isNaN(requestedStart.getTime()) || isNaN(requestedEnd.getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid date",
+      });
+    }
+ 
+    // ✅ FIX: was comparing the raw `startDate` string to a Date object
+    // (`startDate > requestedEnd`), which is an unreliable comparison.
+    // Compare the parsed Date objects instead.
+    if (requestedStart > requestedEnd) {
+      return res.status(400).json({
+        success: false,
+        message: "End date must be after start date",
+      });
+    }
+ 
+    const product = await Product.findById(productId);
+ 
+    if (!product) {
+      return res.status(400).json({
+        success: false,
+        message: "Product Not Found",
+      });
+    }
+ 
+    // 6. Find overlapping booking
+    //
+    // ✅ FIX: the original query only checked
+    //   startDate: { $lte: requestedEnd }
+    // which matches ANY booking that merely started before the requested
+    // end date — including bookings that already ended long ago. A correct
+    // date-range overlap needs BOTH conditions:
+    //   existingBooking.startDate <= requestedEnd
+    //   AND existingBooking.endDate  >= requestedStart
+    const existingBooking = await Booking.findOne({
+      productId,
+      status: {
+        $in: ["pending", "approved", "ongoing"],
+      },
+      startDate: { $lte: requestedEnd },
+      endDate: { $gte: requestedStart },
+    }).select("startDate endDate");
+ 
+    // if product unavailable
+    if (existingBooking) {
+      return res.status(200).json({
+        success: true,
+        isAvailable: false,
+        message: "Product is not available for selected dates",
+        bookedFrom: existingBooking.startDate,
+        bookedUntil: existingBooking.endDate,
+      });
+    }
+ 
+    return res.status(200).json({
+      success: true,
+      isAvailable: true,
+      message: "Product is available for selected dates",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+ 

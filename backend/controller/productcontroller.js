@@ -457,25 +457,7 @@ export const getProductByCategory=async(req,res)=>{
 }
 
 
-// available or not
 
-// export const checkProductAvailabilitu=async(req,res)=>{
-//   try{
-//     const {productId}=req.params;
-//     const {startDate,endDate}=req.query;
 
-//     if(!startDate || !endDate){
-//       return res.status(400).json({
-//         success:false,
-//         message:"Start "
-//       })
-//     }
 
-//   }catch(err){
-//     return res.status(500).json({
-//       success:false,
-//       message:err.message
-//     })
-//   }
-// }
 

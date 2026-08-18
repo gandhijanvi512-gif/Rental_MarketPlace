@@ -38,15 +38,15 @@ function StatsCards({stats}){
     ];
 
     return(
-        <div className="stats-grid">
+        <div className="dashboard-stats-grid">
             {cards.map((card,index)=>(
-                <div className="stats-card" key={index}>
+                <div className="dashboard-stats-card" key={index}>
 
-                    <div className={`stats-icon ${card.className}`}>
+                    <div className={`dashboard-stats-icon ${card.className}`}>
                         {card.icon}
                     </div>
 
-                    <div className="stats-content">
+                    <div className="dashboard-stats-content">
                         <h2>{card.value}</h2>
                         <h4>{card.title}</h4>
                         <p>{card.Subtitle}</p>

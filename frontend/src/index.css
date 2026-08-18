@@ -2,10 +2,10 @@
 @import "tailwindcss";
 
 body {
-  background-color: #f9f9ec;
+  background-color: #fefaf4;
   margin: 0;
   padding: 0;
-  background: #f5f4f1;
+  background: #F5EFE7;
 }
 
 input:-webkit-autofill,
@@ -1351,13 +1351,14 @@ input:-webkit-autofill:active {
 =========================== */
 
 .profile-sidebar {
-    width: 260px;
+    width: 270px;
     min-height: calc(100vh - 80px);
     background: transparent;
     border-right: 1px solid #e8e8e8;
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
     
 }
 
@@ -1378,7 +1379,8 @@ input:-webkit-autofill:active {
     text-decoration: none;
     color: #213555;
     font-size: 17px;
-    font-weight: 500;
+    
+    font-weight: 600;
     padding: 14px 18px;
     border-radius: 12px;
     transition: 0.3s;
@@ -1404,7 +1406,7 @@ input:-webkit-autofill:active {
     background: transparent;
     color: #213555;
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 600;
     border-radius: 12px;
     cursor: pointer;
     transition: 0.3s;
@@ -1465,6 +1467,61 @@ input:-webkit-autofill:active {
 }
 
 /* ===========================
+   CLICK (PRESS) EFFECT
+=========================== */
+
+
+.sidebar-link:active,
+.become-owner-btn:active,
+.logout-btn:active,
+.support-btn:active {
+    transform: scale(0.96) translateY(2px);
+    transition: transform 0.1s ease-in-out;
+}
+
+
+.sidebar-link,
+.become-owner-btn,
+.logout-btn,
+.support-btn {
+    transition: all 0.2s ease;
+}
+
+/* ===========================
+   SIDE SLIDE EFFECT (HOVER & CLICK)
+=========================== */
+
+
+.sidebar-link,
+.become-owner-btn,
+.logout-btn,
+.support-btn {
+    transition: transform 0.2s ease-out, background 0.2s ease;
+}
+
+
+.sidebar-link:hover,
+.become-owner-btn:hover,
+.logout-btn:hover {
+    background: #f5efe7; 
+    transform: translateX(6px); 
+}
+
+
+.sidebar-link:active,
+.become-owner-btn:active,
+.logout-btn:active {
+    background: #e7dbcf; 
+    transform: translateX(10px) scale(0.98); 
+}
+
+
+.sidebar-link.active:hover {
+    transform: translateX(6px);
+    background: #213555; 
+}
+
+/* ===========================
    PROFILE LAYOUT
 =========================== */
 
@@ -1476,8 +1533,10 @@ input:-webkit-autofill:active {
 
 .profile-content {
     flex: 1;
-    padding: 10px;
-    overflow-y: auto;
+    min-width: 0;
+    width: auto;
+    padding: 30px;
+    box-sizing: border-box;
 }
 
 
@@ -5478,25 +5537,17 @@ input:-webkit-autofill:active {
 /* ===========================
    OWNER SIDEBAR LINK
 =========================== */
-
 .owner-sidebar-link {
     display: flex;
     align-items: center;
-
     gap: 14px;
-
     text-decoration: none;
-
     color: #213555;
-
     font-size: 17px;
-    font-weight: 500;
-
-    padding: 14px 18px;
-
-    border-radius: 12px;
-
-    transition: 0.3s;
+    font-weight: 600; 
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: transform 0.2s ease-out, background 0.2s ease;
 }
 
 
@@ -5536,32 +5587,48 @@ input:-webkit-autofill:active {
 .back-profile-btn {
     display: flex;
     align-items: center;
-
     gap: 14px;
-
     width: 100%;
-
-    padding: 14px 18px;
-
+    padding: 12px 16px;
     border: none;
-
     background: transparent;
-
     color: #213555;
-
-    font-size: 17px;
-    font-weight: 500;
-
-    border-radius: 12px;
-
+    font-size: 15px;
+    font-weight: 700; 
+    border-radius: 8px;
     cursor: pointer;
-
-    transition: 0.3s;
+    text-align: left;
+    transition: transform 0.2s ease-out, background 0.2s ease;
 }
 
 
 .back-profile-btn:hover {
     background: #f5efe7;
+}
+
+.owner-sidebar-link:hover,
+.back-profile-btn:hover {
+    background: #f5efe7; 
+    transform: translateX(6px); 
+}
+
+
+.owner-sidebar-link:active,
+.back-profile-btn:active {
+    background: #ead9c8; 
+    transform: translateX(10px) scale(0.98); 
+}
+
+
+.owner-sidebar-link.active {
+    background: #213555;
+    color: white;
+}
+
+
+.owner-sidebar-link.active:hover {
+    transform: translateX(6px);
+    background: #213555; 
 }
 
 
