@@ -1,5 +1,5 @@
 import { useState } from "react"
-import api from "../service/api";
+import api from "../../service/api";
 import { useNavigate } from "react-router-dom";
 
 const AdminSignin=()=>{
@@ -27,7 +27,7 @@ const AdminSignin=()=>{
         setLoading(true)
 
         try{
-            const res=await api.post("/signin",{
+            const res=await api.post("admin/signin",{
                 email:formData.email,
                 password:formData.password
             },{
@@ -42,12 +42,10 @@ const AdminSignin=()=>{
 
             const user=res.data.user
 
-
-
-            if(!user?.role?.includes("admin")){
-                setError("You are not authorized as an admin.")
-                return
-            }
+            // if(!user?.role?.includes("admin")){
+            //     setError("You are not authorized as an admin.")
+            //     return
+            // }
 
             navigate("/admin/dashboard")
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../service/api";
+import api from "../../service/api";
 
 const AdminDashboard = () => {
   const [overview, setOverview] = useState({
@@ -31,10 +31,10 @@ const AdminDashboard = () => {
       setError("");
 
       const [overviewRes, statusRes, ownerRes, productRes] = await Promise.all([
-        api.get("/getadminoverview"),
-        api.get("/getbookingbystatus"),
-        api.get("/getowneranalytics"),
-        api.get("/topproducts"),
+        api.get("/getadminoverview",{withCredentials:true}),
+        api.get("/getbookingbystatus",{withCredentials:true}),
+        api.get("/getowneranalytics",{withCredentials:true}),
+        api.get("/topproducts",{withCredentials:true}),
       ]);
 
       // ==========================================
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
       // ==========================================
 
       if (ownerRes.data.success) {
-        setOwnerData(ownerRes.data.data);
+        setOwnerData(ownerRes.data.owner);
       }
 
       // ==========================================
@@ -112,6 +112,8 @@ const AdminDashboard = () => {
   if (loading) {
     return <div className="admin-loading">Loading dashboard...</div>;
   }
+
+  
 
   // ==========================================
   // ERROR
@@ -266,6 +268,7 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
+                
                 {ownerData.slice(0, 5).map((owner) => (
                   <tr key={owner.ownerId}>
                     <td>
@@ -321,11 +324,17 @@ const AdminDashboard = () => {
                   ((product.totalBookings || 0) / maxBookings) * 100;
 
                 return (
+                  
                   <tr key={product.productId || product._id}>
                     <td>
+                      
                       <div className="product-name">
-                        {product.image ? (
-                          <img src={product.image} alt={product.title} />
+                        
+                        {product.images?.length>0 ? (
+                          
+                          <img src={`http://localhost:5200${product.images[0]}`} 
+                          alt={product.title} />
+                          
                         ) : (
                           <div className="product-placeholder">📦</div>
                         )}

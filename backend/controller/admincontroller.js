@@ -262,7 +262,7 @@ export const getOwnerAnalytics=async(req,res)=>{
 
         return res.status(200).json({
             success:true,
-            data:ownerData
+            owner:ownerData
         })
     }catch(err){
         return res.status(500).json({
@@ -318,6 +318,7 @@ export const getTopProducts=async(req,res)=>{
                     productId:"$_id",
                     title:"$product.title",
                     category:"$product.category",
+                    images: "$product.images",
                     totalBookings:1
                 }
             }
@@ -334,3 +335,58 @@ export const getTopProducts=async(req,res)=>{
         })
     }
 }
+
+export const getAdminProducts=async(req,res)=>{
+    try{
+        const products=await Product.find()
+        .populate("ownerId", "name email")
+        .sort({createdAt:-1})
+
+        return res.status(200).json({
+            success:true,
+            count:products.length,
+            products
+        })
+
+    }catch(err){
+        return res.status(500).json({
+            success:false,
+            message:err.message
+        })
+    }
+}
+
+
+export const checkAdmin = async (req, res) => {
+    return res.status(200).json({
+        success: true,
+        admin: req.admin
+    });
+};
+
+
+export const getAdminBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find({})
+            .populate("userId", "name email")
+            .populate({
+                path: "productId",
+                populate: {
+                    path: "ownerId",
+                    select: "name city state"
+                }
+            });
+
+        return res.status(200).json({
+            success: true,
+            bookings
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+};
+

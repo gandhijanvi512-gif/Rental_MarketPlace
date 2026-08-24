@@ -1,7 +1,22 @@
-import { ClipboardList, LayoutDashboard, Package, UserRoundCheck, Users, BarChart3, LogOut } from "lucide-react"
-import { NavLink } from "react-router-dom"
+import { ClipboardList, LayoutDashboard, Package, UserRoundCheck, Users, LogOut, Contact } from "lucide-react"
+import { NavLink, useNavigate } from "react-router-dom"
+import api from "../service/api"
 
 const AdminSidebar=()=>{
+
+    const navigate=useNavigate()
+
+    const handleLogout=async()=>{
+        try{
+            const res=await api.post("/admin/logout")
+
+            navigate("/admin/signin")
+        }catch(err){
+            console.log(err);
+            
+        }
+    }
+
     return(
         <aside className="admin-sidebar">
             <div className="admin-sidebar-header">
@@ -61,20 +76,20 @@ const AdminSidebar=()=>{
                 </NavLink>
 
                 <NavLink
-                    to="/admin/analytics"
+                    to="/admin/contacts"
                     className={({isActive})=>
                         `admin-nav-item ${isActive ? "active" : ""}`
                     } 
                 >
-                    <BarChart3 className="admin-nav-icon" />
-                    <span>Analytics</span>
+                    <Contact className="admin-nav-icon" />
+                    <span>Contacts</span>
                 </NavLink>
             </nav>
 
             {/* bottom sections */}
 
             <div className="admin-sidebar-bottom">
-                <button className="admin-logout-btn">
+                <button className="admin-logout-btn" onClick={handleLogout}>
                     <LogOut className="admin-nav-icon" />
                     <span>Logout</span>
                 </button>

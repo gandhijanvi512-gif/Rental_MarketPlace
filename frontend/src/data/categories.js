@@ -25,7 +25,7 @@ const categories = [
   },
   {
     name:"Books",
-    image:"/images/books.jpg",
+    image:"/images/electronic.jpg",
   },
   {
     name:"Gaming",
@@ -37,7 +37,7 @@ const categories = [
   },
   {
     name:"Musical Instruments",
-    image:"images/musicinstrument.jpg"
+    image:"images/electronic.jpg"
   }
 ];
 

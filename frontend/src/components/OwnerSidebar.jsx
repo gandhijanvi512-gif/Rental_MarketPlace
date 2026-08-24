@@ -42,12 +42,12 @@ function OwnerSidebar(){
             name:"Earnings",
             icon:<Wallet size={20}/>,
             path:"/owner/earnings"
-        },
-        {
-            name:"Review",
-            icon:<Star size={20}/>,
-            path:"/owner/review"
         }
+        // {
+        //     name:"Review",
+        //     icon:<Star size={20}/>,
+        //     path:"/owner/review"
+        // }
     ]
 
 

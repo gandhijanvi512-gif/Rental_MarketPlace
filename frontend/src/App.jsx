@@ -34,10 +34,19 @@ import ActiveRentals from './components/ActiveRentals'
 import OwnerActiveRentals from './pages/OwnerActiveRentals'
 import OwnerHistory from './pages/OwnerHistory'
 import OwnerEarning from './pages/OwnerEarning'
-import AdminSignin from './pages/AdminSignin'
-import AdminDashboard from './pages/AdminDashboard'
+import AdminSignin from './pages/Admin/AdminSignin'
+import AdminDashboard from './pages/Admin/AdminDashboard'
 import AdminLayout from './components/AdminLayout'
 import AdminSidebar from './components/AdminSidebar'
+import AdminUsers from './pages/Admin/AdminUser'
+import AdminOwner from './pages/Admin/AdminOwner'
+import AdminProducts from './pages/Admin/AdminProducts'
+import AdminBooking from './pages/Admin/AdminBooking'
+import AboutUs from './pages/AboutUs'
+import AdminProtectedRoute from './pages/Admin/AdminProtected'
+import ContactUs from './pages/ContactUs'
+import AdminContact from './pages/Admin/AdminContacts'
+import AdminContactDetails from './pages/Admin/AdminContactDetails'
 
 function App() {
   const location=useLocation()
@@ -54,9 +63,13 @@ function App() {
     }
   }
 
-  useEffect(()=>{
+useEffect(() => {
+    if (location.pathname.startsWith("/admin")) {
+        return;
+    }
+
     getUser();
-  },[])
+}, [location.pathname]);
 
   const isAdminPage=location.pathname.startsWith("/admin")
 
@@ -89,6 +102,8 @@ function App() {
       <Route path='/category/:category' element={<CategoryProducts />}/>
       <Route path='/editprofile' element={<EditProfile />}/>
       <Route path='/wishlist' element={<Wishlist />} />
+      <Route path='/aboutus' element={<AboutUs />}/>
+      <Route path="/contactus" element={<ContactUs />}/>
       
       
       
@@ -118,8 +133,17 @@ function App() {
 
       <Route path='/admin/signin' element={<AdminSignin />}/>
 
-      <Route element={<AdminLayout />}>
-        <Route path='/admin/dashboard' element={<AdminDashboard />} />
+
+      <Route element={<AdminProtectedRoute />}>
+        <Route element={<AdminLayout />}>
+          <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          <Route path='/admin/users' element={<AdminUsers />} />
+          <Route path='/admin/owners' element={<AdminOwner />} />
+          <Route path='/admin/products' element={<AdminProducts />}/>
+          <Route path='/admin/bookings' element={<AdminBooking />} />
+          <Route path='/admin/contacts' element={<AdminContact />} />
+          <Route path="/admin/contact/:id" element={<AdminContactDetails />} />
+        </Route>
       </Route>
       
     </Routes>
