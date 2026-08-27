@@ -2,6 +2,7 @@ import api from "../service/api";
 import "../css/signin.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 
 const signin = () => {
@@ -27,12 +28,16 @@ const signin = () => {
 
       // localStorage.setItem("token", response.data.token);
 
-      alert("Login Successfull!");
+      toast.success("Login Successfull!");
 
-      navigate("/home");
-      window.location.reload()
+      setTimeout(()=>{
+        navigate("/home")
+      },1000)
+      
+
+
     } catch (err) {
-      alert(err.response?.data?.message || "Login Failed");
+      toast.error(err.response?.data?.message || "Login Failed");
     }
   };
 

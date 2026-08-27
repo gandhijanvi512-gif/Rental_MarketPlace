@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../../service/api";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const MyProduct=()=>{
     const [products,setProducts]=useState([])
@@ -37,18 +38,20 @@ const MyProduct=()=>{
 
     const handleDelete=async(id)=>{
         try{
+          
+
             const response=await api.delete(`/deleteproduct/${id}`,
                 {
                     withCredentials:true
                 }
             )
             console.log(response.data);
-            alert(response.data.message);
+            toast.success("Product Deleted Successfully!");
             
             fetchMyProducts()
         }catch(err){
             console.log(err);
-            alert(err.response?.data?.message);
+            toast.error(err.response?.data?.message);
             
         }
     }
@@ -96,43 +99,6 @@ const MyProduct=()=>{
     return "";
   };
 
-
-    // return(
-    //     <div className="product-container">
-    //         <h1>My Products</h1>  
-
-    //         <div className="product-grid">
-    //             {products?.map((product)=>(
-    //                 <div className="product-card" key={product._id}>
-    //                     {/* <img src={`http://localhost:5200${product.images[0]}`} alt={product.title} /> */}
-
-    //                     {product.images?.length > 0 && (
-    //                         <img
-    //                             src={`http://localhost:5200${product.images[0]}`}
-    //                             alt={product.title}
-    //                         />
-    //                         )}
-
-    //                     <h2>{product.title}</h2>
-    //                     <p>{product.description}</p>
-    //                     <h3>₹{product.rentPrice}</h3>
-    //                     <span>Deposit:{product.deposit}</span>
-    //                     <p>Category:{product.category}</p>
-
-    //                     <div className="product-actions">
-    //                         <button onClick={()=>handleEdit(product._id)}>
-    //                             Edit
-    //                         </button>
-
-    //                         <button onClick={()=>handleDelete(product._id)}>
-    //                             Delete
-    //                         </button>
-    //                     </div>
-    //                 </div>
-    //             ))} 
-    //         </div>   
-    //     </div>
-    // )
 
      return (
     <div className="product-container">

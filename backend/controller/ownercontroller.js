@@ -466,10 +466,26 @@ export const getOwnerEarnings=async(req,res)=>{
 }
 
 
+// getowner products
 
+export const getOwnerProducts=async(req,res)=>{
+    try{    
+        const {ownerId}=req.params;
+        console.log("OWNER ID:", ownerId);
 
+        const products=await Product.find({ownerId:ownerId})
+        console.log("OWNER PRODUCTS:", products);
 
-// ==========================================
-// MIGRATE OLD BOOKING EARNINGS
-// ==========================================
+        return res.stats(200).json({
+            success:true,
+            message:"Owner Products",
+            products
+        })
+    }catch(err){
+        return res.status(500).json({
+            success:false,
+            message:err.message
+        })
+    }
+}
 

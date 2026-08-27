@@ -229,7 +229,7 @@ const Product=()=>{
     <img
       src={`http://localhost:5200${product.images?.[0]}`}
       alt={product.title}
-      className="w-full h-56 object-cover"
+      className="w-120 h-80 object-cover product-card-image"
     />
 
     <div className="p-5">
@@ -290,6 +290,11 @@ const Product=()=>{
       )}
     </div>
   );
+
+  
+
+
+
 }
 
 export default Product

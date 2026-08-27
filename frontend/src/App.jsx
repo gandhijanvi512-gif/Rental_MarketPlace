@@ -1,6 +1,7 @@
 import { Routes, useLocation } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import './App.css'
+import {Toaster} from "react-hot-toast"
 import Signup from './pages/Signup'
 import Signin from './pages/Signin'
 import AddProduct from './pages/product/AddProduct'
@@ -48,6 +49,7 @@ import ContactUs from './pages/ContactUs'
 import AdminContact from './pages/Admin/AdminContacts'
 import AdminContactDetails from './pages/Admin/AdminContactDetails'
 
+
 function App() {
   const location=useLocation()
 
@@ -64,7 +66,10 @@ function App() {
   }
 
 useEffect(() => {
-    if (location.pathname.startsWith("/admin")) {
+    if (location.pathname.startsWith("/admin") ||
+        location.pathname==="/signin" ||
+        location.pathname==="/signup"
+    ){
         return;
     }
 
@@ -83,7 +88,8 @@ useEffect(() => {
   
 
   return(
-    <>
+    <div className='app-layout'>
+     <Toaster position="top-right" />
     {!hidenavbar && <Navbar user={user} setUser={setUser}/>}
     
     <Routes>
@@ -150,7 +156,7 @@ useEffect(() => {
 
     {!hideFooter && <Footer />}
 
-    </>
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import api from "../service/api";
+import toast from "react-hot-toast";
 
 const ReviewForm=({productId,onReviewAdded})=>{
     const[rating,setRating]=useState(0);
@@ -10,12 +11,12 @@ const ReviewForm=({productId,onReviewAdded})=>{
         e.preventDefault()
 
         if(rating===0){
-            alert("Please select a rating")
+            toast.error("Please select a rating")
             return;
         }
 
         if(comment.trim()===""){
-            alert("Please enter your review")
+            toast.error("Please enter your review")
             return;
         }
 
@@ -27,7 +28,7 @@ const ReviewForm=({productId,onReviewAdded})=>{
                 comment
             })
 
-            alert(res.data.message);
+            toast.success(res.data.message);
 
             setRating(0);
             setComment("");
@@ -37,7 +38,7 @@ const ReviewForm=({productId,onReviewAdded})=>{
             }
         }catch(err){
             console.log(err);
-            alert(
+            toast.error(
                 err.response?.message?.data||"Faild to submit review"
             )
             

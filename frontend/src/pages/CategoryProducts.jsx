@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import categoryData from "../data/categorydata"
 import api from "../service/api"
 
+
 function CategoryProducts(){
+    const navigate=useNavigate()
+
     const {category}=useParams()
 
     const [products,setProducts]=useState([])
@@ -67,72 +70,62 @@ function CategoryProducts(){
 
                 {loading? (
 
-                <h3>Loading...</h3>
+                <h3 className="status-text">Loading...</h3>
 
             ):filteredProducts.length===0?(
-                <h3>No Products Found</h3>
+                <h3 className="status-text">No Products Found</h3>
             ):(
 
                 <div className="product-grid">
                     {filteredProducts.map((item) => (
-                        // <div className="product-card" key={item._id}>
-                        //     <img
-                        //         src={`http://localhost:5200${item.images[0]}`}
-                        //         alt={item.title}
-                        //     />
-
-                        //     <div className="product-content">
-                        //         <h3>{item.title}</h3>
-
-                        //         <p><strong>Category: </strong>{item.category}</p>
-                        //         {item.subcategory && (
-                        //             <p><strong>SubCategory: </strong>{item.subcategory}</p>
-                                    
-                        //         )}
-
-                        //         <div className="price-row">
-                        //             <span>₹{item.rentPrice}/day</span>
-                        //             <span>₹{item.deposit}</span>
-                        //         </div>
-                                
-                        //         <button className="details-btn">
-                        //             View Details
-                        //         </button>
-                        //     </div>
-
-                        // </div>
 
                         <div className="product-card" key={item._id}>
-    <img
-        src={`http://localhost:5200${item.images[0]}`}
-        alt={item.title}
-    />
+                            <div className="product-image-container">
+                                    <img
+                                        src={`http://localhost:5200${item.images[0]}`}
+                                        alt={item.title}
+                                    />
+                                    <span className="badge-rent">FOR RENT</span>
+                            </div>
 
-    <div className="product-content">
 
-        <h3>{item.title}</h3>
+    <div className="pd-content">
+        <div className="pd-tags">
+            <span className="pd-tag">{item.subcategory||item.category}</span>
+        </div>
 
-        <p className="product-category">
+        <h3 className="pd-title">{item.title}</h3>
+
+        {/* <p className="product-category">
             <strong>Category:</strong> {item.category}
         </p>
 
         <p className="product-sub">
             <strong>Sub Category:</strong> {item.subcategory}
-        </p>
+        </p> */}
 
-        <div className="price-row">
-            <div className="rent">
-                ₹{item.rentPrice}
-                <span>/day</span>
+        <div className="pd-price-row">
+            <div className="pd-rent">
+                <span className="pd-currency">₹</span>
+                <span className="pd-amount">{item.rentPrice}</span>
+                <span className="pd-period">/day</span>
             </div>
 
-            <div className="deposit">
-                ₹{item.deposit}
+            {item.deposit && (
+            <div className="pd-deposit">
+                Deposit: ₹{item.deposit}
             </div>
+            )}
+
         </div>
 
-        <button className="details-btn">
+        <button className="pd-btn" onClick={()=>navigate(`/productsdetails/${item._id}`)}>
             View Details
+
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
         </button>
 
     </div>

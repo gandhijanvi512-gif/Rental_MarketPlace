@@ -5,6 +5,7 @@ import api from "../../service/api";
 
 import ReviewList from "../../components/ReviewList";
 import ReviewForm from "../../components/ReviewForm";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -16,8 +17,14 @@ const ProductDetails = () => {
   const handleAddToCart = async () => {
     try {
       await api.post("/addtocart", { productId: product._id });
-      alert("Product add to cart");
-      navigate("/cart");
+
+      toast.success("Product add to cart");
+
+      setTimeout(()=>{
+        navigate("/cart");
+      },2000)
+
+      
     } catch (err) {
       console.log(err);
       alert("Failed to add product to cart");
@@ -236,14 +243,16 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            <button
+            {/* <button
               className="view-products-btn"
               onClick={() =>
                 navigate(`/owner/${product.ownerId?._id}/products`)
               }
             >
               View All Products
-            </button>
+            </button> */}
+
+            
           </div>
         </div>
 

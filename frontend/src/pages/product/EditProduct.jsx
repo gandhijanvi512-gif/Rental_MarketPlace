@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../../service/api";
 import { useState } from "react";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 
 const Updateproduct=()=>{
@@ -51,7 +52,7 @@ const Updateproduct=()=>{
                 withCredentials:true
             }
         )
-        alert(response.data.message);
+        toast.success(response.data.message);
 
         navigate("/products")
         }catch(err){

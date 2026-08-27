@@ -4,6 +4,7 @@ import "../../css/AddProduct.css";
 import { useNavigate } from "react-router-dom";
 import categoryData from "../../data/categorydata";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 
 const AddProduct = () => {
@@ -61,7 +62,7 @@ const AddProduct = () => {
 
 
     if (images.length === 0) {
-      alert("Please upload at least one product image.");
+      toast.error("Please upload at least one product image.");
       return;
     }
 
@@ -83,8 +84,12 @@ const AddProduct = () => {
         withCredentials: true,
       });
 
-      alert(response.data.message);
-      navigate("/products");
+      toast.success(response.data.message);
+
+      setTimeout(()=>{
+        navigate("/products");
+      },1000)
+      
 
       setFormData({
         title: "",

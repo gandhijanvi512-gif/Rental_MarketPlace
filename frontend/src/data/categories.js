@@ -25,19 +25,19 @@ const categories = [
   },
   {
     name:"Books",
-    image:"/images/electronic.jpg",
+    image:"/images/books.jpg",
   },
-  {
-    name:"Gaming",
-    image:"/images/gaming.jpg",
-  },
-  {
-    name:"Event & Party",
-    image:"images/eventparty.jpg"
-  },
+  // {
+  //   name:"Gaming",
+  //   image:"/images/gaming.jpg",
+  // },
+  // {
+  //   name:"Event & Party",
+  //   image:"images/eventparty.jpg"
+  // },
   {
     name:"Musical Instruments",
-    image:"images/electronic.jpg"
+    image:"images/musical.jpg"
   }
 ];
 

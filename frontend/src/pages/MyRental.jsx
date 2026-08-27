@@ -124,7 +124,7 @@ function MyRental(){
                                         ACTIVE
                                     </span>
 
-                                    <Link to={`/products/${rental.productId._id}`} className="view-btn">
+                                    <Link to={`/productsdetails/${rental.productId._id}`} className="view-btn">
                                         View Product
                                     </Link>
                                 </div>

@@ -4,6 +4,7 @@ import api from "../service/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -18,7 +19,9 @@ function Cart() {
   }, []);
 
   const fetchCart = async () => {
+
     try {
+
       const res = await api.get("/getCart");
 
       const serverCart = res.data.items || [];
@@ -35,6 +38,9 @@ function Cart() {
       });
 
       setCartItems(serverCart);
+
+
+      
 
       localStorage.setItem("cartItems", JSON.stringify(serverCart));
     } catch (error) {
@@ -82,7 +88,7 @@ const checkProductAvailability = async (item) => {
   }
 };
   const calculateDays = (startDate, endDate) => {
-    if (!startDate || !endDate) return 0;
+    if (!startDate || !endDate) return 1;
 
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -93,6 +99,12 @@ const checkProductAvailability = async (item) => {
   };
 
   const calculateTotal = (item) => {
+    const hasDates=item.startDate && item.endDate
+
+    if(!hasDates){
+      return item.productId?.rentPrice || 0
+    }
+
     const days = calculateDays(item.startDate, item.endDate);
 
     const rent=(item.productId?.rentPrice||0)*days;
@@ -149,29 +161,35 @@ const handleDateChange = (index, field, date) => {
 
 const handleBookNow = async (item) => {
   if (!item.startDate || !item.endDate) {
-    alert("Please select start date and end date");
+    toast.error("Please select start date and end date");
     return;
   }
 
   if (new Date(item.endDate) < new Date(item.startDate)) {
-    alert("End date must be after start date");
+    toast.error("End date must be after start date");
     return;
   }
 
   const isAvailable = await checkProductAvailability(item);
 
   if (!isAvailable) {
-    alert(
+    toast.error(
       "This product is not available for the selected dates."
     );
     return;
   }
 
-  navigate("/checkout", {
+  toast.success("Proceeding to checkout...")
+
+  setTimeout(()=>{
+    navigate("/checkout", {
     state: {
       item,
     },
   });
+  },1000)
+
+
 };
 
 
@@ -405,6 +423,8 @@ const grandTotal=rentTotal+gstTotal+depositTotal
 
                 </h2>
 
+                <br />
+
 
                 <div className="price-info">
 
@@ -460,6 +480,8 @@ const grandTotal=rentTotal+gstTotal+depositTotal
 
 
                 </div>
+
+                <br />
 
 
                 {/* ==================================
@@ -696,6 +718,8 @@ const grandTotal=rentTotal+gstTotal+depositTotal
 
 
                 </div>
+
+                <br />
 
                 {availability[item._id] && (
   <div

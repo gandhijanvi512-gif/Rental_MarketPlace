@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import api from "../service/api"
 import userImage from "../assets/user.jpg"
+import toast from "react-hot-toast"
 
 function EditProfile(){
     const navigate=useNavigate()
@@ -93,9 +94,9 @@ function EditProfile(){
                     "content-type":"multipart/form-data"
                 }
             })
-            alert(res.data.message)
+        
 
-            alert("Profile Updated Successfully!");
+            toast.success("Profile Updated Successfully!");
 
             navigate("/profile")
         }catch(err){
@@ -107,7 +108,7 @@ function EditProfile(){
             setLoading(false)
         }
     }
-    // return(
+
     //     <div className="edit-profile-page">
     //         <div className="edit-profile-card">
     //             <h1>Edit Profile</h1>

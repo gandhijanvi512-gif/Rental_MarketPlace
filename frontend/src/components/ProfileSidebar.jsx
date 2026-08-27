@@ -6,6 +6,7 @@ import { Headphones } from "lucide-react";
 
 import api from "../service/api";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function ProfileSidebar({user}){
     const location=useLocation()
@@ -52,15 +53,19 @@ function ProfileSidebar({user}){
         );
 
         if (response.data.success) {
-            alert("You are now an owner!");
+            toast.success("You are now an owner!");
 
-            navigate("/ownerSetup");
+            setTimeout(()=>{
+                navigate("/ownerSetup");
+            })
+
+            
         }
 
     } catch (error) {
         console.log(error);
 
-        alert(
+        toast.error(
             error.response?.data?.message ||
             "Something went wrong"
         );

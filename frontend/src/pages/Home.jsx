@@ -3,7 +3,6 @@
   import api from "../service/api";
   // import "../../css/ProductListing.css"
   import { useNavigate } from "react-router-dom";
-  import CategoryCard from "../components/CategoryCard";
   import categories from "../data/categories";
   import {ArrowRight,Search,ShieldCheck,Wallet,CalendarCheck,Users,Package,Calendar,ChevronRight,PackageCheck,ChevronDown } from "lucide-react";
   import faqs from "../data/faqs";
@@ -25,27 +24,23 @@ useEffect(() => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const sectionName = entry.target.dataset.section;
-
         setVisibleSections((prev) => ({
           ...prev,
-          [sectionName]: entry.isIntersecting,
+          [entry.target.dataset.section]: entry.isIntersecting,
         }));
       });
     },
     {
-      threshold: 0.15,
+      threshold: 0.25,
     }
   );
 
-  sections.forEach((section) => {
-    observer.observe(section);
-  });
+  sections.forEach((section) => observer.observe(section));
 
-  return () => {
-    observer.disconnect();
-  };
+  return () => observer.disconnect();
 }, []);
+
+
     const fetchProducts = async () => {
       try {
         const res = await api.get("/featureProduct",{
@@ -246,7 +241,7 @@ useEffect(() => {
 
         {categories.map((category, index) => (
             <div
-                key={category.id}
+                key={category.name}
                 className={`home-category-card category-${index + 1} home-scroll-card`}
                 onClick={() =>
                     navigate(`/category/${encodeURIComponent(category.name)}`)

@@ -3,6 +3,7 @@ import api from "../service/api";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 
 function Checkout(){
@@ -132,15 +133,19 @@ function Checkout(){
 
                                     await api.delete(`/removefromcart/${item._id}`);
 
-                                    alert("Payment Successful");
+                                    toast.success("Payment Successful");
 
-                                    console.log("Cart item removed");
+                                    
                                     navigate("/bookingconfirmed", {
                                         state: {
                                             booking: verifyRes.data.booking,
                                             payment: response
                                         }
                                     });
+                                    
+
+                                    console.log("Cart item removed");
+
                                 }
 
                                 if (statusRes.data.status === "FAILED") {
@@ -154,6 +159,8 @@ function Checkout(){
                         console.log(err);
                         console.log(err.response?.data);
                         console.log(err.message);
+
+
                     }
                 },
                 prefill:{

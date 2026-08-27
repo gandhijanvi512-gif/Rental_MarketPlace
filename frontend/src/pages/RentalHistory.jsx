@@ -209,7 +209,7 @@ function RentalHistory(){
 
                         <button
                             onClick={()=>
-                                navigate(`/productdetails/${item.productId._id}`)
+                                navigate(`/productsdetails/${item.productId._id}`)
                             }
                         >
                             View Product

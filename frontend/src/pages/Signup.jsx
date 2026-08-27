@@ -11,6 +11,7 @@ import {
   FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
+import toast from "react-hot-toast"
 
 
 
@@ -37,10 +38,14 @@ const Signup = () => {
     try {
       await api.post("/signup", formData);
 
-      alert("Registration Successful");
-      navigate("/signin");
+      toast.success("Registration Successful");
+      
+      setTimeout(()=>{
+        navigate("/signin")
+      },1000)
+
     } catch (error) {
-      alert(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -184,7 +189,7 @@ const Signup = () => {
             
             {/* Register As */}
 
-            <div>
+            {/* <div>
               <label className="block mb-2 font-semibold text-[#213555]">
                 Register As
               </label>
@@ -197,9 +202,9 @@ const Signup = () => {
               >
                 <option value="user">User</option>
                 <option value="owner">Owner</option>
-                {/* <option value="admin">Admin</option> */}
+                <option value="admin">Admin</option>
               </select>
-            </div>
+            </div> */}
             
             {/* Button */}
 
