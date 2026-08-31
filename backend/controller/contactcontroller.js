@@ -60,17 +60,27 @@ export const updateContactStatus=async(req,res)=>{
         const {id}=req.params;
         const {status}=req.body;
 
-        const contact=await Contact.findByIdAndUpdate(id,
-            {status},
-            {new:true}
-        )
+        const message=await Contact.findById(id);
 
-        if(!contact){
+        if(!message){
             return res.status(404).json({
                 success:false,
                 message:"Message Not Found"
             })
         }
+
+        if(message.status==="new" && status==="read"){
+            message.status="read"
+        }
+        else if(message.status==="read" && status==="resolved"){
+            message.status="resolved"
+        }else{
+            return res.status(400).json({
+                success:false,
+                message:`Cannot change status fron ${message.status} to ${status}`
+            })
+        }
+        await message.save()
 
         return res.status(200).json({
             success:true,

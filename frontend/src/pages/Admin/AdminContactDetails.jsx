@@ -537,8 +537,23 @@ const AdminContactDetails=()=>{
                             onChange={
                                 handleStatusChange
                             }
-                            disabled={updatingStatus}
+                            disabled={updatingStatus || contact.status==="resolved"}
                         >
+                            {contact.status==="new" && (
+                                <>
+                                    <option value="new">New</option>
+                                    <option value="read">Read</option>
+                                </>
+                            )}
+                            {contact.status==="read" && (
+                                <>
+                                    <option value="read">Read</option>
+                                    <option value="resolved">Resolved</option>
+                                </>
+                            )}
+                            {contact.status==="resolved" && (
+                                <option value="resolved">Resolved</option>
+                            )}
 
                             <option value="new">
                                 New
