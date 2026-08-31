@@ -30,7 +30,10 @@ app.use((req,res,next)=>{
 })
 
 app.use(cors({
-    origin:"https://rental-market-place.vercel.app",
+    origin:[
+        "http://localhost:5173",
+        "https://rental-market-place.vercel.app"
+    ],
     credentials:true
 }))
 app.use(morgan('dev'))
