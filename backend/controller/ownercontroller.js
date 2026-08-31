@@ -91,25 +91,13 @@ await Booking.updateMany(
 
         const completedBooking=bookings.filter((booking)=>booking.status==="completed")
 
-        const totalEarnings = completedBooking.reduce(
-    (total, booking) => {
+        const earningBookings=bookings.filter((booking)=>
+            ["approved","ongoing","completed"].includes(booking.status)
+        )
 
-        console.log(
-            "BOOKING:",
-            booking._id,
-            "STATUS:",
-            booking.status,
-            "OWNER EARNING:",
-            booking.ownerEarning
-        );
-
-        return total + Number(
-            booking.ownerEarning || 0
-        );
-
-    },
-    0
-);
+        const totalEarning=earningBookings.reduce((total,booking)=>{
+            return total+Number(booking.ownerEarning || 0)
+        },0)
 
         const totalBookings = bookings.length;
 
@@ -253,84 +241,7 @@ export const getOwnerActiveRentals = async (req, res) => {
     }
 };
 
-// export const getOwnerActiveRentals=async(req,res)=>{
-//     try{
-//         const ownerId=req.user.id
 
-//         const products=await Product.find({
-//             ownerId:ownerId
-//         }).select("_id")
-
-//         const productIds=products.map(product=>product._id)
-
-
-
-        
-
-// const testBookings = await Booking.find({
-//     productId: { $in: productIds }
-// })
-
-// console.log("OWNER BOOKINGS:", testBookings)
-
-//         // approved->ongoinf
-
-//         // approved -> ongoing
-// await Booking.updateMany(
-//     {
-//         productId: { $in: productIds },
-//         status: "approved",
-//         startDate: { $lte: today },
-//         endDate: { $gte: today }
-//     },
-//     {
-//         $set: {
-//             status: "ongoing"
-//         }
-//     }
-// )
-
-//         // ongoing->completed
-
-//        await Booking.updateMany(
-//     {
-//         productId: { $in: productIds },
-//         status: "ongoing",
-//         endDate: { $lt: today }
-//     },
-//     {
-//         $set: {
-//             status: "completed"
-//         }
-//     }
-// )
-
-//         // const allBookings = await Booking.find({
-//         //     productId: { $in: productIds }
-//         // });
-
-//         const activeRentals=await Booking.find({
-//             productId: {$in:productIds},
-//             status:"ongoing"
-            
-//         })
-        
-//         .populate("userId","name email phone")
-//         .populate("productId","title images rentPrice deposit")
-//         .sort({createdAt:1})
-      
-
-//         return res.status(200).json({
-//             success:true,
-//             activeRentals
-//         })
-//     }catch(err){
-//         return res.status(500).json({
-//             success:false,
-//             message:err.message
-//         })
-//     }
-// }
 
 
 export const getOwnerBookingHistory=async(req,res)=>{

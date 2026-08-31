@@ -11,9 +11,6 @@ function OwnerDashboard() {
 
     const navigate=useNavigate()
 
-    
-
-
     const getDashboard=async()=>{
         try{
             const res=await api.get("/ownerdashboard",{
@@ -38,8 +35,6 @@ function OwnerDashboard() {
         return <h2>Loading Dashboard...</h2>
     }
   
-
-
 
     return (
         <div className="owner-dashboard">
@@ -96,24 +91,24 @@ function OwnerDashboard() {
                 </div>
 
                 <div className="owner-stat-card">
-    <div className="owner-stat-icon icon-orange">
-        <Wallet size={20} />
-    </div>
+                    <div className="owner-stat-icon icon-orange">
+                        <Wallet size={20} />
+                    </div>
 
-    <div className="owner-stat-text">
-        <h3>Total Earnings</h3>
+                    <div className="owner-stat-text">
+                        <h3>Total Earnings</h3>
 
-        <h2>
-            ₹{Number(
-                dashboard?.stats?.totalEarnings || 0
-            ).toLocaleString("en-IN")}
-        </h2>
+                        <h2>
+                            ₹{Number(
+                                dashboard?.stats?.totalEarnings || 0
+                            ).toLocaleString("en-IN")}
+                        </h2>
 
-        <span className="owner-stat-delta">
-            +{dashboard?.stats?.earningsDelta || 0}% this month
-        </span>
-    </div>
-</div>
+                        <span className="owner-stat-delta">
+                            +{dashboard?.stats?.earningsDelta || 0}% this month
+                        </span>
+                    </div>
+                </div>
             </div>
 
             {/* stats card */}
