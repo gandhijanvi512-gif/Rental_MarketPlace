@@ -13,6 +13,7 @@ import {
     CheckCircle,
     Clock
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 const AdminContactDetails=()=>{
 
@@ -62,6 +63,13 @@ const AdminContactDetails=()=>{
                     ...prev,
                     status:res.data.data.status
                 }))
+                Swal.fire({
+                    icon:"success",
+                    title:"status upated successfully",
+                    text:`Message status changed to ${newStatus}`,
+                    timer:1800,
+                    showCancelButton:false
+                })
             }
         }catch(err){
             console.log(err);
