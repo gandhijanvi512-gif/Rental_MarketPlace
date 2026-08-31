@@ -95,7 +95,7 @@ await Booking.updateMany(
             ["approved","ongoing","completed"].includes(booking.status)
         )
 
-        const totalEarning=earningBookings.reduce((total,booking)=>{
+        const totalEarnings=earningBookings.reduce((total,booking)=>{
             return total+Number(booking.ownerEarning || 0)
         },0)
 
