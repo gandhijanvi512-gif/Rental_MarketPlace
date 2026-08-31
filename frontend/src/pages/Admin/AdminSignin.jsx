@@ -27,7 +27,7 @@ const AdminSignin=()=>{
         setLoading(true)
 
         try{
-            const res=await api.post("admin/signin",{
+            const res=await api.post("/admin/signin",{
                 email:formData.email,
                 password:formData.password
             },{
