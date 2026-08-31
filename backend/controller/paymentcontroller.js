@@ -89,10 +89,7 @@ export const verifyPayment=async(req,res)=>{
         }
 
 
-        if(payment.paymentStatus!=="PAID"){
-            payment.paymentStatus="VERIFYING"
-        }
-
+        payment.paymentStatus="PAID"
         payment.razorpayPaymentId=razorpay_payment_id
         payment.razorpaySignature = razorpay_signature;
         
@@ -110,9 +107,15 @@ export const verifyPayment=async(req,res)=>{
             }
         });
 
-        console.log("🔥 FINAL BOOKING:", JSON.stringify(booking, null, 2));
-console.log("🔥 OWNER:", booking?.productId?.ownerId);
+        if(!booking){
+            return res.status(404).json({
+                success:false,
+                message:"Booking Not Found"
+            })
+        }
 
+        booking.status="approved";
+        await booking.save()
 
         return res.status(200).json({
             success:true,

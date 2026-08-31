@@ -110,12 +110,15 @@ function Checkout(){
                 handler: async function (response) {
 
                     try {
+                        console.log("1️⃣ RAZORPAY RESPONSE:", response);
 
                         const verifyRes = await api.post("/verifypayment", {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature,
                         });
+
+                        console.log("2️⃣ VERIFY RESPONSE:", verifyRes.data);
 
                         if(verifyRes.data.success){
                             setVerifying(true);
@@ -125,13 +128,16 @@ function Checkout(){
                                     `/paymentstatus/${response.razorpay_order_id}`
                                 );
                                 // console.log("Payment Status:", statusRes.data);
+                                console.log("3️⃣ PAYMENT STATUS:", statusRes.data);
 
                                 if (statusRes.data.status === "PAID") {
-                                    console.log("Payment is PAID");
+                                    console.log("4️⃣ PAYMENT IS PAID");
                                     clearInterval(interval);
                                     setVerifying(false);
 
                                     await api.delete(`/removefromcart/${item._id}`);
+
+                                    console.log("5️⃣ NAVIGATING...");
 
                                     toast.success("Payment Successful");
 
