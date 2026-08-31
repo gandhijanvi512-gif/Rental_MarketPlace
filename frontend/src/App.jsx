@@ -108,8 +108,8 @@ useEffect(() => {
       <Route path='/category/:category' element={<CategoryProducts />}/>
       <Route path='/editprofile' element={<EditProfile />}/>
       <Route path='/wishlist' element={<Wishlist />} />
-      <Route path='/about' element={<AboutUs />}/>
-      <Route path="/contact" element={<ContactUs />}/>
+      <Route path='/aboutus' element={<AboutUs />}/>
+      <Route path="/contactus" element={<ContactUs />}/>
       
       
       
