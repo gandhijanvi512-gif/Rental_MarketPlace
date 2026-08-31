@@ -19,6 +19,8 @@ import contactRouter from './routes/contactRoute.js'
 
 const app=express()
 
+const PORT = process.env.PORT || 5200;
+
 app.use((req,res,next)=>{
     if(req.path==="/webhook"){
         next()
@@ -56,7 +58,7 @@ dbconnect()
     console.log(err)
 })
 
-app.listen(process.env.PORT,()=>{
+app.listen(PORT,()=>{
     console.log("App is listen on port 5200");
 })
 
