@@ -27,8 +27,8 @@ function Footer(){
         <h3>Quick Links</h3>
         <Link to="/home">Home</Link>
         <Link to="/products">Products</Link>
-        <Link to="/aboutus">About</Link>
-        <Link to="/contactus">Contact</Link>
+        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
       </div>
 
       <div className="footer-col">
