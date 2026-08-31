@@ -18,12 +18,16 @@ export const signup=async(req,res)=>{
 
         const hashedPassword=await bcrypt.hash(password,10);
 
+        console.log("DATABASE:", mongoose.connection.name);
+
         const user=await User.create({
             name,
             email,
             password:hashedPassword,
             role:["user"]
         })
+
+        
 
         console.log("SIGNUP EMAIL:", email);
         console.log("DATABASE NAME:", mongoose.connection.name);
