@@ -68,7 +68,7 @@ const AdminContactDetails=()=>{
                     title:"status upated successfully",
                     text:`Message status changed to ${newStatus}`,
                     timer:1800,
-                    showCancelButton:false
+                    showConfirmButton:false
                 })
             }
         }catch(err){
