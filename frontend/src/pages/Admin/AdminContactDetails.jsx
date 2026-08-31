@@ -555,7 +555,7 @@ const AdminContactDetails=()=>{
                                 <option value="resolved">Resolved</option>
                             )}
 
-                            <option value="new">
+                            {/* <option value="new">
                                 New
                             </option>
 
@@ -565,7 +565,7 @@ const AdminContactDetails=()=>{
 
                             <option value="resolved">
                                 Resolved
-                            </option>
+                            </option> */}
 
                         </select>
 
