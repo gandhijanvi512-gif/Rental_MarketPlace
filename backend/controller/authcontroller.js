@@ -1,6 +1,7 @@
 import User from "../model/authmodel.js";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 
 export const signup=async(req,res)=>{
     try{
@@ -23,6 +24,10 @@ export const signup=async(req,res)=>{
             password:hashedPassword,
             role:["user"]
         })
+
+        console.log("SIGNUP EMAIL:", email);
+        console.log("DATABASE NAME:", mongoose.connection.name);
+        console.log("USER SAVED:", user._id);
 
         return res.status(200).json({
             success:true,
