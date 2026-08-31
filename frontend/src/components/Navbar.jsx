@@ -140,14 +140,14 @@ const getProfileImage = (profileImage) => {
             </Link>
 
             <Link
-              to="/about"
+              to="/aboutus"
               className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
             >
               About
             </Link>
 
             <Link
-              to="/contact"
+              to="/contactus"
               className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
             >
               Contact
