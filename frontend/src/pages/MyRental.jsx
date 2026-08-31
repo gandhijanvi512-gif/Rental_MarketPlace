@@ -78,7 +78,9 @@ function MyRental(){
                         return(
                             <div className="rental-card" key={rental._id}>
 
-                                <img src={`http://localhost:5200${rental.productId.images[0]}`} 
+                                <img
+                                src={rental.productId.images[0]?.url} 
+                                // src={`http://localhost:5200${rental.productId.images[0]}`} 
                                 alt={rental.productId.title}
                                 className="rental-image" />
 

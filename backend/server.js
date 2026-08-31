@@ -33,7 +33,7 @@ app.use(cors({
 }))
 app.use(morgan('dev'))
 app.use(cookieParser())
-app.use("/uploads",express.static("uploads"))
+// app.use("/uploads",express.static("uploads"))
 app.use(router)
 app.use(productrouter)
 app.use(cartrouter)

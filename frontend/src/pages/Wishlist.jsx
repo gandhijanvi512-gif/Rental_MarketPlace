@@ -108,7 +108,7 @@ const Wishlist=()=>{
                 >
                     <Heart size={18} color="#ef4444" fill="#ef4444" />
                 </button>
-                <img src={`http://localhost:5200${item.productId.images?.[0]}`} 
+                <img src={item.productId.images?.[0]} 
                      alt={item.productId.title} />
             </div>
 

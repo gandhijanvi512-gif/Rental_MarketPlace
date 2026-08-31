@@ -2,11 +2,14 @@ import { Box, Bike, Users, Wallet, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import api from "../service/api";
+import { useNavigate } from "react-router-dom";
 
 function OwnerDashboard() {
 
     const[dashboard,setDashboard]=useState(null);
     const[loading,setLoading]=useState(true)
+
+    const navigate=useNavigate()
 
     
 

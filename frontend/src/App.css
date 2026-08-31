@@ -2,6 +2,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap");
 @import "tailwindcss";
 
+/* img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+} */
+
 .product-container {
   background: #f5f1eb;
   min-height: 100vh;
@@ -160,21 +166,30 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
+  height: auto;
+  min-height: 0;
+  justify-content: flex-start;
 }
 
 .product-image-wrap {
-  position: relative;
-  width: 100%;
-  height: 250px;        /* fixed height instead of aspect-ratio */
-  background: #f3f4f6;  /* shows as placeholder bg if no image */
-  overflow: hidden;
+    width: 100%;
+    height: 260px;          /* badha image boxes same height */
+    overflow: hidden;
+    position: relative;
+    border-radius: 12px;
+    background: #f5f5f5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.product-image-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.product-image-wrap .product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
 
@@ -184,35 +199,44 @@
 .badge-outofstock { background: #fee2e2; color: #dc2626; }
 
 .product-info {
-  padding: 3px 12px 6px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 28px 8px;
+    margin: 0;
+    text-align: left;
+    flex: none;
 }
 
 .product-info h2 {
   font-size: 18px;
   font-weight: 700;
   color: #1e2a4a;
-  margin: 0 0 4px;
+  margin: 0 0 10px;
   line-height: 1.3;
+  text-align: left;
 }
 
 .product-info .category {
   font-size: 13px;
   color: #9ca3af;
-  margin: 0 0 12px;
+  margin: 0 0 18px;
   text-transform: capitalize;
+  text-align: left;
 }
 
 .product-info .price {
   font-size: 17px;
   font-weight: 700;
   color: #1e3a5f;
-  margin: 0 0 6px;
+  margin: 0 0 12px;
+  text-align: left;
 }
 
 .product-info .price span {
   font-size: 12.5px;
   font-weight: 400;
   color: #6b7280;
+  text-align: left;
 }
 
 .product-info .deposit {
@@ -220,14 +244,23 @@
   font-size: 13px;
   color: #6b7280;
   margin-bottom: 1px;
+  text-align: left;
 }
 
 .product-actions {
-  display: flex;
-  gap: 12px;
-  padding: 14px 18px 18px;
-  border-top: 1px solid #f3f4f6;
-  align-items: center;
+    display: flex;
+    gap: 12px;
+    padding: 10px 18px 14px;
+    border-top: 1px solid #f3f4f6;
+    align-items: center;
+    margin: 0;  
+    flex: none;
+
+}
+
+.product-info {
+    padding-bottom: 8px;
+    margin-bottom: 0;
 }
 
 /* Both buttons */
@@ -11095,6 +11128,8 @@ table.contact-table td:nth-child(4) {
     flex-direction: column;
     gap: 6px;
     flex: 1;
+    text-align: left;
+    align-items: flex-start;
 }
 
 .pd-tag {
@@ -11125,9 +11160,12 @@ table.contact-table td:nth-child(4) {
 .pd-price-row {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 10px;
+    width: 100%;
     margin: 4px 0 2px;
 }
+
 
 .pd-rent {
     display: inline-flex;
@@ -11185,6 +11223,9 @@ table.contact-table td:nth-child(4) {
     letter-spacing: 0.2px;
     cursor: pointer;
     transition: all 0.25s ease;
+    margin-top: auto;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .pd-btn:hover {
@@ -11204,18 +11245,1389 @@ table.contact-table td:nth-child(4) {
 
 .product-image-wrap {
     width: 100%;
-    height: 320px;
+    aspect-ratio: 1 / 1;       /* WIDTH = HEIGHT */
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: transparent;
+    background: #fff;
+    border-radius: 12px;
+    position: relative;
 }
 
 .product-image-wrap img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: center !important;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;       /* FULL IMAGE */
+    object-position: center;
     display: block;
+}
+
+
+/* =========================================================
+   RENTERS SECTION — INTERACTIVE CARDS
+========================================================= */
+
+.about-renters-section {
+    position: relative;
+    padding: 90px 6%;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.about-renters-section .about-center-header {
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+.about-renters-section .about-section-label {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #3e5879;
+    margin-bottom: 15px;
+}
+
+.about-renters-section .about-section-title {
+    color: #213555;
+    font-size: 48px;
+    line-height: 1.15;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.about-renter-grid {
+    max-width: 1250px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 30px;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.about-renter-card {
+    position: relative;
+
+    min-height: 190px;
+    padding: 38px 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #f5efe7;
+
+    border: 1px solid rgba(62, 88, 121, 0.12);
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    /* Important for smooth up/down movement */
+    transform: translateY(0);
+
+    transition:
+        transform 0.45s cubic-bezier(.2,.8,.2,1),
+        box-shadow 0.45s ease,
+        border-color 0.45s ease,
+        background 0.45s ease;
+}
+
+
+/* =========================================================
+   HOVER — CARD GOES UP
+========================================================= */
+
+.about-renter-card:hover {
+    transform: translateY(-12px);
+
+    border-color: rgba(62, 88, 121, 0.35);
+
+    box-shadow:
+        0 20px 45px rgba(33, 53, 85, 0.14),
+        0 5px 15px rgba(33, 53, 85, 0.08);
+
+    background: #faf7f2;
+}
+
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
+
+.about-rc-text {
+    position: relative;
+    z-index: 2;
+
+    max-width: 65%;
+}
+
+
+.about-rc-text h4 {
+    margin: 18px 0 8px;
+
+    color: #213555;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    transition:
+        transform 0.35s ease,
+        color 0.35s ease;
+}
+
+
+.about-rc-text p {
+    margin: 0;
+
+    color: #666;
+
+    font-size: 16px;
+    line-height: 1.5;
+
+    transition:
+        transform 0.35s ease,
+        color 0.35s ease;
+}
+
+
+/* Text moves slightly upward */
+
+.about-renter-card:hover .about-rc-text h4 {
+    transform: translateY(-3px);
+    color: #3e5879;
+}
+
+.about-renter-card:hover .about-rc-text p {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   LUCIDE ICON
+========================================================= */
+
+.about-rc-icon {
+    width: 30px;
+    height: 30px;
+
+    color: #3e5879;
+
+    stroke-width: 1.8;
+
+    transition:
+        transform 0.45s cubic-bezier(.2,.8,.2,1),
+        color 0.3s ease;
+}
+
+
+/* Icon animation */
+
+.about-renter-card:hover .about-rc-icon {
+    transform:
+        translateY(-7px)
+        rotate(-5deg)
+        scale(1.12);
+
+    color: #213555;
+}
+
+
+/* =========================================================
+   RIGHT VISUAL BOX
+========================================================= */
+
+.about-rc-visual {
+    position: relative;
+
+    width: 100px;
+    height: 100px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e8ddd0;
+
+    border-radius: 16px;
+
+    transition:
+        transform 0.5s cubic-bezier(.2,.8,.2,1),
+        box-shadow 0.4s ease,
+        background 0.4s ease;
+}
+
+
+/* Box moves upward */
+
+.about-renter-card:hover .about-rc-visual {
+    transform:
+        translateY(-8px)
+        rotate(2deg)
+        scale(1.05);
+
+    background: #dfd0bf;
+
+    box-shadow:
+        0 12px 25px rgba(33, 53, 85, 0.12);
+}
+
+
+/* =========================================================
+   GLOW EFFECT INSIDE VISUAL
+========================================================= */
+
+.about-rc-visual::before {
+    content: "";
+
+    position: absolute;
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(62, 88, 121, 0.25);
+
+    opacity: 0;
+
+    transform: scale(0.5);
+
+    transition:
+        transform 0.5s ease,
+        opacity 0.5s ease;
+}
+
+
+.about-renter-card:hover .about-rc-visual::before {
+    opacity: 1;
+
+    transform: scale(1.2);
+}
+
+
+/* =========================================================
+   MOCK ELEMENTS
+========================================================= */
+
+.about-mock-circle,
+.about-mock-calendar,
+.about-mock-card,
+.about-mock-chart {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   CLOCK / CIRCLE VISUAL
+========================================================= */
+
+.about-mock-circle {
+    width: 42px;
+    height: 42px;
+
+    border: 3px solid #3e5879;
+    border-radius: 50%;
+}
+
+.about-mock-circle::before {
+    content: "";
+
+    position: absolute;
+
+    width: 2px;
+    height: 13px;
+
+    background: #3e5879;
+
+    left: 50%;
+    top: 7px;
+
+    transform-origin: bottom;
+}
+
+.about-mock-circle::after {
+    content: "";
+
+    position: absolute;
+
+    width: 11px;
+    height: 2px;
+
+    background: #3e5879;
+
+    left: 50%;
+    top: 50%;
+
+    transform: rotate(25deg);
+
+    transform-origin: left;
+}
+
+
+/* =========================================================
+   CALENDAR VISUAL
+========================================================= */
+
+.about-mock-calendar {
+    width: 44px;
+    height: 38px;
+
+    border: 3px solid #3e5879;
+
+    border-radius: 6px;
+}
+
+.about-mock-calendar::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 9px;
+
+    height: 3px;
+
+    background: #3e5879;
+}
+
+.about-mock-calendar::after {
+    content: "✓";
+
+    position: absolute;
+
+    left: 12px;
+    top: 12px;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    color: #3e5879;
+}
+
+
+/* =========================================================
+   PAYMENT CARD VISUAL
+========================================================= */
+
+.about-mock-card {
+    width: 48px;
+    height: 35px;
+
+    border: 3px solid #3e5879;
+
+    border-radius: 6px;
+
+    transform: rotate(-5deg);
+}
+
+.about-mock-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 8px;
+
+    height: 3px;
+
+    background: #3e5879;
+}
+
+.about-mock-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 13px;
+    height: 5px;
+
+    left: 7px;
+    bottom: 7px;
+
+    border-radius: 2px;
+
+    background: #3e5879;
+}
+
+
+/* =========================================================
+   CHART VISUAL
+========================================================= */
+
+.about-mock-chart {
+    width: 48px;
+    height: 42px;
+
+    border-left: 3px solid #3e5879;
+    border-bottom: 3px solid #3e5879;
+
+    position: relative;
+}
+
+.about-mock-chart::before {
+    content: "";
+
+    position: absolute;
+
+    width: 8px;
+    height: 20px;
+
+    left: 8px;
+    bottom: 0;
+
+    background: #3e5879;
+
+    box-shadow:
+        13px -10px 0 #3e5879,
+        26px -19px 0 #3e5879;
+
+    transition: height 0.4s ease;
+}
+
+.about-renter-card:hover .about-mock-chart::before {
+    height: 25px;
+}
+
+
+/* =========================================================
+   FLOATING EFFECT
+========================================================= */
+
+.about-renter-card:nth-child(1) .about-rc-visual {
+    animation: renterFloat1 4s ease-in-out infinite;
+}
+
+.about-renter-card:nth-child(2) .about-rc-visual {
+    animation: renterFloat2 4.5s ease-in-out infinite;
+}
+
+.about-renter-card:nth-child(3) .about-rc-visual {
+    animation: renterFloat3 4.2s ease-in-out infinite;
+}
+
+.about-renter-card:nth-child(4) .about-rc-visual {
+    animation: renterFloat4 4.7s ease-in-out infinite;
+}
+
+
+@keyframes renterFloat1 {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+
+@keyframes renterFloat2 {
+    0%, 100% {
+        transform: translateY(-2px);
+    }
+
+    50% {
+        transform: translateY(6px);
+    }
+}
+
+
+@keyframes renterFloat3 {
+    0%, 100% {
+        transform: translateY(3px);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+
+@keyframes renterFloat4 {
+    0%, 100% {
+        transform: translateY(-3px);
+    }
+
+    50% {
+        transform: translateY(7px);
+    }
+}
+
+
+/* =========================================================
+   HOVER — STOP FLOATING AND USE HOVER MOVEMENT
+========================================================= */
+
+.about-renter-card:hover .about-rc-visual {
+    animation-play-state: paused;
+}
+
+
+/* =========================================================
+   CARD SHINE EFFECT
+========================================================= */
+
+.about-renter-card::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 70%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+
+    transform: skewX(-20deg);
+
+    transition: left 0.7s ease;
+
+    pointer-events: none;
+}
+
+
+.about-renter-card:hover::after {
+    left: 130%;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .about-renter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-renters-section .about-section-title {
+        font-size: 38px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .about-renters-section {
+        padding: 60px 20px;
+    }
+
+    .about-renters-section .about-section-title {
+        font-size: 30px;
+    }
+
+    .about-renter-card {
+        min-height: 170px;
+        padding: 28px;
+    }
+
+    .about-rc-text {
+        max-width: 60%;
+    }
+
+    .about-rc-text h4 {
+        font-size: 18px;
+    }
+
+    .about-rc-text p {
+        font-size: 14px;
+    }
+
+    .about-rc-visual {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+
+/* =========================================================
+   TRUST & TRANSPARENCY — INTERACTIVE CARDS
+========================================================= */
+
+.about-trust-section {
+    padding: 90px 6%;
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* ================= HEADER ================= */
+
+.about-trust-section .about-center-header {
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+.about-trust-section .about-section-label {
+    display: inline-block;
+    color: #3e5879;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+}
+
+.about-trust-section .about-section-title {
+    color: #213555;
+    font-size: 46px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+
+/* ================= GRID ================= */
+
+.about-trust-grid {
+    max-width: 1200px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 25px;
+}
+
+
+/* ================= CARD ================= */
+
+.about-trust-card {
+    position: relative;
+
+    min-height: 220px;
+    padding: 35px 28px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    background: #f5efe7;
+
+    border: 1px solid rgba(62, 88, 121, 0.12);
+    border-radius: 20px;
+
+    overflow: hidden;
+    cursor: pointer;
+
+    opacity: 1;
+    transform: translateY(0);
+
+    transition:
+        transform 0.45s cubic-bezier(.2,.8,.2,1),
+        box-shadow 0.45s ease,
+        border-color 0.4s ease,
+        background 0.4s ease;
+}
+
+
+/* ================= CARD HOVER ================= */
+
+.about-trust-card:hover {
+    transform: translateY(-12px);
+
+    background: #faf7f2;
+
+    border-color: rgba(62, 88, 121, 0.35);
+
+    box-shadow:
+        0 20px 40px rgba(33, 53, 85, 0.14),
+        0 5px 15px rgba(33, 53, 85, 0.08);
+}
+
+
+/* ================= ICON ================= */
+
+.about-trust-icon {
+    width: 38px;
+    height: 38px;
+
+    color: #3e5879;
+
+    stroke-width: 1.8;
+
+    margin-bottom: 22px;
+
+    transition:
+        transform 0.45s ease,
+        color 0.35s ease;
+}
+
+
+.about-trust-card:hover .about-trust-icon {
+    transform:
+        translateY(-6px)
+        scale(1.15)
+        rotate(-5deg);
+
+    color: #213555;
+}
+
+
+/* ================= TITLE ================= */
+
+.about-trust-card h4 {
+    margin: 0 0 10px;
+
+    color: #213555;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    transition:
+        transform 0.35s ease,
+        color 0.35s ease;
+}
+
+
+.about-trust-card:hover h4 {
+    transform: translateY(-3px);
+    color: #3e5879;
+}
+
+
+/* ================= DESCRIPTION ================= */
+
+.about-trust-card p {
+    margin: 0;
+
+    color: #666;
+
+    font-size: 15px;
+    line-height: 1.5;
+
+    transition: transform 0.35s ease;
+}
+
+
+.about-trust-card:hover p {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   DECORATIVE CIRCLE
+========================================================= */
+
+.about-trust-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    right: -45px;
+    bottom: -50px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(62, 88, 121, 0.13);
+
+    transition:
+        transform 0.5s ease,
+        width 0.5s ease,
+        height 0.5s ease;
+}
+
+
+.about-trust-card:hover::before {
+    width: 150px;
+    height: 150px;
+
+    transform: translate(-10px, -10px);
+}
+
+
+/* =========================================================
+   SECOND DECORATIVE CIRCLE
+========================================================= */
+
+.about-trust-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 45px;
+    height: 45px;
+
+    right: 18px;
+    top: 18px;
+
+    border-radius: 50%;
+
+    background: rgba(216, 196, 182, 0.35);
+
+    opacity: 0;
+
+    transform: scale(0.5);
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.45s ease;
+}
+
+
+.about-trust-card:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* =========================================================
+   SHINE EFFECT
+========================================================= */
+
+.about-trust-card {
+    isolation: isolate;
+}
+
+.about-trust-card .about-trust-icon,
+.about-trust-card h4,
+.about-trust-card p {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   DIFFERENT FLOATING MOVEMENTS
+========================================================= */
+
+.about-trust-card:nth-child(1) {
+    animation: trustFloat1 4s ease-in-out infinite;
+}
+
+.about-trust-card:nth-child(2) {
+    animation: trustFloat2 4.5s ease-in-out infinite;
+}
+
+.about-trust-card:nth-child(3) {
+    animation: trustFloat3 4.2s ease-in-out infinite;
+}
+
+.about-trust-card:nth-child(4) {
+    animation: trustFloat4 4.7s ease-in-out infinite;
+}
+
+
+@keyframes trustFloat1 {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+
+@keyframes trustFloat2 {
+
+    0%, 100% {
+        transform: translateY(-3px);
+    }
+
+    50% {
+        transform: translateY(6px);
+    }
+}
+
+
+@keyframes trustFloat3 {
+
+    0%, 100% {
+        transform: translateY(3px);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+
+@keyframes trustFloat4 {
+
+    0%, 100% {
+        transform: translateY(-2px);
+    }
+
+    50% {
+        transform: translateY(6px);
+    }
+}
+
+
+/* ================= STOP FLOAT WHEN HOVER ================= */
+
+.about-trust-card:hover {
+    animation-play-state: paused;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .about-trust-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .about-trust-section {
+        padding: 60px 20px;
+    }
+
+    .about-trust-section .about-section-title {
+        font-size: 30px;
+    }
+
+    .about-trust-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .about-trust-card {
+        min-height: 190px;
+    }
+
+}
+
+
+/* --------------------------------------why choose us----------------------------------------------------- */
+
+
+/* =========================================================
+   WHY CHOOSE US
+========================================================= */
+
+.about-why-section {
+    position: relative;
+    padding: 80px 6%;
+    background: #fff;
+    overflow: hidden;
+}
+
+
+/* Header */
+
+.about-why-section .about-center-header {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.about-why-section .about-section-label {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #3E5879;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.about-why-grid {
+    max-width: 1250px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.about-why-card {
+    position: relative;
+
+    min-height: 125px;
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    background: #fff;
+
+    border: 1px solid #e1e1e1;
+    border-radius: 16px;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease,
+        border-color 0.4s ease,
+        background 0.4s ease;
+}
+
+
+/* =========================================================
+   HOVER BACKGROUND CIRCLE
+========================================================= */
+
+.about-why-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -80px;
+    top: -80px;
+
+    border-radius: 50%;
+
+    background: #F5EFE7;
+
+    transform: scale(0);
+
+    transition: transform 0.5s ease;
+
+    z-index: 0;
+}
+
+.about-why-card:hover::before {
+    transform: scale(1.4);
+}
+
+
+/* =========================================================
+   TOP ANIMATED LINE
+========================================================= */
+
+.about-why-card::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 0;
+    height: 3px;
+
+    background: #3E5879;
+
+    transition: width 0.4s ease;
+}
+
+.about-why-card:hover::after {
+    width: 100%;
+}
+
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
+.about-why-card:hover {
+    transform: translateY(-9px);
+
+    border-color: #cbd3df;
+
+    background: #fafafa;
+
+    box-shadow:
+        0 18px 35px rgba(33, 53, 85, 0.13);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.about-why-card .about-w-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 46px;
+    height: 46px;
+
+    padding: 10px;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    color: #3E5879;
+    background: #F5EFE7;
+
+    transition:
+        transform 0.45s ease,
+        background 0.35s ease,
+        color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+/* Icon hover */
+
+.about-why-card:hover .about-w-icon {
+    transform: scale(1.15) rotate(-8deg);
+
+    color: white;
+    background: #3E5879;
+
+    box-shadow: 0 8px 18px rgba(62, 88, 121, 0.25);
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.about-why-card h4 {
+    position: relative;
+    z-index: 2;
+
+    margin: 0;
+
+    color: #213555;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    transition:
+        transform 0.35s ease,
+        color 0.35s ease;
+}
+
+.about-why-card:hover h4 {
+    transform: translateX(5px);
+    color: #3E5879;
+}
+
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.about-why-card h4::after {
+    content: " ↗";
+
+    display: inline-block;
+
+    opacity: 0;
+
+    transform: translate(-6px, 5px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+.about-why-card:hover h4::after {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+
+/* =========================================================
+   SMALL CONTINUOUS FLOAT
+========================================================= */
+
+.about-why-card:nth-child(odd) {
+    animation: whyCardFloat1 5s ease-in-out infinite;
+}
+
+.about-why-card:nth-child(even) {
+    animation: whyCardFloat2 5.5s ease-in-out infinite;
+}
+
+
+/* Pause floating when mouse is over card */
+
+.about-why-card:hover {
+    animation-play-state: paused;
+}
+
+
+@keyframes whyCardFloat1 {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+
+@keyframes whyCardFloat2 {
+    0%,
+    100% {
+        transform: translateY(-2px);
+    }
+
+    50% {
+        transform: translateY(4px);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .about-why-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .about-why-section {
+        padding: 60px 20px;
+    }
+
+    .about-why-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .about-why-card {
+        min-height: 105px;
+    }
+}
+
+
+
+
+.active-image {
+  display: block !important;
+  width: 200px !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.navbar-profile-wrapper {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5efe7;
+}
+
+
+.navbar-profile-img {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
+.navbar-profile-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #d8c4b6;
+    color: #213555;
+
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.navbar-profile-img img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+}
+
+
+
+.product-card .pd-content {
+    width: 100% !important;
+    box-sizing: border-box;
+    text-align: left !important;
+    align-items: flex-start !important;
+}
+
+.product-card .pd-tag,
+.product-card .pd-title,
+.product-card .pd-price-row,
+.product-card .pd-deposit {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.product-card .pd-price-row {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+}
+
+.product-card .pd-btn {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }

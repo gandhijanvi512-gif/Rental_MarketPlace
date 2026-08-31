@@ -8,6 +8,7 @@ import ReviewForm from "../../components/ReviewForm";
 import toast from "react-hot-toast";
 
 const ProductDetails = () => {
+  
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -32,6 +33,7 @@ const ProductDetails = () => {
   };
 
   const fetchProducts = async () => {
+    
     try {
       const res = await api.get(`/getproductdetails/${id}`);
       setProduct(res.data.product);
@@ -50,8 +52,10 @@ const ProductDetails = () => {
 
   if (!product) return <h2>Loading...</h2>;
 
-  const mainImage = product.images?.[selectedImage] ?? product.images?.[0];
-
+  const mainImage=product.images?.[selectedImage]?.url ||
+      product.images?.[0]?.url ||
+      "/default-product.png"
+  
   return (
     <div className="product-details-wrapper">
       <div className="product-details-container">
@@ -62,9 +66,11 @@ const ProductDetails = () => {
               {product.images?.map((img, index) => (
                 <img
                   key={index}
-                  src={`http://localhost:5200${img}`}
+                  src={img.url}
                   alt={product.title}
-                  className={index === selectedImage ? "active" : ""}
+                  className={`product-details-img ${
+                    index === selectedImage ? "active" : ""
+                  }`}
                   onClick={() => setSelectedImage(index)}
                   onError={(e) => (e.target.src = "/default-product.png")}
                 />
@@ -87,7 +93,7 @@ const ProductDetails = () => {
               )}
 
               <img
-                src={`http://localhost:5200${mainImage}`}
+                src={mainImage}
                 alt={product.title}
                 onError={(e) => (e.target.src = "/default-product.png")}
               />
@@ -216,12 +222,8 @@ const ProductDetails = () => {
           <div className="owner-card-body">
             <div className="owner-avatar">
               <img
-                src={
-                  product.ownerId?.profileImage
-                    ? `http://localhost:5200${product.ownerId.profileImage}`
-                    : "/default-avatar.png"
-                }
-                alt={product.ownerId?.name}
+                src={product.ownerId?.profileImage?.url || "/default-avatar.png"}
+                alt={product.ownerId?.name || "Owner"}
               />
             </div>
 

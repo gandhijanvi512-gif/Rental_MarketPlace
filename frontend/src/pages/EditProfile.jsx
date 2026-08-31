@@ -43,8 +43,8 @@ function EditProfile(){
                 profileImage:null
             })
 
-            if(user.profileImage){
-                setPreview(`http://localhost:5200${user.profileImage}`)
+            if(user.profileImage?.url){
+                setPreview(user.profileImage.url)
             }
         }catch(err){
             console.log(err)  
@@ -89,11 +89,7 @@ function EditProfile(){
                 data.append("profileImage",formData.profileImage)
             }
 
-            const res=await api.put("/updateProfile",data,{
-                headers:{
-                    "content-type":"multipart/form-data"
-                }
-            })
+            const res=await api.put("/updateProfile",data)
         
 
             toast.success("Profile Updated Successfully!");
@@ -109,94 +105,6 @@ function EditProfile(){
         }
     }
 
-    //     <div className="edit-profile-page">
-    //         <div className="edit-profile-card">
-    //             <h1>Edit Profile</h1>
-
-    //             <form className="edit-profile-form" onSubmit={handleSubmit}>
-    //                 <div className="profile-image-box">
-    //                     <img src={preview||"http://via.placeholder.com/150"} alt="profile" className="profile-preview" />
-
-    //                     <input type="file" accept="image/*" onChange={handleImage} />
-    //                 </div>
-
-    //                 <div className="form-group">
-    //                     <label>Name</label>
-
-    //                     <input type="text" name="name" 
-    //                         value={formData.name}
-    //                         onChange={handleChange} />
-    //                 </div>
-
-    //                 <div className="form-group">
-    //                     <label>Phone</label>
-
-    //                     <input type="text" name="phone" 
-    //                         value={formData.phone}
-    //                         onChange={handleChange} />
-    //                 </div>
-
-    //                 <div className="form-group">
-    //                     <label>Address</label>
-
-    //                     <textarea name="address" 
-    //                         rows={5}
-    //                         value={formData.address}
-    //                         onChange={handleChange}/>
-                        
-    //                 </div>
-
-    //                 <div className="form-group">
-    //                     <label>City</label>
-
-    //                     <input type="text" 
-    //                         name="city"
-    //                         value={formData.city}
-    //                         onChange={handleChange}/>
-    //                 </div>
-
-    //                 <div className="form-group">
-    //                     <label htmlFor="">State</label>
-
-    //                     <input type="text" 
-    //                         name="state"
-    //                         value={formData.state}
-    //                         onChange={handleChange}/>
-    //                 </div>
-
-    //                 <div className="form-group">
-    //                     <label htmlFor="">Pincode</label>
-
-    //                     <input type="text" 
-    //                         name="pincode"
-    //                         value={formData.pincode}
-    //                         onChange={handleChange}/>
-    //                 </div>
-
-    //                 <div className="edit-buttons">
-    //                     <button
-    //                         type="button"
-    //                         className="cancel-btn"
-                            
-    //                         onClick={()=>navigate("/profile")}
-    //                     >
-    //                         Cancel
-    //                     </button>
-
-    //                     <button
-    //                         type="submit"
-    //                         className="save-btn"
-    //                         disabled={loading}
-    //                     >
-    //                         {loading?"saving...":"Save Changes"}
-    //                     </button>
-    //                 </div>
-
-    //             </form>
-    //         </div>
-    //     </div>
-
-    // );
 
     return (
     <div className="edit-profile-page">

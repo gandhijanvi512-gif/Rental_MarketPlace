@@ -471,7 +471,7 @@ const monthlyData = Array.from({ length: 12 }, (_, index) => {
                                             <div className="earning-product">
                                                 <div className="earning-product-image">
                                                     {booking.productId?.images?.length>0?(
-                                                        <img src={`http://localhost:5200${booking.productId.images[0]}`} 
+                                                        <img src={booking.productId?.images?.[0]?.url || "/placeholder.jpg"} 
                                                         alt={booking.productId.title||"Product"} />
                                                     ):(
                                                         <div>

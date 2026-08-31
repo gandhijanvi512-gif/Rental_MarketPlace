@@ -30,14 +30,21 @@ function ActiveRentals({rentals}){
                         const daysLeft=Math.ceil((endDate-today)/(1000*60*60*24))
                         
                         return(
+
                             
                             <div className="active-item" key={rental._id}>
 
                                 <div className="active-left">
 
-                                <img src={`http://localhost:5200${rental.productId.images[0]}`} 
+                                {/* <img src={`http://localhost:5200${rental.productId.images[0]}`}  */}
+                                <img src={rental.productId?.images?.[0]?.url}
                                 
-                                alt={rental.productId.title} 
+                                alt={rental.productId.title}
+                                 onError={(e) => {
+    console.log("IMAGE FAILED:", e.currentTarget.src);
+    e.currentTarget.src = "/default-product.png";
+  }}
+                                
                                 className="active-image"
                                 />
                                 

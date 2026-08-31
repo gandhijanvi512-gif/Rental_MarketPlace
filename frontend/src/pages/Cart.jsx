@@ -289,11 +289,12 @@ const grandTotal=rentTotal+gstTotal+depositTotal
                 <div className="cart-image-wrapper">
 
                   <img
-                    src={
-                      `http://localhost:5200${
-                        item.productId?.images?.[0]
-                      }`
-                    }
+                    // src={
+                    //   `http://localhost:5200${
+                    //     item.productId?.images?.[0]
+                    //   }`
+                    // }
+                    src={item.productId?.images?.[0]?.url||"/placeholder.jpg"}
                     alt={
                       item.productId?.title ||
                       "Product"

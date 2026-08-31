@@ -1,14 +1,25 @@
 import User from "../model/authmodel.js";
 import Booking from "../model/bookingmodel.js";
 import Product from "../model/productmodel.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 export const addProduct = async (req, res) => {
   try {
+
     const { title, description, category, subcategory, rentPrice, deposit } = req.body;
 
-    const images = req.files.map((file) => {
-      return `/uploads/products/${file.filename}`;
-    });
+    const images=[]
+
+    if(req.files && req.files.length>0){
+      for(const file of req.files){
+        const result=await uploadToCloudinary(file.buffer)
+
+        images.push({
+          url: result.secure_url,
+          public_id: result.public_id,
+        })
+      }
+    }
 
     const product = await Product.create({
       title,
@@ -34,7 +45,91 @@ export const addProduct = async (req, res) => {
   }
 };
 
+
+// export const addProduct = async (req, res) => {
+//   try {
+//     const {
+//       title,
+//       description,
+//       category,
+//       subcategory,
+//       rentPrice,
+//       deposit
+//     } = req.body;
+
+//     console.log("========== ADD PRODUCT ==========");
+//     console.log("BODY:", req.body);
+//     console.log("FILES:", req.files?.length);
+
+//     const images = [];
+
+//     if (req.files && req.files.length > 0) {
+
+//       for (const file of req.files) {
+
+//         console.log("FILE:", {
+//           name: file.originalname,
+//           type: file.mimetype,
+//           size: file.size,
+//           buffer: !!file.buffer
+//         });
+
+//         const result = await uploadToCloudinary(file.buffer);
+
+//         console.log("🔥 CLOUDINARY RESULT:", result);
+
+//         if (!result || !result.secure_url || !result.public_id) {
+//           throw new Error("Cloudinary did not return image URL/public_id");
+//         }
+
+//         images.push({
+//           url: result.secure_url,
+//           public_id: result.public_id,
+//         });
+//       }
+//     }
+
+//     console.log("🔥 FINAL IMAGES:", images);
+
+//     const product = await Product.create({
+//       title,
+//       description,
+//       category,
+//       subcategory,
+//       rentPrice,
+//       deposit,
+//       images,
+//       ownerId: req.user.id,
+//     });
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Product Added Successfully!",
+//       product,
+//     });
+
+//   } catch (err) {
+
+//     console.log("❌ ADD PRODUCT ERROR:", err);
+
+//     return res.status(500).json({
+//       success: false,
+//       message: err.message,
+//     });
+//   }
+// };
+
+
+
+
+
+
+
+
 //GET /products  Paginated list of all available 
+
+
+
 export const getProducts = async (req, res) => {
   try {
     const { search, category, minPrice, maxPrice } = req.query;
@@ -68,7 +163,7 @@ export const getProducts = async (req, res) => {
     }
 
     const products = await Product.find(filter)
-      .populate("ownerId", "name email");
+      .populate("ownerId", "name email").sort({createdAt:-1});
 
     const today=new Date()
     today.setHours(0,0,0,0)
@@ -155,6 +250,7 @@ export const getProducts = async (req, res) => {
 
 export const updateProduct=async(req,res)=>{
   try{
+
     const {id}=req.params;
 
     const {title,description,category,rentPrice,deposit}=req.body
@@ -243,6 +339,9 @@ export const deleteProduct=async(req,res)=>{
 export const getMyProduct=async(req,res)=>{
   try{  
     const product=await Product.find({ownerId:req.user.id})
+
+     console.log("MY PRODUCTS:");
+    console.log(JSON.stringify(product, null, 2));
 
     return res.status(200).json({
       success:true,

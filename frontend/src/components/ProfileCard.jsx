@@ -29,8 +29,8 @@ function ProfileCard({user}){
                     <div className="profile-avatar">
 
 
-                        <img src={
-                            user.profileImage?`http://localhost:5200${user.profileImage}`:userImage
+                        <img src={user.profileImage?.url || userImage
+                            // user.profileImage?`http://localhost:5200${user.profileImage}`:userImage
                         } alt={user.name} className="profile-image" />
 
                         

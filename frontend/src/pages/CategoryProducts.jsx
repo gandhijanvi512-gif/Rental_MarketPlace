@@ -82,7 +82,8 @@ function CategoryProducts(){
                         <div className="product-card" key={item._id}>
                             <div className="product-image-container">
                                     <img
-                                        src={`http://localhost:5200${item.images[0]}`}
+                                        // src={`http://localhost:5200${item.images[0]}`}
+                                        src={item.images?.[0]?.url||"/placeholder.jpg"}
                                         alt={item.title}
                                     />
                                     <span className="badge-rent">FOR RENT</span>

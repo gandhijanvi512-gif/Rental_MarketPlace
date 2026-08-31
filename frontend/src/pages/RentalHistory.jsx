@@ -144,6 +144,11 @@ function RentalHistory(){
 
     ):(
         filteredHistory.map((item)=>{
+
+        if (!item.productId) {
+            return null;
+    }
+
             const days =Math.ceil((new Date(item.endDate)-new Date(item.startDate))/(1000*60*60*24))+1;
 
             return(
@@ -152,8 +157,11 @@ function RentalHistory(){
                     {/* Product Image */}
                     <div className="history-image">
                         <img
-                            src={`http://localhost:5200${item.productId.images[0]}`}
+                            src={item.productId?.images?.[0]?.url || "/placeholder.jpg"}
                             alt={item.productId.title}
+                            onError={(e) => {
+                                e.currentTarget.src = "/placeholder.jpg";
+                            }}
                         />
                     </div>
 

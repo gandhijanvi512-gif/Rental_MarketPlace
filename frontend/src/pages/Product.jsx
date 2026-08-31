@@ -62,7 +62,11 @@ const Product=()=>{
           withCredentials:true
         })
 
-        const ids=res.data.wishlist.map((item)=>item.productId._id)
+        // const ids=res.data.wishlist.map((item)=>item.productId._id)
+
+        const ids=(res.data.wishlist||[])
+          .filter((item)=>item.productId)
+          .map((item)=>item.productId._id)
 
         setwishlistIds(ids)
       }catch(err){
@@ -227,7 +231,7 @@ const Product=()=>{
     </button>
 
     <img
-      src={`http://localhost:5200${product.images?.[0]}`}
+      src={product.images?.[0]?.url }
       alt={product.title}
       className="w-120 h-80 object-cover product-card-image"
     />

@@ -71,7 +71,7 @@ const categoryData = {
     "Jewellery"
   ],
 
-  HomeAppliances: [
+  "Home Appliances": [
     "Refrigerator",
     "Washing Machine",
     "Microwave",
@@ -91,7 +91,7 @@ const categoryData = {
     "Decoration"
   ],
 
-  MusicalInstruments: [
+  "Musical Instruments": [
     "Guitar",
     "Piano",
     "Keyboard",

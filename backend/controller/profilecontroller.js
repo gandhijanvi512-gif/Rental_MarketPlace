@@ -1,5 +1,6 @@
 import User from "../model/authmodel.js";
 import Booking from "../model/bookingmodel.js"
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 export const getProfile=async(req,res)=>{
     try{
@@ -132,13 +133,45 @@ export const getProfile=async(req,res)=>{
 
 export const updateProfile=async(req,res)=>{
     try{
+
+         console.log("========== UPDATE PROFILE ==========");
+            console.log("BODY:", req.body);
+            console.log("FILE:", req.file ? {
+            fieldname: req.file.fieldname,
+            originalname: req.file.originalname,
+            mimetype: req.file.mimetype,
+            size: req.file.size,
+            hasBuffer: !!req.file.buffer
+            } : "NO FILE");
+
+
         const {name,phone,address,city,state,pincode}=req.body;
 
         const updateData={name,phone,address,city,state,pincode};
 
         if(req.file){
-            updateData.profileImage=`/uploads/profile/${req.file.filename}`
+
+             if (!req.file.buffer) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Image buffer not available",
+                });
+            }
+
+            console.log(
+                "Uploading profile image to Cloudinary..."
+            );
+
+             console.log("Uploading profile image to Cloudinary...");
+            const result=await uploadToCloudinary(req.file.buffer);
+             console.log("CLOUDINARY RESULT:", result);
+
+            updateData.profileImage={
+                url: result.secure_url,
+                public_id: result.public_id
+            }
         }
+          console.log("UPDATE DATA:", updateData);
 
         const user=await User.findByIdAndUpdate(
             req.user.id,
@@ -148,6 +181,8 @@ export const updateProfile=async(req,res)=>{
                 runValidators:true
             }
         ).select("-password")
+         console.log("USER UPDATED:", user);
+
 
         return res.status(200).json({
             success:true,
@@ -158,6 +193,7 @@ export const updateProfile=async(req,res)=>{
         return res.status(500).json({
             success:false,
             message:err.message
+
         })
     }
 }

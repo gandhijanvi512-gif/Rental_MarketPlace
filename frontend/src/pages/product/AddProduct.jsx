@@ -76,13 +76,17 @@ const AddProduct = () => {
       data.append("rentPrice", formData.rentPrice);
       data.append("deposit", formData.deposit);
 
-      for (let i = 0; i < images.length; i++) {
-        data.append("images", images[i]);
-      }
+      // for (let i = 0; i < images.length; i++) {
+      //   data.append("images", images[i]);
+      // }
 
-      const response = await api.post("/addproduct", data, {
-        withCredentials: true,
-      });
+      images.forEach((image)=>{
+        data.append("images",image)
+      })
+
+      const response=await api.post("/addproduct",data,{
+        withCredentials:true,
+      })
 
       toast.success(response.data.message);
 
@@ -241,9 +245,9 @@ return (
 
           {previewUrls.length > 0 && (
             <div className="image-preview-grid">
-              {previewUrls.map((url, index) => (
+              {previewUrls.map((image, index) => (
                 <div className="image-preview-item" key={index}>
-                  <img src={url} alt={`preview-${index}`} />
+                  <img src={image} alt={`preview-${index}`} />
                   <button
                     type="button"
                     className="remove-img-btn"

@@ -241,10 +241,14 @@ return (
                 </div>
 
                 <div className="product-card">
-                    <img
-                        src={`http://localhost:5200${item.productId.images[0]}`}
+                    <div className="product-image-box">
+                        <img
+                        // src={`http://localhost:5200${item.productId.images[0]}`}
+                        src={item.productId?.images[0]?.url || "/placeholder.jpg"}
                         alt={item.productId.title}
                     />
+                    </div>
+                    
 
                     <div className="product-details">
                         <h3>{item.productId?.title || "Xyz"}</h3>
@@ -261,7 +265,10 @@ return (
                             </div>
 
                             <div className="deposit-badge">
-                                <span className="deposit-label">Deposit: ₹{deposit.toLocaleString("en-IN")}</span>
+                                <span className="deposit-label">
+                                    Deposit: ₹{Number(deposit || 0).toLocaleString("en-IN")}
+                                </span>
+
                                 <span className="deposit-sub">(Refundable)</span>
                             </div>
                         </div>

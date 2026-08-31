@@ -28,12 +28,13 @@ function RentalHistory({history}){
                             <div className="history-left">
 
                             <img 
-                            src={`http://localhost:5200${rental.productId.images[0]}`} 
-                            alt={rental.productId.title}
+                            src={rental.productId?.images[0]?.url || "/placeholder.jpg"}
+                            // src={`http://localhost:5200${rental.productId.images[0]}`} 
+                            alt={rental.productId?.title||"Product Unavailable"}
                             className="history-image"/>
 
                             <div className="history-info">
-                                <h4>{rental.productId.title}</h4>
+                                <h4>{rental.productId?.title || "Product unavailable"}</h4>
 
                                 <p>
                                     Start: {" "}{new Date(rental.startDate).toLocaleDateString()}

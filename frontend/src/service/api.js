@@ -17,4 +17,3 @@ export const getProductReviews = (id) =>
   api.get(`/products/${id}/reviews`);
 
 export default api
-

@@ -176,7 +176,9 @@ useEffect(() => {
                 onClick={()=>navigate(`/productsdetails/${product._id}`)}
               >
                 <div className="home-product-image">
-                  <img src={`http://localhost:5200${product.images?.[0]}`} 
+                  <img 
+                  src={product.images?.[0]?.url || "/placeholder.jpg"}
+                  // src={`http://localhost:5200${product.images?.[0]}`} 
                   alt={product.title} />
 
                   <span className="home-product-category">

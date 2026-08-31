@@ -3,9 +3,11 @@ import {
   Bike, Camera, Laptop, BookOpen, ArrowRight, 
   Search, CalendarCheck, ShieldCheck, HandCoins, 
   LayoutGrid, Star, CheckCircle, BarChart3, Clock,
-  CreditCard, Shield, HeadphonesIcon
+  CreditCard, Shield, HeadphonesIcon, HeartHandshake,BadgeCheck 
 } from "lucide-react";
 import { useReveal, useCounter } from "./useAboutInteractions";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const AboutUs = () => {
@@ -22,6 +24,32 @@ const AboutUs = () => {
   const { count: productsCount, ref: productsRef } = useCounter(500);
   const { count: bookingsCount, ref: bookingsRef } = useCounter(1000);
   const { count: ownersCount, ref: ownersRefCount } = useCounter(100);
+
+  const navigate=useNavigate()
+
+useEffect(() => {
+  const section = stepsRef.current;
+
+  if (!section) return;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        section.classList.add("steps-visible");
+      } else {
+        section.classList.remove("steps-visible");
+      }
+    },
+    {
+      threshold: 0.2,
+    }
+  );
+
+  observer.observe(section);
+
+  return () => observer.disconnect();
+}, []);
+
 
   return (
     <div className="about-page-wrapper">
@@ -68,7 +96,7 @@ const AboutUs = () => {
     className="about-story-img"
     style={{ objectFit: "cover" }}
   >
-    <source src="/path-to-your-app-demo.mp4" type="video/mp4" />
+    <source src="/images/aboutus.mp4" type="video/mp4" />
   </video>
 </div>
         <div className="about-story-content reveal-anim fade-left">
@@ -95,7 +123,7 @@ const AboutUs = () => {
         </div>
         <div className="about-mission-grid">
           <div className="about-mission-card reveal-anim fade-up" style={{ transitionDelay: "0ms" }}>
-            <img src="https://images.unsplash.com/photo-1555529733-0e670560f8e1?q=80&w=600&auto=format&fit=crop" alt="Access" className="about-card-img" />
+            <img src="/images/rent.jpg" alt="Access" className="about-card-img" />
             <div className="about-mission-content">
               <h3 className="about-card-title"><LayoutGrid size={20}/> ACCESS</h3>
               <p className="about-card-desc">Make useful products accessible without requiring users to purchase them.</p>
@@ -202,7 +230,7 @@ const AboutUs = () => {
             <span className="about-section-label">FOR OWNERS</span>
             <h2 className="about-section-title">Turn Your Products<br/>Into Opportunities</h2>
             <p className="about-section-desc">Owners can list products, manage prices / deposits / requests / tracking / history / earnings.</p>
-            <button className="about-btn about-btn-primary mt-4">Start Listing <ArrowRight size={16}/></button>
+            <button className="about-btn about-btn-primary mt-4" onClick={()=>navigate("/ownerSetup")}>Start Listing <ArrowRight size={16}/></button>
           </div>
           <div className="about-owners-ui reveal-anim fade-left">
             <div className="about-dashboard-mock">
@@ -284,6 +312,9 @@ const AboutUs = () => {
           <div className="about-why-card reveal-anim fade-up"><LayoutGrid className="about-w-icon"/> <h4>Simple Booking</h4></div>
           <div className="about-why-card reveal-anim fade-up"><CreditCard className="about-w-icon"/> <h4>Secure Payments</h4></div>
           <div className="about-why-card reveal-anim fade-up"><HeadphonesIcon className="about-w-icon"/> <h4>Dedicated Support</h4></div>
+          <div className="about-why-card reveal-anim fade-up"><HeartHandshake className="about-w-icon"/> <h4>Reliable Service</h4></div>
+          <div className="about-why-card reveal-anim fade-up"><BadgeCheck className="about-w-icon"/> <h4>Verified Listings</h4></div>
+
         </div>
       </section>
 
@@ -294,8 +325,8 @@ const AboutUs = () => {
           <h2 className="about-cta-title">Ready to Rent Something?</h2>
           <p className="about-cta-desc">Find what you need, choose your dates and start your rental journey.</p>
           <div className="about-cta-actions">
-            <button className="about-btn about-btn-light">Explore Rentals</button>
-            <button className="about-btn about-btn-outline">Become an Owner</button>
+            <button className="about-btn about-btn-light" onClick={()=>navigate("/products")}>Explore Rentals</button>
+            <button className="about-btn about-btn-outline" onClick={()=>navigate("/ownerSetup")}>Become an Owner</button>
           </div>
         </div>
         {/* Decorative background circles */}

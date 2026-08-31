@@ -100,7 +100,7 @@ const OwnerHistory=()=>{
                                     <td>
                                         <div className="history-product">
                                             {booking.productId?.images?.length>0?(
-                                                <img src={`http://localhost:5200${booking.productId.images[0]}`} 
+                                                <img src={booking.productId.images[0]?.url} 
                                                 alt={booking.productId.title} />
                                             ):(
                                                  <div className="history-no-image">

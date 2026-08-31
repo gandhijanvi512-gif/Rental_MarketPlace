@@ -402,7 +402,9 @@ export const getOwnerEarnings=async(req,res)=>{
             productId:{
                 $in:productIds
             },
-            status:"completed"
+            status:{
+                $in:["approved", "ongoing", "completed"]
+            }
         })
         .populate("productId","title images rentPrice")
         .populate("userId","name email")
@@ -439,9 +441,10 @@ export const getOwnerEarnings=async(req,res)=>{
         bookings.forEach((booking)=>{
             const month=new Date(booking.endDate).getMonth()
 
-            monthlyEarnings[month].earning+=Number(booking.ownerEarning||0)
+            monthlyEarnings[month].earnings+=Number(booking.ownerEarning||0)
         })
 
+        
 
 
         return res.status(200).json({

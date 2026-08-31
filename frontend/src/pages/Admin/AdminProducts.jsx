@@ -152,7 +152,7 @@ const AdminProducts=()=>{
                                                 <div className="admin-product-info">
                                                     <div className="admin-product-image">
                                                         {product.images?.length>0?(
-                                                            <img src={`http://localhost:5200${product.images[0]}`} 
+                                                            <img src={product.images[0]?.url} 
                                                             alt={product.title} />
                                                         ):(
                                                             <Package size={22} />

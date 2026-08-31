@@ -184,11 +184,14 @@ const MyProduct=()=>{
       {/* Product grid */}
       <div className="product-grid">
         {paginatedProducts?.map((product) => (
+
+
+
           <div className="product-card" key={product._id}>
-            <div className="product-image-wrap">
+            {/* <div className="product-image-wrap">
               {product.images?.length > 0 && (
                 <img
-                  src={`http://localhost:5200${product.images[0]}`}
+                  src={product.images[0]?.url}
                   alt={product.title}
                 />
               )}
@@ -197,7 +200,31 @@ const MyProduct=()=>{
                   {product.status}
                 </span>
               )}
-            </div>
+            </div> */}
+
+            <div className="product-image-wrap">
+  {product.images?.[0]?.url ? (
+    <img
+      src={product.images[0].url}
+      alt={product.title}
+      className="product-img"
+      onLoad={() => {
+        console.log("✅ IMAGE LOADED:", product.images[0].url);
+      }}
+      onError={(e) => {
+        console.log("❌ IMAGE FAILED:", e.currentTarget.src);
+      }}
+    />
+  ) : (
+    <p>No Image</p>
+  )}
+
+  {product.status && (
+    <span className={`status-badge ${statusClass(product.status)}`}>
+      {product.status}
+    </span>
+  )}
+</div>
 
             <div className="product-info">
               <h2>{product.title}</h2>

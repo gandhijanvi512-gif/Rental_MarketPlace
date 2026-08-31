@@ -47,8 +47,14 @@ const userSchema=new mongoose.Schema(
         },
 
         profileImage: {
-            type: String,
-            default: ""
+            url: {
+                type: String,
+                default: ""
+            },
+            public_id: {
+                type: String,
+                default: ""
+            }
         },
 
         isActive:{

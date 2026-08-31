@@ -83,7 +83,7 @@ const OwnerActiveRentals=()=>{
                             <div className="active-rental-card" key={rental._id}>
                                 <div className="active-rental-image">
                                     {rental.productId?.images?.length>0?(
-                                        <img src={`http://localhost:5200${rental.productId.images[0]}`} 
+                                        <img src={rental.productId.images[0]?.url}
                                         alt={rental.productId.title} />
                                     ):(
                                     <div className="no-product-image">
