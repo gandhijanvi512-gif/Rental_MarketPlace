@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken"
 export const authMiddleware=async(req,res,next)=>{
     try{
         
-        const token=req.cookies?.accesstoken;
+        const authHeader=req.headers.authorization;
+        const token=authHeader?.startWith("Bearer")
 
         if(!token){
             return res.status(400).json({

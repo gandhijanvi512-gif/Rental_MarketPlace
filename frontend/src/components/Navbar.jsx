@@ -14,19 +14,40 @@ const Navbar = ({ user, setUser }) => {
   // LOGOUT
   // ==========================================
 
-  const handleLogout = async () => {
-    try {
-      await api.post("/logout");
+  // const handleLogout = async () => {
+  //   try {
+  //     await api.post("/logout");
 
+  //     setUser(null);
+
+  //     setShowMenu(false);
+
+  //     navigate("/signin");
+  //   } catch (err) {
+  //     console.log("Logout error:", err);
+  //   }
+  // };
+
+  const handleLogout=async()=>{
+    try{
+      await api.post("/logout")
+
+      localStorage.removeItem("accesstoken");
+      localStorage.removeItem("refreshtoken");
+
+      setUser(null)
+      setShowMenu(false)
+      navigate("/signin")
+    }catch(err){
+      console.log(err);
+
+      localStorage.removeItem("accesstoken");
+      localStorage.removeItem("refreshtoken");
       setUser(null);
-
-      setShowMenu(false);
-
       navigate("/signin");
-    } catch (err) {
-      console.log("Logout error:", err);
+      
     }
-  };
+  }
 
   // ==========================================
   // CLOSE DROPDOWN WHEN CLICKING OUTSIDE

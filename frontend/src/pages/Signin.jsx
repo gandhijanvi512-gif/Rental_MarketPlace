@@ -24,9 +24,10 @@ const signin = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/signin", formData,{
-        withCredentials:true
-      });
+      const response = await api.post("/signin", formData);
+
+      localStorage.setItem("accesstoken:",response.data)
+      localStorage.setItem("refreshtoken",response.data)
       console.log("LOGIN RESPONSE:", response.data);
 
       // localStorage.setItem("token", response.data.token);
