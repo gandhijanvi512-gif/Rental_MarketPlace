@@ -2,7 +2,10 @@ import jwt from "jsonwebtoken"
 
 export const authMiddleware=async(req,res,next)=>{
     try{
-        const token=req.cookies.refreshtoken
+        console.log("Cookies:",req.cookies);
+        
+
+        const token=req.cookies?.refreshtoken
 
         if(!token){
             return res.status(400).json({
@@ -19,8 +22,9 @@ export const authMiddleware=async(req,res,next)=>{
         req.user=decoded;
         next()
     }catch(err){
-        
+        console.log("AUTH ERROR:", err.message);
         return res.status(500).json({
+            
             success:false,
             message:err.message
         })
