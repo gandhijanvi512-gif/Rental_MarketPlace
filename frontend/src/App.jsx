@@ -92,12 +92,7 @@ console.log("user:", user)
       setUser(res.data.user);
       localStorage.setItem("user",JSON.stringify(res.data.user))
     }catch(err){
-      if (err.response?.status === 401) {
-      setUser(null);
-      localStorage.removeItem("user");
-    } else {
-      console.log("getme failed (non-auth error), keeping cached user:", err);
-    }
+      console.log("User fetched error:",err.message);
   }
 }
 

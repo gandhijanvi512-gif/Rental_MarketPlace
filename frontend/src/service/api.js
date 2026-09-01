@@ -81,12 +81,11 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       const url = error.config?.url || "";
-      if (url.includes("/getme")) {
-        localStorage.removeItem("accesstoken");
-        localStorage.removeItem("refreshtoken");
-      } else if (url.includes("/admin/check") || url.includes("/admin/signin")) {
-        localStorage.removeItem("admintoken");
+
+      if(url.includes("/admin/check")||url.includes("/admin/signin")){
+        localStorage.removeItem("admintoken")
       }
+      
     }
     return Promise.reject(error);
   }

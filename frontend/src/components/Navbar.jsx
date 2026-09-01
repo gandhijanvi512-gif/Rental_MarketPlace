@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import api from "../service/api";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, act } from "react";
 import { Heart, ShoppingCart } from "lucide-react";
 
 const Navbar = ({ user, setUser }) => {
@@ -10,6 +10,17 @@ const Navbar = ({ user, setUser }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const dropdownRef = useRef(null);
+
+  const activeUser=user||(()=>{
+    try{
+      const saved=localStorage.getItem("user")
+      const token=localStorage.getItem("accesstoken")
+
+      return (saved && token) ? JSON.parse(saved):null;
+    }catch(_){
+      return null
+    }
+  })()
 
 
     const handleLogout=async()=>{
@@ -179,7 +190,7 @@ const Navbar = ({ user, setUser }) => {
                 USER LOGGED IN
             ========================================== */}
 
-            {user ? (
+            {activeUser ? (
 
               <div
                 className="relative ml-2"
@@ -196,14 +207,14 @@ const Navbar = ({ user, setUser }) => {
 
                   {/* PROFILE IMAGE */}
 <div className="navbar-profile-wrapper">
-  {user?.profileImage?.url ||
-  (typeof user?.profileImage === "string" && user.profileImage) ? (
+  {activeUser?.profileImage?.url ||
+  (typeof activeUser?.profileImage === "string" && activeUser.profileImage) ? (
     <img
       src={
-        user?.profileImage?.url ||
-        user?.profileImage
+        activeUser?.profileImage?.url ||
+        activeUser?.profileImage
       }
-      alt={user?.name || "User"}
+      alt={activeUser?.name || "User"}
       className="navbar-profile-img"
       onError={(e) => {
         e.currentTarget.style.display = "none";
@@ -211,7 +222,10 @@ const Navbar = ({ user, setUser }) => {
     />
   ) : (
     <div className="navbar-profile-placeholder">
-      {user?.name?.charAt(0)?.toUpperCase() || "U"}
+      {
+      activeUser?.name?.charAt(0)?.toUpperCase() || 
+      activeUser?.email?.charAt(0)?.toUpperCase() || "U"
+      }
     </div>
   )}
 </div>
@@ -222,9 +236,9 @@ const Navbar = ({ user, setUser }) => {
                   <div className="text-left hidden sm:block">
 
                     <p className="font-semibold">
-                      {user?.email
-                        ? user.email.split("@")[0]
-                        : "User"}
+                      {activeUser?.name || 
+                      (activeUser?.email ? 
+                      activeUser.email.split("@")[0] : "User")}
                     </p>
 
                   </div>
