@@ -24,7 +24,7 @@ const getBaseURL=()=>{
       
       
       {
-          return envUrl.replace("localhost", window.location.hostname).replace(/\/+$/, "");
+          return envURL.replace("localhost", window.location.hostname).replace(/\/+$/, "");
 
   }
   return envURL.replace(/\/+$/,"");

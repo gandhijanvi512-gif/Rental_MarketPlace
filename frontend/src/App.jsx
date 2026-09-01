@@ -92,11 +92,14 @@ console.log("user:", user)
       setUser(res.data.user);
       localStorage.setItem("user",JSON.stringify(res.data.user))
     }catch(err){
-      console.log(err);
-      setUser(null)
-      localStorage.removeItem("user")
+      if (err.response?.status === 401) {
+      setUser(null);
+      localStorage.removeItem("user");
+    } else {
+      console.log("getme failed (non-auth error), keeping cached user:", err);
     }
   }
+}
 
 
 useEffect(() => {

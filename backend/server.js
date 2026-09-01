@@ -39,30 +39,34 @@ app.use((req,res,next)=>{
 
 // ];
 
+// app.use(cors({
+//     origin:(origin,callback)=>{
+//         if(!origin)
+//             return callback(null,true);
+
+//         let isVercel=false
+
+//         try{
+//             const hostname=new URL(origin).hostname;
+
+//             isVercel=hostname==="vercel.app" || hostname.endsWith(".vercel.app");
+//         }catch(_){}
+
+//         const isLocalOrPrivateNetwork = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})(:\d+)?$/.test(origin);
+
+//         if(isVercel || isLocalOrPrivateNetwork || process.env.NODE_ENV!=="production"){
+//             return callback(null,true)
+//         }
+
+//         return callback(new Error("Not allowed by CORS"));
+//     },
+//     credentials:true
+// }))
+
 app.use(cors({
-    origin:(origin,callback)=>{
-        if(!origin)
-            return callback(null,true);
-
-        let isVercel=false
-
-        try{
-            const hostname=new URL(origin).hostname;
-
-            isVercel=hostname==="vercel.app" || hostname.endsWith(".vercel.app");
-        }catch(_){}
-
-        const isLocalOrPrivateNetwork = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})(:\d+)?$/.test(origin);
-
-        if(isVercel || isLocalOrPrivateNetwork || process.env.NODE_ENV!=="production"){
-            return callback(null,true)
-        }
-
-        return callback(new Error("Not allowed by CORS"));
-    },
-    credentials:true
-}))
-
+  origin: "https://rental-market-place.vercel.app",
+  credentials: true
+}));
 
 
 app.use(morgan('dev'))
