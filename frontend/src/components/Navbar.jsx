@@ -417,7 +417,11 @@ const Navbar = ({ user, setUser }) => {
     }
     if (typeof profileImage === "string" && profileImage.trim()) {
       if (profileImage.startsWith("/uploads")) {
-        const base = import.meta.env.VITE_API_URL || (typeof window !== "undefined" ? `http://${window.location.hostname}:5200` : "http://localhost:5200");
+        const isVercel=typeof window!=="undefined" && window.location.hostname.endsWith(".vercel.app")
+
+        const base=isVercel?"http://rental-marketplace-backend.onrender.com":(typeof window!=="undefined"?
+          `http://${window.location.hostname}:5200`:"http://localhost:5200"
+        )
         return `${base}${profileImage}`;
       }
       return profileImage;

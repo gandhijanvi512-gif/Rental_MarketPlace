@@ -80,11 +80,9 @@ console.log("user:", user)
   // }
 
   const getUser=async()=>{
-    const token=localStorage.getItem("accesstoken")
+    const token=localStorage.getItem("accesstoken") || localStorage.getItem("token")
 
     if(!token){
-      setUser(null)
-      localStorage.removeItem("user")
       return;
     }
 
@@ -93,17 +91,33 @@ console.log("user:", user)
       if(res.data?.user){
         setUser(res.data.user);
         localStorage.setItem("user",JSON.stringify(res.data.user))
+        window.dispatchEvent(new Event("userChange"))
       }
     }catch(err){
       console.log("User fetched error:",err.message);
-      if(err.response && (err.response.status === 401 || err.response.status === 403)){
-        localStorage.removeItem("accesstoken");
-        localStorage.removeItem("refreshtoken");
-        localStorage.removeItem("user");
-        setUser(null);
-      }
     }
   }
+
+  useEffect(() => {
+    const handleUserChange = () => {
+      try {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser && savedUser !== "undefined" && savedUser !== "null") {
+          setUser(JSON.parse(savedUser));
+        } else {
+          setUser(null);
+        }
+      } catch (_) {
+        setUser(null);
+      }
+    };
+    window.addEventListener("userChange", handleUserChange);
+    window.addEventListener("storage", handleUserChange);
+    return () => {
+      window.removeEventListener("userChange", handleUserChange);
+      window.removeEventListener("storage", handleUserChange);
+    };
+  }, []);
 
 
 

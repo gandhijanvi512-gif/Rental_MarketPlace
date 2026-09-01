@@ -10,35 +10,36 @@ import axios from "axios"
 const getBaseURL=()=>{
   const envURL=import.meta.env.VITE_API_URL;
 
-  if(envURL){
-    if(typeof window!=="undefined"){
-      if(window.location.hostname.endsWith(".vercel.app")){
-        return "https://rental-marketplace-backend.onrender.com";
+  const isValidEnv = typeof envURL === "string" && (envURL.startsWith("http://") || 
+  envURL.startsWith("https://")) && !envURL.includes(process.env.VITE_API_UR);
+
+  if(typeof window !== "undefined"){
+    const hostname = window.location.hostname;
+
+    // 1. If running on Vercel deployment
+    if(hostname.endsWith(".vercel.app")){
+      return "https://rental-marketplace-backend.onrender.com";
+
+    }
+
+     // 2. If running locally on localhost or 127.0.0.1
+    if(hostname === "localhost" || hostname === "127.0.0.1"){
+      if(isValidEnv){
+        return envURL.replace(/\/+$/, "");
       }
+      return "http://localhost:5200";
     }
-
-    if(window.location.hostname!=="localhost" && window.location.hostname!=="127.0.0.1"){
-      return `http://${window.location.hostname}:5200`
-    }
-      
-      
-      
-      {
-          return envURL.replace("localhost", window.location.hostname).replace(/\/+$/, "");
-
+    // 3. If running on LAN IP
+    return `http://${hostname}:5200`;
   }
-  return envURL.replace(/\/+$/,"");
-  }
+      
+    
 
-  if(typeof window!=="undefined"){
-   if(window.location.hostname!=="localhost" &&
-      window.location.hostname!=="127.0.0.1" &&
-      !window.location.hostname.endsWith(".vercel.app")
-   ){
-    return `http://${window.location.hostname}:5200`;
-   }
+  if(isValidEnv){
+     return envURL.replace(/\/+$/, "");
   }
-  return "http://localhost:5200"
+  
+    return "http://localhost:5200";
 }
 
 const api=axios.create({
