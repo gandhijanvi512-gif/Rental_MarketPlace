@@ -13,7 +13,7 @@ import {
     CheckCircle,
     Clock
 } from "lucide-react";
-import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const AdminContactDetails=()=>{
 
@@ -63,13 +63,7 @@ const AdminContactDetails=()=>{
                     ...prev,
                     status:res.data.data.status
                 }))
-                Swal.fire({
-                    icon:"success",
-                    title:"status upated successfully",
-                    text:`Message status changed to ${newStatus}`,
-                    timer:1800,
-                    showConfirmButton:false
-                })
+                toast.success(`Message status changed to ${newStatus}`);
             }
         }catch(err){
             console.log(err);
