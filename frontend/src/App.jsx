@@ -68,7 +68,7 @@ function App() {
     }
   })
 
-console.log("user:", user)
+  console.log("user:", user)
   // const getUser=async()=>{
   //   try{
   //     const res=await api.get("/getme")
@@ -121,17 +121,25 @@ console.log("user:", user)
 
 
 
-useEffect(() => {
-  window.scrollTo(0,0)
-    if (location.pathname.startsWith("/admin") ||
-        location.pathname==="/signin" ||
-        location.pathname==="/signup"
-    ){
-        return;
-    }
+  // useEffect(() => {
+  //   window.scrollTo(0,0)
+  //     if (location.pathname.startsWith("/admin") ||
+  //         location.pathname==="/signin" ||
+  //         location.pathname==="/signup"
+  //     ){
+  //         return;
 
-    getUser();
-}, [location.pathname]);
+  useEffect(() => {
+    const token = localStorage.getItem("accesstoken") || localStorage.getItem("token");
+    if (token) {
+      getUser();
+    }
+  }, []);
+    
+
+  useEffect(()=>{
+    window.scrollTo(0,0);
+  },[location.pathname])
 
   const isAdminPage=location.pathname.startsWith("/admin")
 
