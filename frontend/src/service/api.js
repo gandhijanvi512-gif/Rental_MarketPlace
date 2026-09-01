@@ -60,9 +60,9 @@ api.interceptors.request.use((config)=>{
 
   let token = null;
   if (isAdminUrl) {
-    token = localStorage.getItem("admintoken") || localStorage.getItem("accesstoken");
+    token = localStorage.getItem("admintoken") || localStorage.getItem("accesstoken") || localStorage.getItem("token");
   } else {
-    token = localStorage.getItem("accesstoken");
+    token = localStorage.getItem("accesstoken") || localStorage.getItem("token");
   }
 
    console.log("🔑 REQUEST:", url, "TOKEN FOUND:", token); 
@@ -86,6 +86,7 @@ api.interceptors.response.use(
         localStorage.removeItem("admintoken")
 
       }else if(url.includes("/getme")||url.includes("/getProfile")){
+        localStorage.removeItem("token");
         localStorage.removeItem("refreshtoken")
         localStorage.removeItem("refreshtoken")
         localStorage.removeItem("user")
