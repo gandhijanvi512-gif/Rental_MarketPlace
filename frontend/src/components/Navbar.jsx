@@ -372,8 +372,10 @@ const Navbar = ({ user, setUser }) => {
   const activeUser = user || (() => {
     try {
       const saved = localStorage.getItem("user");
-      const token = localStorage.getItem("accesstoken");
-      return (saved && token) ? JSON.parse(saved) : null;
+       if (saved && saved !== "undefined" && saved !== "null") {
+        return JSON.parse(saved);
+      }
+      return null;
     } catch (_) {
       return null;
     }

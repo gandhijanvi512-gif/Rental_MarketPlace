@@ -31,6 +31,7 @@ const signin = ({setUser}) => {
 
       if(response.data.accesstoken){
         localStorage.setItem("accesstoken",response.data.accesstoken);
+        localStorage.setItem("token",response.data.accesstoken);
       }
 
       if(response.data.user){

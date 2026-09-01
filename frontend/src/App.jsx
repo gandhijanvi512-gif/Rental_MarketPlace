@@ -59,9 +59,10 @@ function App() {
     try{
       const savedUser=localStorage.getItem("user");
 
-      const token=localStorage.getItem("accesstoken");
-
-      return(savedUser && token) ? JSON.parse(savedUser):null
+      if (savedUser && savedUser !== "undefined" && savedUser !== "null") {
+        return JSON.parse(savedUser);
+      }
+      return null;
     }catch(_){
       return null
     }

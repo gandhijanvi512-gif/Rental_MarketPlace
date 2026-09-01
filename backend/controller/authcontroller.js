@@ -76,7 +76,7 @@ export const signin=async(req,res)=>{
             },
             process.env.JWT_SECRET,
             {
-                expiresIn:"15m"
+                expiresIn:"7d"
             }
         )
 
