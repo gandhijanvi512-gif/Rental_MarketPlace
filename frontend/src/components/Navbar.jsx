@@ -4,29 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import { Heart, ShoppingCart } from "lucide-react";
 
 const Navbar = ({ user, setUser }) => {
+  
   const navigate = useNavigate();
 
   const [showMenu, setShowMenu] = useState(false);
 
   const dropdownRef = useRef(null);
 
-  // ==========================================
-  // LOGOUT
-  // ==========================================
-
-  // const handleLogout = async () => {
-  //   try {
-  //     await api.post("/logout");
-
-  //     setUser(null);
-
-  //     setShowMenu(false);
-
-  //     navigate("/signin");
-  //   } catch (err) {
-  //     console.log("Logout error:", err);
-  //   }
-  // };
 
     const handleLogout=async()=>{
       try{
@@ -44,7 +28,7 @@ const Navbar = ({ user, setUser }) => {
         navigate("/signin")
       }
     }
-  }
+  
 
   // ==========================================
   // CLOSE DROPDOWN WHEN CLICKING OUTSIDE
@@ -67,49 +51,31 @@ const Navbar = ({ user, setUser }) => {
     };
   }, []);
 
-  // ==========================================
-  // PROFILE IMAGE
-  // Supports:
-  //
-  // 1. profileImage: "https://..."
-  //
-  // 2. profileImage: {
-  //      url: "https://...",
-  //      public_id: "..."
-  //    }
-  // ==========================================
+  
 // ==========================================
 // PROFILE IMAGE URL
 // Supports Cloudinary + old local uploads
 // ==========================================
 
-const getProfileImage = (profileImage) => {
-  if (!profileImage) {
-    return "/default-avatar.png";
-  }
-
-  // Cloudinary object
-  if (
-    typeof profileImage === "object" &&
-    profileImage?.url
-  ) {
-    return profileImage.url;
-  }
-
-  // Old/local image
-  if (typeof profileImage === "string") {
-    if (profileImage.startsWith("/uploads")) {
-      // return `http://localhost:5200${profileImage}`;
-
-    const base = import.meta.env.VITE_API_URL || (typeof window !== "undefined" ? `http://${window.location.hostname}:5200` : "http://localhost:5200");
-      return `${base}${profileImage}`;
+  const getProfilImage=(profileImage)=>{
+    if(!profileImage){
+      return "/default-avatar.jpg"
     }
 
-    return profileImage;
+    if(typeof profileImage==="object" && profileImage?.url){
+      return profileImage.url;
+    }
+
+    if(typeof profileImage==="string"){
+      if(profileImage.startsWith("/uploads")){
+        const base=import.meta.env.VITE_API_URL || (typeof window!=="undefined" ? `http://${window.location.hostname}:5200`:"http://localhost:5200");
+        return `${base}${profileImage}`
+      }
+      return profileImage
+    }
+    return "/default-avatar.jpg"
   }
 
-  return "/default-avatar.png";
-};
 
 
   return (
@@ -249,6 +215,7 @@ const getProfileImage = (profileImage) => {
     </div>
   )}
 </div>
+
 
                   {/* USERNAME */}
 
