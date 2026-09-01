@@ -5,13 +5,11 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
-   server: {
-    // allowedHosts: [
-    //   "applaud-gala-atypical.ngrok-free.dev"
-    // ]
-    host:true,
-    allowedHosts:true,
+  define: {
+    'process.env': {},
+  },
+  server: {
+    host: true,
+    allowedHosts: true,
   }
 })
-
-
