@@ -100,6 +100,7 @@ console.log("user:", user)
 
 
 useEffect(() => {
+  window.scrollTo(0,0)
     if (location.pathname.startsWith("/admin") ||
         location.pathname==="/signin" ||
         location.pathname==="/signup"
@@ -130,6 +131,7 @@ useEffect(() => {
       
       <Route path='/signup' element={<Signup />}/>
       <Route path='/signin' element={<Signin setUser={setUser} />}/>
+      <Route path='/' element={<Home />}/>
       {/* <Route path='addProduct' element={<AddProduct />}/> */}
       <Route path='/home' element={<Home />}/>
       {/* <Route path='updateproduct/:id' element={<Updateproduct />}/> */}
@@ -143,6 +145,8 @@ useEffect(() => {
       <Route path='/category/:category' element={<CategoryProducts />}/>
       <Route path='/editprofile' element={<EditProfile />}/>
       <Route path='/wishlist' element={<Wishlist />} />
+      <Route path='/about' element={<AboutUs />}/>
+      <Route path="/contact" element={<ContactUs />}/>
       <Route path='/aboutus' element={<AboutUs />}/>
       <Route path="/contactus" element={<ContactUs />}/>
       
