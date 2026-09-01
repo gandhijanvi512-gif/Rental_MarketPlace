@@ -91,24 +91,46 @@ export const signin=async(req,res)=>{
             }
         )
 
+        const isProd=process.env.NODE_ENV==="production";
+
+
+
         // res.cookie("refreshtoken",refreshtoken,{
         //     httpOnly:true,
         //     secure:true,
         //     sameSite:"none",
         //     maxAge:7*24*60*60*1000
         // })
-        res.cookie("refreshtoken", refreshtoken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // false on local/LAN http
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-            path: "/",
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        });
+        // res.cookie("refreshtoken", refreshtoken, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === "production", // false on local/LAN http
+        //     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        //     path: "/",
+        //     maxAge: 7 * 24 * 60 * 60 * 1000
+        // });
+
+        const cookieOptions={
+            httpOnly:true,
+            secure:isProd, // false on LAN/http, true in production
+            sameSite:isProd?"none":"lax", // "lax" works fine on http/local
+            path:"/"
+        }
+
+        res.cookie("accesstoken",accesstoken,{
+            ...cookieOptions,
+            maxAge:15*60*1000
+        })
+
+        res.cookie("refreshtoken",refreshtoken,{
+            ...cookieOptions,
+            maxAge:7*24*60*60*1000
+        })
+
 
         return res.status(200).json({
             success:true,
             message:"User login Successfully",
-            accesstoken,
+            
             user
         })
     }catch(err){
