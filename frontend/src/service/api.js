@@ -64,6 +64,8 @@ api.interceptors.request.use((config)=>{
   } else {
     token = localStorage.getItem("accesstoken");
   }
+
+   console.log("🔑 REQUEST:", url, "TOKEN FOUND:", token); 
   
 
   if(token){
