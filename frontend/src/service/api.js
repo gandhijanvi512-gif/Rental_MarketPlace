@@ -11,12 +11,19 @@ const getBaseURL=()=>{
   const envURL=import.meta.env.VITE_API_URL;
 
   if(envURL){
-    if(typeof window!=="undefined" && 
-       envURL.includes("localhost") &&
-       window.location.hostname!=="localhost" &&
-       window.location.hostname!=="127.0.0.1" &&
-       !window.location.hostname.endsWith(".vercel.app")
-  ){
+    if(typeof window!=="undefined"){
+      if(window.location.hostname.endsWith(".vercel.app")){
+        return "https://rental-marketplace-backend.onrender.com";
+      }
+    }
+
+    if(window.location.hostname!=="localhost" && window.location.hostname!=="127.0.0.1"){
+      return `http://${window.location.hostname}:5200`
+    }
+      
+      
+      
+      {
           return envUrl.replace("localhost", window.location.hostname).replace(/\/+$/, "");
 
   }

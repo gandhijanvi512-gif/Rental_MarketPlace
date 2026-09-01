@@ -33,8 +33,12 @@ const signin = ({setUser}) => {
         localStorage.setItem("accesstoken",response.data.accesstoken);
       }
 
-      if(response.data.user && setUser){
-        setUser(response.data.user)
+      if(response.data.user){
+        localStorage.setItem("user",JSON.stringify(response.data.user))
+
+        if(setUser){
+          setUser(response.data.user)
+        }
       }
 
       if(response.data.refreshtoken){

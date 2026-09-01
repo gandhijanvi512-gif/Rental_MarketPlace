@@ -28,24 +28,21 @@ const Navbar = ({ user, setUser }) => {
   //   }
   // };
 
-  const handleLogout=async()=>{
-    try{
-      await api.post("/logout")
+    const handleLogout=async()=>{
+      try{
+        await api.post("/logout")
+      }catch(err){
+        console.log("Logout error:",err);
+        
+      }finally{
+        localStorage.removeItem("accesstoken");
+        localStorage.removeItem("refreshtoken");
 
-      localStorage.removeItem("accesstoken");
-      localStorage.removeItem("refreshtoken");
-
-      setUser(null)
-      setShowMenu(false)
-      navigate("/signin")
-    }catch(err){
-      console.log(err);
-
-      localStorage.removeItem("accesstoken");
-      localStorage.removeItem("refreshtoken");
-      setUser(null);
-      navigate("/signin");
-      
+        localStorage.removeItem("user")
+        setUser(null)
+        setShowMenu(false)
+        navigate("/signin")
+      }
     }
   }
 

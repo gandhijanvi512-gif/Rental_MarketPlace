@@ -55,7 +55,18 @@ import AdminContactDetails from './pages/Admin/AdminContactDetails'
 function App() {
   const location=useLocation()
 
-  const [user,setUser]=useState(null)
+  const [user,setUser]=useState(()=>{
+    try{
+      const savedUser=localStorage.getItem("user");
+
+      const token=localStorage.getItem("accesstoken");
+
+      return(savedUser && token) ? JSON.parse(savedUser):null
+    }catch(_){
+      return null
+    }
+  })
+
 console.log("user:", user)
   // const getUser=async()=>{
   //   try{
@@ -72,15 +83,18 @@ console.log("user:", user)
 
     if(!token){
       setUser(null)
+      localStorage.removeItem("user")
       return;
     }
 
     try{
       const res=await api.get("/getme");
       setUser(res.data.user);
+      localStorage.setItem("user",JSON.stringify(res.data.user))
     }catch(err){
       console.log(err);
       setUser(null)
+      localStorage.removeItem("user")
     }
   }
 
