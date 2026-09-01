@@ -6,7 +6,7 @@ const router=express.Router()
 
 router.post("/signup",signup)
 router.post("/signin",signin)
-router.get("/getme",authMiddleware,getme)
+router.get("/getme",getme)
 router.post("/logout",authMiddleware,logout)
 router.put("/becomeowner",authMiddleware,becomeOwner)
 router.post("/admin/signin",adminsignin)

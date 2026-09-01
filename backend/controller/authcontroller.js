@@ -115,7 +115,7 @@ export const signin=async(req,res)=>{
 export const getme=async(req,res)=>{
     try{
         const user=await User.findById(req.user.id).select("-password")
-
+        console.log("user1: ", user)
         if(!user){
             return res.status(404).json({
                 success:false,
