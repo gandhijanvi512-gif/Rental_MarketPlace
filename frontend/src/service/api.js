@@ -24,8 +24,23 @@ const api=axios.create({
 })
 
 api.interceptors.request.use((config)=>{
-  const token=localStorage.getItem("admintoken") ||
-              localStorage.getItem("accesstoken");
+  const url = config.url || "";
+  const isAdminUrl = url.startsWith("/admin") || 
+                     url.startsWith("/alluser") || 
+                     url.startsWith("/deleteuser") || 
+                     url.startsWith("/user/") || 
+                     url.startsWith("/getadminoverview") || 
+                     url.startsWith("/getbookingbystatus") || 
+                     url.startsWith("/getowneranalytics") || 
+                     url.startsWith("/topproducts") || 
+                     url.startsWith("/getadminproducts");
+
+  let token = null;
+  if (isAdminUrl) {
+    token = localStorage.getItem("admintoken") || localStorage.getItem("accesstoken");
+  } else {
+    token = localStorage.getItem("accesstoken");
+  }
   
 
   if(token){
@@ -33,6 +48,24 @@ api.interceptors.request.use((config)=>{
   }
   return config
 })
+
+
+// Response Interceptor: handles 401 Unauthorized cleanup
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      const url = error.config?.url || "";
+      if (url.includes("/getme")) {
+        localStorage.removeItem("accesstoken");
+        localStorage.removeItem("refreshtoken");
+      } else if (url.includes("/admin/check") || url.includes("/admin/signin")) {
+        localStorage.removeItem("admintoken");
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const getProducts = (params) =>
   api.get("/products", { params });

@@ -115,7 +115,7 @@ useEffect(() => {
     <Routes>
       
       <Route path='/signup' element={<Signup />}/>
-      <Route path='/signin' element={<Signin />}/>
+      <Route path='/signin' element={<Signin setUser={setUser} />}/>
       {/* <Route path='addProduct' element={<AddProduct />}/> */}
       <Route path='/home' element={<Home />}/>
       {/* <Route path='updateproduct/:id' element={<Updateproduct />}/> */}

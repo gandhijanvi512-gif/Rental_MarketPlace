@@ -5,7 +5,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 
-const signin = () => {
+const signin = ({setUser}) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -31,6 +31,10 @@ const signin = () => {
 
       if(response.data.accesstoken){
         localStorage.setItem("accesstoken",response.data.accesstoken);
+      }
+
+      if(response.data.user && setUser){
+        setUser(response.data.user)
       }
 
       if(response.data.refreshtoken){

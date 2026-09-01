@@ -6,10 +6,19 @@ export const adminAuthMiddleware = (req, res, next) => {
         console.log("ADMIN COOKIES:", req.cookies);
         console.log("ADMIN TOKEN:", req.cookies?.adminrefreshtoken);
 
-        const authHeader=req.headers.authorization;
-        const bearerToken=authHeader.startsWith("Bearer")?authHeader.split(" ")[1]:null;
+        const authHeader=req.headers && (req.headers.authorization || req.headers.Authorization);
+        let bearerToken=null;
 
-        const token=bearerToken || req.cookies?.adminrefreshtoken;
+        if(typeof authHeader==="string"){
+            if(authHeader.startsWith("Bearer")){
+                bearerToken=authHeader.split(" ")[1];
+            }else{
+                bearerToken=authHeader
+            }
+        }
+
+
+        const token=bearerToken || (req.cookies && req.cookies.adminrefreshtoken);
 
         // console.log("ADMIN COOKIES:", req.cookies);
 
@@ -28,8 +37,9 @@ export const adminAuthMiddleware = (req, res, next) => {
         );
 
 
+        const roles=Array.isArray(decoded.role)?decoded.role:[decoded.role];
 
-        if (!decoded.role?.includes("admin") && decoded.role!=="admin") {
+        if (!roles.includes("admin")) {
             return res.status(403).json({
                 success: false,
                 message: "Admin access denied"
