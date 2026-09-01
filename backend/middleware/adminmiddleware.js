@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 
 export const adminAuthMiddleware = (req, res, next) => {
     try {
+        console.log("ADMIN COOKIES:", req.cookies);
+        console.log("ADMIN TOKEN:", req.cookies?.adminrefreshtoken);
 
         // console.log("ADMIN COOKIES:", req.cookies);
 
