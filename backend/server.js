@@ -21,6 +21,8 @@ const app=express()
 
 const PORT = process.env.PORT || 5200;
 
+app.set("trust proxy", 1);
+
 app.use((req,res,next)=>{
     if(req.path==="/webhook"){
         next()
@@ -37,6 +39,7 @@ app.use(cors({
     credentials:true
 }))
 app.use(morgan('dev'))
+app.use(express.json())
 app.use(cookieParser())
 // app.use("/uploads",express.static("uploads"))
 app.use(router)

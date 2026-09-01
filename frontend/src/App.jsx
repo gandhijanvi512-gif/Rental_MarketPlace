@@ -48,6 +48,7 @@ import AdminProtectedRoute from './pages/Admin/AdminProtected'
 import ContactUs from './pages/ContactUs'
 import AdminContact from './pages/Admin/AdminContacts'
 import AdminContactDetails from './pages/Admin/AdminContactDetails'
+import { Navigate } from "react-router-dom";
 
 
 function App() {
@@ -93,6 +94,7 @@ useEffect(() => {
     {!hidenavbar && <Navbar user={user} setUser={setUser}/>}
     
     <Routes>
+      <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path='/signup' element={<Signup />}/>
       <Route path='/signin' element={<Signin />}/>
       {/* <Route path='addProduct' element={<AddProduct />}/> */}
