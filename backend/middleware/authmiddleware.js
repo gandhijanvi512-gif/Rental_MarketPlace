@@ -4,7 +4,7 @@ export const authMiddleware=async(req,res,next)=>{
     try{
         
         const authHeader=req.headers.authorization;
-        const token=authHeader?.startWith("Bearer")
+        const token=authHeader?.startsWith("Bearer")?authHeader.split(" ")[1]:null
 
         if(!token){
             return res.status(400).json({
@@ -26,7 +26,7 @@ export const authMiddleware=async(req,res,next)=>{
             
             success:false,
             message:err.message,
-            message:"Invalid or expired token"
+            
 
         })
     }
