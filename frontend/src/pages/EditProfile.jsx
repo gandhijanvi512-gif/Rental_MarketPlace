@@ -6,7 +6,7 @@ import api from "../service/api"
 import userImage from "../assets/user.jpg"
 import toast from "react-hot-toast"
 
-function EditProfile(){
+function EditProfile({setUser}){
     const navigate=useNavigate()
 
     const [loading,setLoading]=useState(false)
@@ -90,6 +90,13 @@ function EditProfile(){
             }
 
             const res=await api.put("/updateProfile",data)
+
+            if (res.data?.user) {
+                localStorage.setItem("user", JSON.stringify(res.data.user));
+                if (setUser) {
+                    setUser(res.data.user);
+                }
+            }
         
 
             toast.success("Profile Updated Successfully!");
@@ -98,7 +105,7 @@ function EditProfile(){
         }catch(err){
             console.log(err);
 
-            alert(err.response?.data?.message||"Something Went Wrong")
+            toast.error(err.response?.data?.message || "Something Went Wrong")
             
         }finally{
             setLoading(false)

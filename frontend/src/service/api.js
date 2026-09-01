@@ -84,8 +84,12 @@ api.interceptors.response.use(
 
       if(url.includes("/admin/check")||url.includes("/admin/signin")){
         localStorage.removeItem("admintoken")
+
+      }else if(url.includes("/getme")||url.includes("/getProfile")){
+        localStorage.removeItem("refreshtoken")
+        localStorage.removeItem("refreshtoken")
+        localStorage.removeItem("user")
       }
-      
     }
     return Promise.reject(error);
   }

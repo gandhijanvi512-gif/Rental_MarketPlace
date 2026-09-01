@@ -1,348 +1,643 @@
+// import { Link, useNavigate } from "react-router-dom";
+// import api from "../service/api";
+// import { useState, useEffect, useRef } from "react";
+// import { Heart, ShoppingCart, User as UserIcon, LogOut, Package, History, Settings, ChevronDown } from "lucide-react";
+
+// const Navbar = ({ user, setUser }) => {
+  
+//   const navigate = useNavigate();
+//   const [showMenu, setShowMenu] = useState(false);
+//   const dropdownRef = useRef(null);
+
+//     const activeUser = user || (() => {
+//     try {
+//       const saved = localStorage.getItem("user");
+//       const token = localStorage.getItem("accesstoken");
+//       return (saved && token) ? JSON.parse(saved) : null;
+//     } catch (_) {
+//       return null;
+//     }
+//   })();
+
+
+//     const handleLogout=async()=>{
+//       try{
+//         await api.post("/logout")
+//       }catch(err){
+//         console.log("Logout error:",err);
+        
+//       }finally{
+//         localStorage.removeItem("accesstoken");
+//         localStorage.removeItem("refreshtoken");
+
+//         localStorage.removeItem("user")
+//         if(setUser) setUser(null);
+//         setShowMenu(false)
+//         navigate("/signin")
+//       }
+//     }
+  
+
+  
+//   // CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+  
+
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (
+//         dropdownRef.current &&
+//         !dropdownRef.current.contains(event.target)
+//       ) {
+//         setShowMenu(false);
+//       }
+//     };
+
+//     document.addEventListener("mousedown", handleClickOutside);
+
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+  
+// // ==========================================
+// // PROFILE IMAGE URL
+// // Supports Cloudinary + old local uploads
+// // ==========================================
+
+//   const getProfilImage=(profileImage)=>{
+//     if(!profileImage){
+//       return null
+//     }
+
+//     if(typeof profileImage==="object" && profileImage?.url){
+//       return profileImage.url;
+//     }
+
+//     if (typeof profileImage === "string" && profileImage.trim()) {
+//       if (profileImage.startsWith("/uploads")) {
+//         const base = import.meta.env.VITE_API_URL || (typeof window !== "undefined" ? `http://${window.location.hostname}:5200` : "http://localhost:5200");
+//         return `${base}${profileImage}`;
+//     }
+//     return profileImage
+//   }
+//   return "/default-avatar.jpg"
+    
+//   }
+  
+
+
+
+//   return (
+//     <nav className="sticky top-0 left-0 w-full z-50 bg-[#213555]/90 backdrop-blur-md shadow-lg">
+//       <div className="max-w-7xl mx-auto px-6">
+//         <div className="flex items-center justify-between h-20">
+
+//           {/* ==========================================
+//               LOGO
+//           ========================================== */}
+
+//           <div className="-translate-x-35">
+//             <Link
+//               to="/"
+//               className="text-3xl font-bold text-[#F5EFE7]"
+//             >
+//               Rentora
+//             </Link>
+//           </div>
+
+//           {/* ==========================================
+//               CENTER MENU
+//           ========================================== */}
+
+//           <div className="hidden md:flex items-center gap-8">
+
+//             <Link
+//               to="/home"
+//               className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+//             >
+//               Home
+//             </Link>
+
+//             <Link
+//               to="/products"
+//               className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+//             >
+//               Products
+//             </Link>
+
+//             <Link
+//               to="/category"
+//               className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+//             >
+//               Categories
+//             </Link>
+
+//             <Link
+//               to="/aboutus"
+//               className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+//             >
+//               About
+//             </Link>
+
+//             <Link
+//               to="/contactus"
+//               className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+//             >
+//               Contact
+//             </Link>
+
+//           </div>
+
+//           {/* ==========================================
+//               RIGHT SECTION
+//           ========================================== */}
+
+//           <div className="flex items-center gap-6 translate-x-35">
+
+//             {/* ==========================================
+//                 CART
+//             ========================================== */}
+
+//             <Link
+//               to="/cart"
+//               className="flex flex-col items-center justify-center text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+//             >
+//               <ShoppingCart size={20} />
+
+//               <span className="text-xs mt-1">
+//                 Cart
+//               </span>
+//             </Link>
+
+//             {/* ==========================================
+//                 WISHLIST
+//             ========================================== */}
+
+//             <Link
+//               to="/wishlist"
+//               className="flex flex-col items-center justify-center text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+//             >
+//               <Heart size={20} />
+
+//               <span className="text-xs mt-1">
+//                 Wishlist
+//               </span>
+//             </Link>
+
+//             {/* ==========================================
+//                 USER LOGGED IN
+//             ========================================== */}
+
+//             {activeUser ? (
+
+//               <div
+//                 className="relative ml-2"
+//                 ref={dropdownRef}
+//               >
+
+//                 {/* PROFILE BUTTON */}
+
+//                 <button
+//                   type="button"
+//                   onClick={() => setShowMenu((prev) => !prev)}
+//                   className="flex items-center gap-3 bg-[#3E5879] px-4 py-2 rounded-lg text-[#F5EFE7] hover:bg-[#2e4561] transition"
+//                 >
+
+//                   {/* PROFILE IMAGE */}
+// <div className="navbar-profile-wrapper">
+//   {activeUser?.profileImage?.url ||
+//   (typeof activeUser?.profileImage === "string" && activeUser.profileImage) ? (
+//     <img
+//       src={
+//         activeUser?.profileImage?.url ||
+//         activeUser?.profileImage
+//       }
+//       alt={activeUser?.name || "User"}
+//       className="navbar-profile-img"
+//       onError={(e) => {
+//         e.currentTarget.style.display = "none";
+//       }}
+//     />
+//   ) : (
+//     <div className="navbar-profile-placeholder">
+//       {
+//       activeUser?.name?.charAt(0)?.toUpperCase() || 
+//       activeUser?.email?.charAt(0)?.toUpperCase() || "U"
+//       }
+//     </div>
+//   )}
+// </div>
+
+
+//                   {/* USERNAME */}
+
+//                   <div className="text-left hidden sm:block">
+
+//                     <p className="font-semibold">
+//                       {activeUser?.name || 
+//                       (activeUser?.email ? 
+//                       activeUser.email.split("@")[0] : "User")}
+//                     </p>
+
+//                   </div>
+
+//                   {/* ARROW */}
+
+//                   <span
+//                     className={`transition-transform duration-200 ${
+//                       showMenu ? "rotate-180" : ""
+//                     }`}
+//                   >
+//                     ▼
+//                   </span>
+
+//                 </button>
+
+//                 {/* ==========================================
+//                     DROPDOWN MENU
+//                 ========================================== */}
+
+//                 {showMenu && (
+
+//                   <div className="absolute right-0 mt-3 w-60 bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+
+//                     {/* MY PROFILE */}
+
+//                     <Link
+//                       to="/profile"
+//                       onClick={() => setShowMenu(false)}
+//                       className="block px-5 py-3 hover:bg-gray-100 transition"
+//                     >
+//                       👤 My Profile
+//                     </Link>
+
+//                     {/* MY RENTALS */}
+
+//                     <Link
+//                       to="/myrentals"
+//                       onClick={() => setShowMenu(false)}
+//                       className="block px-5 py-3 hover:bg-gray-100 transition"
+//                     >
+//                       📦 My Rentals
+//                     </Link>
+
+//                     {/* RENTAL HISTORY */}
+
+//                     <Link
+//                       to="/rentalhistory"
+//                       onClick={() => setShowMenu(false)}
+//                       className="block px-5 py-3 hover:bg-gray-100 transition"
+//                     >
+//                       🕒 Rental History
+//                     </Link>
+
+//                     {/* SETTINGS */}
+
+//                     <Link
+//                       to="/settings"
+//                       onClick={() => setShowMenu(false)}
+//                       className="block px-5 py-3 hover:bg-gray-100 transition"
+//                     >
+//                       ⚙️ Settings
+//                     </Link>
+
+//                     {/* LOGOUT */}
+
+//                     <button
+//                       type="button"
+//                       onClick={handleLogout}
+//                       className="w-full text-left px-5 py-3 text-red-600 hover:bg-red-50 transition"
+//                     >
+//                       🚪 Logout
+//                     </button>
+
+//                   </div>
+
+//                 )}
+
+//               </div>
+
+//             ) : (
+
+//               /* ==========================================
+//                  USER NOT LOGGED IN
+//               ========================================== */
+
+//               <div className="flex items-center gap-4 ml-2">
+
+//                 <Link
+//                   to="/signin"
+//                   className="px-5 py-2 border border-[#D8C4B6] rounded-lg text-[#F5EFE7] hover:bg-[#D8C4B6] hover:text-[#213555] transition"
+//                 >
+//                   Login
+//                 </Link>
+
+//                 <Link
+//                   to="/signup"
+//                   className="px-5 py-2 bg-[#3E5879] rounded-lg text-[#F5EFE7] hover:bg-[#D8C4B6] hover:text-[#213555] transition"
+//                 >
+//                   Sign Up
+//                 </Link>
+
+//               </div>
+
+//             )}
+
+//           </div>
+
+//         </div>
+//       </div>
+//     </nav>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+
+
 import { Link, useNavigate } from "react-router-dom";
 import api from "../service/api";
-import { useState, useEffect, useRef, act } from "react";
-import { Heart, ShoppingCart } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Heart, ShoppingCart, User as UserIcon, LogOut, Package, History, Settings, ChevronDown } from "lucide-react";
 
 const Navbar = ({ user, setUser }) => {
-  
   const navigate = useNavigate();
-
   const [showMenu, setShowMenu] = useState(false);
-
   const dropdownRef = useRef(null);
 
-  const activeUser=user||(()=>{
-    try{
-      const saved=localStorage.getItem("user")
-      const token=localStorage.getItem("accesstoken")
-
-      return (saved && token) ? JSON.parse(saved):null;
-    }catch(_){
-      return null
+  // Retrieve active user from props or localStorage
+  const activeUser = user || (() => {
+    try {
+      const saved = localStorage.getItem("user");
+      const token = localStorage.getItem("accesstoken");
+      return (saved && token) ? JSON.parse(saved) : null;
+    } catch (_) {
+      return null;
     }
-  })()
+  })();
 
-
-    const handleLogout=async()=>{
-      try{
-        await api.post("/logout")
-      }catch(err){
-        console.log("Logout error:",err);
-        
-      }finally{
-        localStorage.removeItem("accesstoken");
-        localStorage.removeItem("refreshtoken");
-
-        localStorage.removeItem("user")
-        setUser(null)
-        setShowMenu(false)
-        navigate("/signin")
-      }
+  const handleLogout = async () => {
+    try {
+      await api.post("/logout");
+    } catch (err) {
+      console.log("Logout error:", err);
+    } finally {
+      localStorage.removeItem("accesstoken");
+      localStorage.removeItem("refreshtoken");
+      localStorage.removeItem("user");
+      if (setUser) setUser(null);
+      setShowMenu(false);
+      navigate("/signin");
     }
-  
+  };
 
-  // ==========================================
-  // CLOSE DROPDOWN WHEN CLICKING OUTSIDE
-  // ==========================================
-
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowMenu(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  
-// ==========================================
-// PROFILE IMAGE URL
-// Supports Cloudinary + old local uploads
-// ==========================================
-
-  const getProfilImage=(profileImage)=>{
-    if(!profileImage){
-      return "/default-avatar.jpg"
-    }
-
-    if(typeof profileImage==="object" && profileImage?.url){
+  // Helper to resolve profile image URL
+  const getProfileImageUrl = (profileImage) => {
+    if (!profileImage) return null;
+    if (typeof profileImage === "object" && profileImage?.url) {
       return profileImage.url;
     }
-
-    if(typeof profileImage==="string"){
-      if(profileImage.startsWith("/uploads")){
-        const base=import.meta.env.VITE_API_URL || (typeof window!=="undefined" ? `http://${window.location.hostname}:5200`:"http://localhost:5200");
-        return `${base}${profileImage}`
+    if (typeof profileImage === "string" && profileImage.trim()) {
+      if (profileImage.startsWith("/uploads")) {
+        const base = import.meta.env.VITE_API_URL || (typeof window !== "undefined" ? `http://${window.location.hostname}:5200` : "http://localhost:5200");
+        return `${base}${profileImage}`;
       }
-      return profileImage
+      return profileImage;
     }
-    return "/default-avatar.jpg"
-  }
+    return null;
+  };
 
-
+  const avatarUrl = getProfileImageUrl(activeUser?.profileImage);
 
   return (
-    <nav className="sticky top-0 left-0 w-full z-50 bg-[#213555]/90 backdrop-blur-md shadow-lg">
-      <div className="max-w-7xl mx-auto px-6">
+    <nav className="sticky top-0 left-0 w-full z-50 bg-[#213555]/95 backdrop-blur-md shadow-lg border-b border-white/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
 
-          {/* ==========================================
-              LOGO
-          ========================================== */}
-
-          <div className="-translate-x-35">
+          {/* LOGO */}
+          <div className="flex items-center">
             <Link
               to="/"
-              className="text-3xl font-bold text-[#F5EFE7]"
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-[#F5EFE7] hover:text-[#D8C4B6] transition"
             >
               Rentora
             </Link>
           </div>
 
-          {/* ==========================================
-              CENTER MENU
-          ========================================== */}
-
+          {/* CENTER MENU */}
           <div className="hidden md:flex items-center gap-8">
-
             <Link
               to="/home"
-              className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+              className="text-[#F5EFE7] font-medium hover:text-[#D8C4B6] transition"
             >
               Home
             </Link>
 
             <Link
               to="/products"
-              className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+              className="text-[#F5EFE7] font-medium hover:text-[#D8C4B6] transition"
             >
               Products
             </Link>
 
             <Link
               to="/category"
-              className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+              className="text-[#F5EFE7] font-medium hover:text-[#D8C4B6] transition"
             >
               Categories
             </Link>
 
             <Link
               to="/aboutus"
-              className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+              className="text-[#F5EFE7] font-medium hover:text-[#D8C4B6] transition"
             >
               About
             </Link>
 
             <Link
               to="/contactus"
-              className="text-[#F5EFE7] hover:text-[#D8C4B6] transition"
+              className="text-[#F5EFE7] font-medium hover:text-[#D8C4B6] transition"
             >
               Contact
             </Link>
-
           </div>
 
-          {/* ==========================================
-              RIGHT SECTION
-          ========================================== */}
+          {/* RIGHT SECTION */}
+          <div className="flex items-center gap-4 sm:gap-6">
 
-          <div className="flex items-center gap-6 translate-x-35">
-
-            {/* ==========================================
-                CART
-            ========================================== */}
-
+            {/* CART */}
             <Link
               to="/cart"
               className="flex flex-col items-center justify-center text-[#F5EFE7] hover:text-[#D8C4B6] transition"
             >
               <ShoppingCart size={20} />
-
-              <span className="text-xs mt-1">
-                Cart
-              </span>
+              <span className="text-xs mt-1 font-medium">Cart</span>
             </Link>
 
-            {/* ==========================================
-                WISHLIST
-            ========================================== */}
-
+            {/* WISHLIST */}
             <Link
               to="/wishlist"
               className="flex flex-col items-center justify-center text-[#F5EFE7] hover:text-[#D8C4B6] transition"
             >
               <Heart size={20} />
-
-              <span className="text-xs mt-1">
-                Wishlist
-              </span>
+              <span className="text-xs mt-1 font-medium">Wishlist</span>
             </Link>
 
-            {/* ==========================================
-                USER LOGGED IN
-            ========================================== */}
-
+            {/* USER LOGGED IN vs USER NOT LOGGED IN */}
             {activeUser ? (
-
-              <div
-                className="relative ml-2"
-                ref={dropdownRef}
-              >
-
+              <div className="relative" ref={dropdownRef}>
                 {/* PROFILE BUTTON */}
-
                 <button
                   type="button"
                   onClick={() => setShowMenu((prev) => !prev)}
-                  className="flex items-center gap-3 bg-[#3E5879] px-4 py-2 rounded-lg text-[#F5EFE7] hover:bg-[#2e4561] transition"
+                  className="flex items-center gap-2.5 bg-[#3E5879] hover:bg-[#2e4561] px-3.5 py-1.5 rounded-full text-[#F5EFE7] transition shadow-sm border border-white/10 cursor-pointer"
                 >
-
-                  {/* PROFILE IMAGE */}
-<div className="navbar-profile-wrapper">
-  {activeUser?.profileImage?.url ||
-  (typeof activeUser?.profileImage === "string" && activeUser.profileImage) ? (
-    <img
-      src={
-        activeUser?.profileImage?.url ||
-        activeUser?.profileImage
-      }
-      alt={activeUser?.name || "User"}
-      className="navbar-profile-img"
-      onError={(e) => {
-        e.currentTarget.style.display = "none";
-      }}
-    />
-  ) : (
-    <div className="navbar-profile-placeholder">
-      {
-      activeUser?.name?.charAt(0)?.toUpperCase() || 
-      activeUser?.email?.charAt(0)?.toUpperCase() || "U"
-      }
-    </div>
-  )}
-</div>
-
+                  {/* PROFILE AVATAR */}
+                  <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#F5EFE7] text-[#213555] font-bold text-sm flex-shrink-0 border border-white/20">
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt={activeUser?.name || "User"}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                          if (e.currentTarget.nextSibling) {
+                            e.currentTarget.nextSibling.style.display = "flex";
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <span
+                      style={{
+                        display: avatarUrl ? "none" : "flex",
+                      }}
+                      className="w-full h-full items-center justify-center bg-[#D8C4B6] text-[#213555] font-bold text-sm"
+                    >
+                      {activeUser?.name?.charAt(0)?.toUpperCase() ||
+                        activeUser?.email?.charAt(0)?.toUpperCase() ||
+                        "U"}
+                    </span>
+                  </div>
 
                   {/* USERNAME */}
-
-                  <div className="text-left hidden sm:block">
-
-                    <p className="font-semibold">
-                      {activeUser?.name || 
-                      (activeUser?.email ? 
-                      activeUser.email.split("@")[0] : "User")}
+                  <div className="text-left hidden sm:block max-w-[120px] truncate">
+                    <p className="font-semibold text-sm truncate">
+                      {activeUser?.name ||
+                        (activeUser?.email
+                          ? activeUser.email.split("@")[0]
+                          : "User")}
                     </p>
-
                   </div>
 
                   {/* ARROW */}
-
-                  <span
+                  <ChevronDown
+                    size={16}
                     className={`transition-transform duration-200 ${
                       showMenu ? "rotate-180" : ""
                     }`}
-                  >
-                    ▼
-                  </span>
-
+                  />
                 </button>
 
-                {/* ==========================================
-                    DROPDOWN MENU
-                ========================================== */}
-
+                {/* DROPDOWN MENU */}
                 {showMenu && (
-
-                  <div className="absolute right-0 mt-3 w-60 bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+                  <div className="absolute right-0 mt-2.5 w-60 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100 py-1.5 z-50">
+                    {/* USER INFO HEADER */}
+                    <div className="px-4 py-3 border-b border-gray-100 bg-[#F5EFE7]/30">
+                      <p className="text-sm font-semibold text-[#213555] truncate">
+                        {activeUser?.name || "User"}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {activeUser?.email || ""}
+                      </p>
+                    </div>
 
                     {/* MY PROFILE */}
-
                     <Link
                       to="/profile"
                       onClick={() => setShowMenu(false)}
-                      className="block px-5 py-3 hover:bg-gray-100 transition"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#213555] hover:bg-[#F5EFE7] transition font-medium"
                     >
-                      👤 My Profile
+                      <UserIcon size={16} className="text-[#3E5879]" />
+                      <span>My Profile</span>
                     </Link>
 
                     {/* MY RENTALS */}
-
                     <Link
                       to="/myrentals"
                       onClick={() => setShowMenu(false)}
-                      className="block px-5 py-3 hover:bg-gray-100 transition"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#213555] hover:bg-[#F5EFE7] transition font-medium"
                     >
-                      📦 My Rentals
+                      <Package size={16} className="text-[#3E5879]" />
+                      <span>My Rentals</span>
                     </Link>
 
                     {/* RENTAL HISTORY */}
-
                     <Link
                       to="/rentalhistory"
                       onClick={() => setShowMenu(false)}
-                      className="block px-5 py-3 hover:bg-gray-100 transition"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#213555] hover:bg-[#F5EFE7] transition font-medium"
                     >
-                      🕒 Rental History
+                      <History size={16} className="text-[#3E5879]" />
+                      <span>Rental History</span>
                     </Link>
 
                     {/* SETTINGS */}
-
                     <Link
-                      to="/settings"
+                      to="/setting"
                       onClick={() => setShowMenu(false)}
-                      className="block px-5 py-3 hover:bg-gray-100 transition"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#213555] hover:bg-[#F5EFE7] transition font-medium"
                     >
-                      ⚙️ Settings
+                      <Settings size={16} className="text-[#3E5879]" />
+                      <span>Settings</span>
                     </Link>
 
-                    {/* LOGOUT */}
+                    <div className="border-t border-gray-100 my-1"></div>
 
+                    {/* LOGOUT */}
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="w-full text-left px-5 py-3 text-red-600 hover:bg-red-50 transition"
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition font-medium cursor-pointer"
                     >
-                      🚪 Logout
+                      <LogOut size={16} />
+                      <span>Logout</span>
                     </button>
-
                   </div>
-
                 )}
-
               </div>
-
             ) : (
-
-              /* ==========================================
-                 USER NOT LOGGED IN
-              ========================================== */
-
-              <div className="flex items-center gap-4 ml-2">
-
+              /* USER NOT LOGGED IN */
+              <div className="flex items-center gap-3">
                 <Link
                   to="/signin"
-                  className="px-5 py-2 border border-[#D8C4B6] rounded-lg text-[#F5EFE7] hover:bg-[#D8C4B6] hover:text-[#213555] transition"
+                  className="px-4 py-2 border border-[#D8C4B6] rounded-lg text-[#F5EFE7] font-medium hover:bg-[#D8C4B6] hover:text-[#213555] transition text-sm sm:text-base"
                 >
                   Login
                 </Link>
 
                 <Link
                   to="/signup"
-                  className="px-5 py-2 bg-[#3E5879] rounded-lg text-[#F5EFE7] hover:bg-[#D8C4B6] hover:text-[#213555] transition"
+                  className="px-4 py-2 bg-[#3E5879] hover:bg-[#D8C4B6] hover:text-[#213555] rounded-lg text-[#F5EFE7] font-medium transition text-sm sm:text-base"
                 >
                   Sign Up
                 </Link>
-
               </div>
-
             )}
 
           </div>

@@ -8,9 +8,23 @@ import api from "../service/api";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-function ProfileSidebar({user}){
+    function ProfileSidebar({user, setUser}){
     const location=useLocation()
     const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await api.post("/logout");
+        } catch (err) {
+            console.log("Logout error:", err);
+        } finally {
+            localStorage.removeItem("accesstoken");
+            localStorage.removeItem("refreshtoken");
+            localStorage.removeItem("user");
+            if (setUser) setUser(null);
+            navigate("/signin");
+        }
+    };
 
     const menuItem=[
         {
@@ -98,7 +112,7 @@ function ProfileSidebar({user}){
                 </span> 
             </button>
 
-            <button className="logout-btn">
+            <button className="logout-btn" onClick={handleLogout}>
                 <LogOut size={20}/>
                 <span>Logout</span>
             </button>

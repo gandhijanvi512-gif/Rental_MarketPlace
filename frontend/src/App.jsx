@@ -89,12 +89,21 @@ console.log("user:", user)
 
     try{
       const res=await api.get("/getme");
-      setUser(res.data.user);
-      localStorage.setItem("user",JSON.stringify(res.data.user))
+      if(res.data?.user){
+        setUser(res.data.user);
+        localStorage.setItem("user",JSON.stringify(res.data.user))
+      }
     }catch(err){
       console.log("User fetched error:",err.message);
+      if(err.response && (err.response.status === 401 || err.response.status === 403)){
+        localStorage.removeItem("accesstoken");
+        localStorage.removeItem("refreshtoken");
+        localStorage.removeItem("user");
+        setUser(null);
+      }
+    }
   }
-}
+
 
 
 useEffect(() => {
@@ -141,7 +150,7 @@ useEffect(() => {
       <Route path='/bookingconfirmed' element={<Bookingconfirmed />}/>
       <Route path='/category' element={<Category />} />
       <Route path='/category/:category' element={<CategoryProducts />}/>
-      <Route path='/editprofile' element={<EditProfile />}/>
+      <Route path='/editprofile' element={<EditProfile setUser={setUser} />}/>
       <Route path='/wishlist' element={<Wishlist />} />
       <Route path='/about' element={<AboutUs />}/>
       <Route path="/contact" element={<ContactUs />}/>
@@ -155,11 +164,12 @@ useEffect(() => {
       <Route path='/rentalhistory' element={<RentalHistory />}/>
       <Route path='/settings' element={<Setting />}/> */}
 
-      <Route element={<ProfileLayout user={user} />}>
+      <Route element={<ProfileLayout user={user} setUser={setUser} />}>
         <Route path='/profile' element={<Profile />}/>
         <Route path='/myrentals' element={<MyRental />}/>
         <Route path='/rentalhistory' element={<RentalHistory />}/>
         <Route path='/setting' element={<Setting />}/>
+        <Route path='/settings' element={<Setting />}/>
         {/* <Route path='/ownerdashboard'  element={<h1>Owner Dashboard</h1>}/> */}
         <Route path='/ownerSetup' element={<OwnerSetup />}/>
       </Route>
