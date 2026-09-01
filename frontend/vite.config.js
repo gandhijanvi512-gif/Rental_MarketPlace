@@ -6,9 +6,11 @@ export default defineConfig({
     tailwindcss(),
   ],
    server: {
-    allowedHosts: [
-      "applaud-gala-atypical.ngrok-free.dev"
-    ]
+    // allowedHosts: [
+    //   "applaud-gala-atypical.ngrok-free.dev"
+    // ]
+    host:true,
+    allowedHosts:true,
   }
 })
 

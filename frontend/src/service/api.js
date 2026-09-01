@@ -11,11 +11,15 @@ const getBaseURL=()=>{
   const envURL=import.meta.env.VITE_API_URL;
 
   if(typeof window!=="undefined"){
-    if(envURL && envURL.includes("localhost") && window.location.hostname!=="localhost"){
-      return envURL.replace("localhost",window.location.hostname)
+    const hostname=window.location.hostname;
+
+    if(hostname && hostname!=="localhost" && hostname!="127.0.0.1"){
+      if(envURL && envURL.includes("localhost")){
+        return envURL.replace("localhost",hostname)
+      }
     }
   }
-  return envURL || (typeof window!=="undefined"?`http://${window.location.hostname}:5200`:"http://localhost:5200");
+  return envURL || "http://localhost:5200"
 }
 
 const api=axios.create({

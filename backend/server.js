@@ -66,6 +66,14 @@ app.use(adminRouter)
 app.use(contactRouter)
 
 
+app.use((req, res, next) => {
+    if (req.headers["access-control-request-private-network"]) {
+        res.setHeader("Access-Control-Allow-Private-Network", "true");
+    }
+    next();
+});
+
+
 
 dbconnect()
 .then(()=>{
@@ -75,7 +83,7 @@ dbconnect()
     console.log(err)
 })
 
-app.listen(PORT,()=>{
+app.listen(PORT,"0.0.0.0",()=>{
     console.log("App is listen on port 5200");
 })
 
