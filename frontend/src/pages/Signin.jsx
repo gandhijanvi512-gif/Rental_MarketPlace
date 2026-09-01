@@ -26,8 +26,19 @@ const signin = () => {
     try {
       const response = await api.post("/signin", formData);
 
-      localStorage.setItem("accesstoken:",response.data)
-      localStorage.setItem("refreshtoken",response.data)
+      // localStorage.setItem("accesstoken:",response.data)
+      // localStorage.setItem("refreshtoken",response.data)
+
+      if(response.data.accesstoken){
+        localStorage.setItem("accesstoken",response.data.accesstoken);
+      }
+
+      if(response.data.refreshtoken){
+        localStorage.setItem("refreshtoken",response.data.refreshtoken)
+      }
+
+
+
       console.log("LOGIN RESPONSE:", response.data);
 
       // localStorage.setItem("token", response.data.token);

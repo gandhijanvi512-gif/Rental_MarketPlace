@@ -36,11 +36,17 @@ const AdminSignin=()=>{
             console.log("ADMIN LOGIN RESPONSE:", res.data);
 
             if(!res.data.success){
-                setError(res.data.message||"Login Failed")
+                setError(res.data.message||
+                    "Login Failed");
                 return
             }
 
-            const user=res.data.user
+            // const user=res.data.user
+            const token=res.data.token || res.data.admintoken;
+
+            if(token){
+                localStorage.setItem("admintoken",token)
+            }
 
             // if(!user?.role?.includes("admin")){
             //     setError("You are not authorized as an admin.")

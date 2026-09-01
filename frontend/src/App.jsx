@@ -48,6 +48,7 @@ import AdminProtectedRoute from './pages/Admin/AdminProtected'
 import ContactUs from './pages/ContactUs'
 import AdminContact from './pages/Admin/AdminContacts'
 import AdminContactDetails from './pages/Admin/AdminContactDetails'
+import { set } from 'react-datepicker/dist/dist/date_utils.js'
 
 
 
@@ -56,15 +57,33 @@ function App() {
 
   const [user,setUser]=useState(null)
 console.log("user:", user)
+  // const getUser=async()=>{
+  //   try{
+  //     const res=await api.get("/getme")
+  //     setUser(res.data.user)
+  //   }catch(err){
+  //     console.log(err);
+      
+  //   }
+  // }
+
   const getUser=async()=>{
+    const token=localStorage.getItem("accesstoken")
+
+    if(!token){
+      setUser(null)
+      return;
+    }
+
     try{
-      const res=await api.get("/getme")
-      setUser(res.data.user)
+      const res=await api.get("/getme");
+      setUser(res.data.user);
     }catch(err){
       console.log(err);
-      
+      setUser(null)
     }
   }
+
 
 useEffect(() => {
     if (location.pathname.startsWith("/admin") ||

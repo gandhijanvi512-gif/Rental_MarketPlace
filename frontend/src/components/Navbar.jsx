@@ -102,7 +102,10 @@ const getProfileImage = (profileImage) => {
   // Old/local image
   if (typeof profileImage === "string") {
     if (profileImage.startsWith("/uploads")) {
-      return `http://localhost:5200${profileImage}`;
+      // return `http://localhost:5200${profileImage}`;
+
+    const base = import.meta.env.VITE_API_URL || (typeof window !== "undefined" ? `http://${window.location.hostname}:5200` : "http://localhost:5200");
+      return `${base}${profileImage}`;
     }
 
     return profileImage;
@@ -110,9 +113,6 @@ const getProfileImage = (profileImage) => {
 
   return "/default-avatar.png";
 };
-
-
-
 
 
   return (

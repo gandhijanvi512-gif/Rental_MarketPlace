@@ -31,12 +31,23 @@ app.use((req,res,next)=>{
     }
 })
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:3000",
+    "https://rental-market-place.vercel.app"
+];
+
 app.use(cors({
-    origin:[
-        "http://localhost:5173",
-        "https://rental-market-place.vercel.app"
-    ],
-    credentials:true
+        origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        const isLocalOrPrivateNetwork = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})(:\d+)?$/.test(origin);
+        if (allowedOrigins.includes(origin) || isLocalOrPrivateNetwork || process.env.NODE_ENV !== "production") {
+            return callback(null, true);
+        }
+        return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true
 }))
 app.use(morgan('dev'))
 app.use(express.json())

@@ -6,14 +6,26 @@ const AdminSidebar=()=>{
 
     const navigate=useNavigate()
 
+    // const handleLogout=async()=>{
+    //     try{
+    //         const res=await api.post("/admin/logout")
+
+    //         navigate("/admin/signin")
+    //     }catch(err){
+    //         console.log(err);
+            
+    //     }
+    // }
+
     const handleLogout=async()=>{
         try{
-            const res=await api.post("/admin/logout")
-
-            navigate("/admin/signin")
+            await api.post("/admin/logout")
         }catch(err){
             console.log(err);
             
+        }finally{
+            localStorage.removeItem("admintoken");
+            navigate("/admin/signin")
         }
     }
 

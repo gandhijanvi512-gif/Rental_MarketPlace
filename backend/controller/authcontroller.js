@@ -149,16 +149,43 @@ export const getme=async(req,res)=>{
     }
 }
 
+// export const logout=async(req,res)=>{
+//     try{ 
+               
+//         res.clearCookie("refreshtoken",{
+//             httpOnly:true,
+//             secure:false,
+//             sameSite:"lax"
+//         })
+
+//         return res.status(200).json({
+//             success:false,
+//             message:"Logout Successful"
+//         })
+//     }catch(err){
+//         return res.status(500).json({
+//             success:false,
+//             message:err.message
+//         })
+//     }
+// }
+
+
 export const logout=async(req,res)=>{
-    try{        
+    try{ 
+        const isProduction=process.env.NODE_ENV==="production";
+               
         res.clearCookie("refreshtoken",{
             httpOnly:true,
-            secure:false,
-            sameSite:"lax"
+            // secure:false,
+            // sameSite:"lax",
+            secure:isProduction,
+            sameSite:isProduction?"none":"lax",
+            path:"/"
         })
 
         return res.status(200).json({
-            success:false,
+            success:true,
             message:"Logout Successful"
         })
     }catch(err){
@@ -168,6 +195,8 @@ export const logout=async(req,res)=>{
         })
     }
 }
+
+
 
 
 export const becomeOwner=async(req,res)=>{
@@ -253,18 +282,22 @@ export const adminsignin=async(req,res)=>{
         const adminrefreshtoken=jwt.sign(
             {
                 id:admin._id,
-                role:"admin"
+                role:admin.role || ["admin"]
             },
             process.env.JWT_SECRET,
             {
-                expiresIn:"1d"
+                expiresIn:"7d"
             }
         )
 
+        const isProduction=process.env.NODE_ENV==="production";
+
         res.cookie("adminrefreshtoken", adminrefreshtoken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            // secure: true,
+            // sameSite: "none",
+            secure:isProduction,
+            sameSite:isProduction?"none":"lax",
             path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
@@ -272,6 +305,8 @@ export const adminsignin=async(req,res)=>{
         return res.status(200).json({
             success: true,
             message: "Admin login successful",
+            token:adminrefreshtoken,
+            admintoken:adminrefreshtoken,
             admin: {
                 _id: admin._id,
                 name: admin.name,
@@ -291,10 +326,16 @@ export const adminsignin=async(req,res)=>{
 
 export const adminLogout=async(req,res)=>{
     try{
+
+        const isProduction=process.env.NODE_ENV==="production";
+
         res.clearCookie("adminrefreshtoken",{
             httpOnly:true,
-            secure:false,
-            sameSite:"lax"
+            // secure:false,
+            // sameSite:"lax"
+            secure:isProduction,
+            sameSite:isProduction?"none":"lax",
+            path:"/"
         })
 
         return res.status(200).json({
