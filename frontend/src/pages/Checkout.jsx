@@ -187,7 +187,7 @@ function Checkout(){
 
             const razor = new window.Razorpay(options);
 
-            razor.on("payment.failed", function (response) {
+            razor.on("payment.failed", function(response){
                 console.log("PAYMENT FAILED:", response);
                 setLoading(false);
 
@@ -209,6 +209,8 @@ function Checkout(){
     }
 
     useEffect(()=>{
+
+        
         const getUser=async()=>{
             try{
                 const res=await api.get("/getme")
@@ -219,6 +221,8 @@ function Checkout(){
             }
         }
         getUser()
+
+
     },[])
 
 return (
@@ -361,7 +365,6 @@ return (
 
     </div>
 );
-
 
 }
 

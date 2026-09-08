@@ -2,6 +2,7 @@ import { useState } from "react"
 import api from "../../service/api"
 import { useEffect } from "react"
 import { Eye, Package, Search, Trash2 } from "lucide-react"
+import toast from "react-hot-toast"
 
 const AdminProducts=()=>{
     
@@ -59,6 +60,45 @@ const AdminProducts=()=>{
         }
     }
 
+    // approved 
+
+    const handleApprove=async(id)=>{
+        try{
+            const res=await api.patch(`/admin/product/${id}`)
+
+            if(res.data.success){
+                toast.success("Product approved successfully")
+                fetchAllProduct()
+            }
+        }catch(err){
+            console.log(err);
+            
+        }
+    }
+
+    // handle reject product
+
+    const handleReject=async(id)=>{
+        try{
+            const confirmReject=window.confirm(
+                "Are you sure you want to reject this product?"
+            )
+
+            if(!confirmReject){
+                return
+            }
+
+            const res=await api.patch(`/admin/product/${id}`)
+
+            if(res.data.success){
+                toast.success("Product rejected")
+                fetchAllProduct()
+            }
+        }catch(err){
+            console.log(err);
+            
+        }
+    }
 
     // search products
 
@@ -140,6 +180,7 @@ const AdminProducts=()=>{
                                     <th>Deposit</th>
                                     <th>Rating</th>
                                     <th>Reviews</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -230,13 +271,33 @@ const AdminProducts=()=>{
                                                 {product.totalReview || 0}
                                             </td>
 
+                                            {/* <td>
+                                                <span className={`product-status ${product.status}`}>
+                                                    {product.status || "pending"}
+                                                </span>
+                                            </td> */}
+
                                             <td>
                                                 <div className="admin-product-actions">
-                                                    <button className="admin-product-action-view"
-                                                        title="View Product"
-                                                    >   
-                                                        <Eye size={17} />
-                                                    </button>
+
+                                                    {/* {product.status==="pending" && (
+                                                        <>
+                                                            <button className="admin-product-action-approve"
+                                                                title="Approve Product"
+                                                                onClick={()=>handleApprove(product._id)}
+                                                            >
+                                                                Approve
+                                                            </button>
+
+                                                            <button
+                                                                className="admin-product-action-reject"
+                                                                title="Reject Product"
+                                                                onClick={()=>handleReject(product._id)}
+                                                            >
+                                                                Reject
+                                                            </button>
+                                                        </>
+                                                    )} */}
 
                                                     <button className="admin-product-action-delete"
                                                         title="Delete Product"

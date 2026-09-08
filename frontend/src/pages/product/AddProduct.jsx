@@ -88,7 +88,10 @@ const AddProduct = () => {
         withCredentials:true,
       })
 
-      toast.success(response.data.message);
+      if(response.data.success){
+        toast.success(response.data.message);
+      }
+      
 
       setTimeout(()=>{
         navigate("/products");

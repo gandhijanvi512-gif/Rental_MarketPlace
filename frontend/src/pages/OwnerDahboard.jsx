@@ -31,9 +31,9 @@ function OwnerDashboard() {
         getDashboard()
     },[])
 
-    if(loading){
-        return <h2>Loading Dashboard...</h2>
-    }
+    // if(loading){
+    //     return <h2>Loading Dashboard...</h2>
+    // }
   
 
     return (

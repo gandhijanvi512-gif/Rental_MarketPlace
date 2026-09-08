@@ -2,9 +2,9 @@ import User from "../model/authmodel.js"
 import jwt from "jsonwebtoken";
 
 export const adminAuthMiddleware = (req, res, next) => {
+    console.log("ADMIN MIDDLEWARE CALLED");
+
     try {
-        console.log("ADMIN COOKIES:", req.cookies);
-        console.log("ADMIN TOKEN:", req.cookies?.adminrefreshtoken);
 
         const authHeader=req.headers && (req.headers.authorization || req.headers.Authorization);
         let bearerToken=null;

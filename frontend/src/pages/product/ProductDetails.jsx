@@ -21,10 +21,11 @@ const ProductDetails = () => {
 
       toast.success("Product add to cart");
 
-      setTimeout(()=>{
-        navigate("/cart");
-      },2000)
+      // setTimeout(()=>{
+      //   navigate("/cart");
+      // },100)
 
+      navigate("/cart")
       
     } catch (err) {
       console.log(err);

@@ -604,14 +604,14 @@ const Navbar = ({ user, setUser }) => {
                     </Link>
 
                     {/* SETTINGS */}
-                    <Link
+                    {/* <Link
                       to="/setting"
                       onClick={() => setShowMenu(false)}
                       className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#213555] hover:bg-[#F5EFE7] transition font-medium"
                     >
                       <Settings size={16} className="text-[#3E5879]" />
                       <span>Settings</span>
-                    </Link>
+                    </Link> */}
 
                     <div className="border-t border-gray-100 my-1"></div>
 
