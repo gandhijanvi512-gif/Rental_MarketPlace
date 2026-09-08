@@ -48,6 +48,7 @@ import AdminProtectedRoute from './pages/Admin/AdminProtected'
 import ContactUs from './pages/ContactUs'
 import AdminContact from './pages/Admin/AdminContacts'
 import AdminContactDetails from './pages/Admin/AdminContactDetails'
+import AdminProductRequest from './pages/Admin/AdminProductRequest'
 
 
 
@@ -215,10 +216,12 @@ function App() {
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/users' element={<AdminUsers />} />
           <Route path='/admin/owners' element={<AdminOwner />} />
+          <Route path='/admin/adminrequest' element={<AdminProductRequest /> }/>
           <Route path='/admin/products' element={<AdminProducts />}/>
           <Route path='/admin/bookings' element={<AdminBooking />} />
           <Route path='/admin/contacts' element={<AdminContact />} />
           <Route path="/admin/contact/:id" element={<AdminContactDetails />} />
+          
         </Route>
       </Route>
       

@@ -1,7 +1,8 @@
 import express from "express"
 // import { authMiddleware } from "../middleware/authmiddleware.js"
 import { adminAuthMiddleware, isAdmin } from "../middleware/adminmiddleware.js"
-import { approveProduct, checkAdmin, deleteUser, getAdminBookings, getAdminOverview, getAdminProducts, getAllUser, getBookingByStatus, getOwnerAnalytics, getPendingProduct, getTopProducts, rejectProduct, updateUser } from "../controller/admincontroller.js"
+import { checkAdmin, deleteUser, getAdminBookings, getAdminOverview, getAdminProducts, getAllUser, getBookingByStatus, getOwnerAnalytics, getPendingProduct, getTopProducts, updateUser } from "../controller/admincontroller.js"
+import { getProductRequest,approveProductRequest, rejectProductRequest } from "../controller/productRequestcontroller.js"
 
 const adminRouter=express.Router()
 
@@ -16,7 +17,8 @@ adminRouter.get("/getadminproducts",adminAuthMiddleware,getAdminProducts)
 adminRouter.get("/admin/check",adminAuthMiddleware,checkAdmin)
 adminRouter.get("/admin/bookings",adminAuthMiddleware,getAdminBookings)
 adminRouter.get("/admin/products/pending",adminAuthMiddleware,getPendingProduct)
-adminRouter.patch("/admin/product/:id/",adminAuthMiddleware,approveProduct)
-adminRouter.patch("/admin/product/:id",adminAuthMiddleware,rejectProduct)
+adminRouter.get("/admin/productrequest",adminAuthMiddleware,getProductRequest)
+adminRouter.patch("/admin/approverequest/:id",adminAuthMiddleware,approveProductRequest)
+adminRouter.patch("/admin/rejectrequest/:id",adminAuthMiddleware,rejectProductRequest)
 
 export default adminRouter

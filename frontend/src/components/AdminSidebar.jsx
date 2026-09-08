@@ -68,6 +68,16 @@ const AdminSidebar=()=>{
                 </NavLink>
 
                 <NavLink
+                    to="/admin/adminrequest"
+                    className={({isActive})=>
+                        `admin-nav-item ${isActive ? "active" : ""}`
+                    }   
+                >
+                    <Package className="admin-nav-icon" />
+                    <span>Products Request</span>
+                </NavLink>
+
+                <NavLink
                     to="/admin/products"
                     className={({isActive})=>
                         `admin-nav-item ${isActive ? "active" : ""}`

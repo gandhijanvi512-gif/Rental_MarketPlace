@@ -413,67 +413,9 @@ export const getPendingProduct=async(req,res)=>{
     }
 }
 
-// admin approved request
 
 
-export const approveProduct=async(req,res)=>{
-    try{
-        const product=await Product.findById(req.params.id)
-
-        if(!product){
-            return res.status(404).json({
-                success:false,
-                message:"Product not found"
-            })
-        }
-
-        product.status="approved"
-        await product.save()
-
-        return res.status(200).json({
-            success:true,
-            message:"Product approved successfully",
-            product
-        })
-    }catch(err){
-        return res.status(500).json({
-            success:false,
-            message:err.message
-        })
-    }
-}
 
 
-// admin rejected the product
 
-export const rejectProduct=async(req,res)=>{
-    try{
-        
-        const product=await Product.findById(req.params.id);
 
-        if(!product){
-            return res.status(404).json({
-                success: false,
-                message: "Product not found"
-            });
-        }
-
-        
-
-        product.status="rejected"
-        await product.save()
-
-        
-         return res.status(200).json({
-            success:true,
-            message:"Product rejected successfully",
-            product
-        })
-
-    }catch(err){
-        return res.status(500).json({
-            success:false,
-            message:err.message
-        })   
-    }
-}
