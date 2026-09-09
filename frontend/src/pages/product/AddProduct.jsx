@@ -22,6 +22,7 @@ const AddProduct = () => {
 
   const [images, setImages] = useState([]);
   const[previewUrls,setPreviewUrls]=useState([]);
+  const[loading,setLoading]=useState(false)
 
   const handleChange = (e) => {
     setFormData({
@@ -59,6 +60,8 @@ const AddProduct = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if(loading) return;
 
 
     if (images.length === 0) {
@@ -112,6 +115,8 @@ const AddProduct = () => {
       console.log(error);
 
       alert(error.response?.data?.message || "Something went wrong");
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -263,8 +268,8 @@ return (
             </div>
           )}
 
-          <button type="submit" className="submit-btn">
-            Add Product
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading?"Submitting...":"Add Product"}
           </button>
         </form>
       </div>
