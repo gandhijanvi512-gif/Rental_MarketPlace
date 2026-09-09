@@ -98,7 +98,7 @@ const AddProduct = () => {
 
       setTimeout(()=>{
         navigate("/products");
-      },1000)
+      },100)
       
 
       setFormData({

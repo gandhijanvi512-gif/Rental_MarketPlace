@@ -219,11 +219,11 @@ const MyProduct=()=>{
     <p>No Image</p>
   )}
 
-  {product.status && (
+  {/* {product.status && (
     <span className={`status-badge ${statusClass(product.status)}`}>
       {product.status}
     </span>
-  )}
+  )} */}
 </div>
 
             <div className="product-info">
