@@ -280,24 +280,6 @@ const AdminProducts=()=>{
                                             <td>
                                                 <div className="admin-product-actions">
 
-                                                    {/* {product.status==="pending" && (
-                                                        <>
-                                                            <button className="admin-product-action-approve"
-                                                                title="Approve Product"
-                                                                onClick={()=>handleApprove(product._id)}
-                                                            >
-                                                                Approve
-                                                            </button>
-
-                                                            <button
-                                                                className="admin-product-action-reject"
-                                                                title="Reject Product"
-                                                                onClick={()=>handleReject(product._id)}
-                                                            >
-                                                                Reject
-                                                            </button>
-                                                        </>
-                                                    )} */}
 
                                                     <button className="admin-product-action-delete"
                                                         title="Delete Product"

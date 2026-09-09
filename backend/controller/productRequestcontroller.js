@@ -86,7 +86,7 @@ export const rejectProductRequest=async(req,res)=>{
             });
         }
 
-        if(req.status!=="pending"){
+        if(request.status!=="pending"){
             return res.status(400).json({
                 success: false,
                 message: "Request is already processed"
